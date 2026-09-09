@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Alex Rivera — Links</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" />
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg:#12131a; --card:#1b1d27; --card-2:#20232e;
+    --ink:#e9ebf2; --ink-soft:#a2a6b8; --ink-faint:#6f7488;
+    --line:#2b2e3c; --accent:#4ade80;
+    font-family:"Manrope", system-ui, -apple-system, sans-serif;
+  }
+  body {
+    background: var(--bg); color: var(--ink); line-height: 1.5; -webkit-font-smoothing: antialiased;
+    min-height: 100vh; display: flex; flex-direction: column; align-items: center;
+    padding: 2.4rem 1.1rem 2rem;
+  }
+  .page { width: 100%; max-width: 430px; }
+
+  .demo-note {
+    display: flex; align-items: center; gap: 0.5rem; justify-content: center;
+    font-size: 0.76rem; color: var(--ink-faint); margin-bottom: 1.4rem;
+  }
+  .demo-note .chip { font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--accent); border: 1px solid var(--accent); border-radius: 999px; padding: 0.15rem 0.5rem; font-size: 0.68rem; }
+
+  .hero { text-align: center; margin-bottom: 1.7rem; }
+  .avatar {
+    width: 94px; height: 94px; border-radius: 50%; margin: 0 auto 1rem;
+    background: linear-gradient(145deg, #4ade80, #22c55e);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem; font-weight: 800; color: #0c1a12;
+    box-shadow: 0 0 0 4px rgba(74, 222, 128, 0.12);
+  }
+  .name { font-size: 1.45rem; font-weight: 800; letter-spacing: -0.02em; }
+  .status { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; font-weight: 700;
+    color: var(--accent); margin-top: 0.4rem; }
+  .status .pulse { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); position: relative; }
+  .status .pulse::after { content: ""; position: absolute; inset: -4px; border-radius: 50%;
+    border: 1px solid var(--accent); animation: ring 1.8s ease-out infinite; }
+  @keyframes ring { 0% { transform: scale(0.6); opacity: 1; } 100% { transform: scale(1.6); opacity: 0; } }
+  .bio { color: var(--ink-soft); font-size: 0.92rem; margin-top: 0.7rem; }
+
+  .socials { display: flex; justify-content: center; gap: 0.5rem; margin: 1.1rem 0 0; }
+  .socials a {
+    width: 40px; height: 40px; border-radius: 11px; border: 1px solid var(--line);
+    background: var(--card); display: flex; align-items: center; justify-content: center;
+    color: var(--ink-soft); text-decoration: none; transition: border-color 0.15s, color 0.15s, transform 0.12s;
+  }
+  .socials a:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+  .socials svg { width: 18px; height: 18px; fill: currentColor; }
+
+  .links { display: flex; flex-direction: column; gap: 0.7rem; }
+  .link {
+    display: flex; align-items: center; gap: 0.9rem;
+    padding: 0.95rem 1.1rem; border-radius: 14px;
+    background: var(--card); border: 1px solid var(--line);
+    color: var(--ink); text-decoration: none; font-weight: 700; font-size: 0.95rem;
+    transition: transform 0.12s ease, border-color 0.15s ease;
+  }
+  .link:hover { transform: translateY(-2px); border-color: var(--accent); }
+  .link .ic { width: 34px; height: 34px; border-radius: 9px; flex: none;
+    background: var(--card-2); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+  .link .tx { flex: 1; }
+  .link .tx small { display: block; font-weight: 500; font-size: 0.78rem; color: var(--ink-faint); margin-top: 1px; }
+  .link .arrow { color: var(--ink-faint); font-weight: 800; }
+
+  .subscribe { margin: 1.4rem 0; background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 1.15rem 1.2rem; }
+  .subscribe h3 { font-size: 0.98rem; font-weight: 800; }
+  .subscribe p { font-size: 0.83rem; color: var(--ink-soft); margin: 0.25rem 0 0.9rem; }
+  .sub-row { display: flex; gap: 0.5rem; }
+  .subscribe input {
+    flex: 1; font: inherit; font-size: 0.9rem; padding: 0.65rem 0.8rem; border-radius: 10px;
+    border: 1px solid var(--line); background: var(--card-2); color: var(--ink); min-width: 0;
+  }
+  .subscribe input:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: var(--accent); }
+  .subscribe button {
+    font: inherit; font-weight: 800; font-size: 0.88rem; cursor: pointer; white-space: nowrap;
+    padding: 0.65rem 1.1rem; border-radius: 10px; border: 1px solid var(--accent);
+    background: var(--accent); color: #0c1a12;
+  }
+  .sub-err { font-size: 0.78rem; color: #f87171; margin-top: 0.5rem; min-height: 1em; }
+  .sub-ok { display: none; align-items: center; gap: 0.55rem; font-size: 0.9rem; font-weight: 700; color: var(--accent); }
+  .sub-ok .tick { width: 22px; height: 22px; border-radius: 50%; background: var(--accent); color: #0c1a12;
+    display: flex; align-items: center; justify-content: center; font-weight: 800; }
+  .subscribe.done .sub-form { display: none; }
+  .subscribe.done .sub-ok { display: flex; }
+
+  .share { display: flex; justify-content: center; margin-top: 1.4rem; }
+  .share button {
+    font: inherit; font-size: 0.82rem; font-weight: 700; cursor: pointer; color: var(--ink-soft);
+    background: transparent; border: 1px solid var(--line); border-radius: 999px; padding: 0.45rem 1rem;
+    display: inline-flex; align-items: center; gap: 0.45rem;
+  }
+  .share button:hover { border-color: var(--accent); color: var(--accent); }
+
+  .toast {
+    position: fixed; left: 50%; bottom: 1.4rem; transform: translateX(-50%) translateY(20px);
+    background: var(--card-2); border: 1px solid var(--line); color: var(--ink);
+    font-size: 0.83rem; font-weight: 600; padding: 0.6rem 1rem; border-radius: 10px;
+    opacity: 0; pointer-events: none; transition: opacity 0.2s, transform 0.2s;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  footer { text-align: center; margin-top: 1.8rem; font-size: 0.76rem; color: var(--ink-faint); }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="demo-note"><span class="chip">Demo</span> Template &mdash; swap in your own photo, links and copy</div>
+
+  <div class="hero">
+    <div class="avatar">AR</div>
+    <div class="name">Alex Rivera</div>
+    <div class="status"><span class="pulse"></span> Available for projects</div>
+    <p class="bio">Product designer &amp; writer. I make things simple and write about how.</p>
+    <div class="socials">
+      <a href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 1.2.1 1.8.3 2.2.4.6.2 1 .5 1.4.9.4.4.7.8.9 1.4.2.4.4 1 .4 2.2.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c-.1 1.2-.3 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.2-1 .4-2.2.4-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2-.1-1.8-.3-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.8-.9-1.4-.2-.4-.4-1-.4-2.2C2.6 15.6 2.6 15.2 2.6 12s0-3.6.1-4.9c.1-1.2.3-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.2 1-.4 2.2-.4C8.4 2.2 8.8 2.2 12 2.2zm0 3.1a6.7 6.7 0 100 13.4 6.7 6.7 0 000-13.4zm0 1.8a4.9 4.9 0 110 9.8 4.9 4.9 0 010-9.8zm5.1-.3a1.1 1.1 0 110 2.3 1.1 1.1 0 010-2.3z"/></svg></a>
+      <a href="https://youtube.com" target="_blank" rel="noopener" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M23 12s0-3.2-.4-4.7c-.2-.8-.9-1.5-1.7-1.7C19.4 5.2 12 5.2 12 5.2s-7.4 0-8.9.4c-.8.2-1.5.9-1.7 1.7C1 8.8 1 12 1 12s0 3.2.4 4.7c.2.8.9 1.5 1.7 1.7 1.5.4 8.9.4 8.9.4s7.4 0 8.9-.4c.8-.2 1.5-.9 1.7-1.7.4-1.5.4-4.7.4-4.7zM9.8 15.3V8.7l5.7 3.3-5.7 3.3z"/></svg></a>
+      <a href="https://x.com" target="_blank" rel="noopener" aria-label="X"><svg viewBox="0 0 24 24"><path d="M18.2 2.3h3.3l-7.2 8.2 8.5 11.2h-6.7l-5.2-6.8-6 6.8H1.6l7.7-8.8L1.1 2.3H8l4.7 6.2 5.5-6.2zm-1.2 17.6h1.8L7.1 4.1H5.2l11.8 15.8z"/></svg></a>
+      <a href="https://linkedin.com" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M4.98 3.5a2.5 2.5 0 11-.02 5 2.5 2.5 0 01.02-5zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05C21.4 8.65 22 11 22 14v7h-4v-6.2c0-1.48-.03-3.38-2.06-3.38-2.06 0-2.37 1.6-2.37 3.27V21h-4z"/></svg></a>
+    </div>
+  </div>
+
+  <div class="links">
+    <a class="link" href="https://example.com" target="_blank" rel="noopener">
+      <span class="ic">&#128188;</span>
+      <span class="tx">Portfolio<small>Case studies and selected work</small></span>
+      <span class="arrow">&rarr;</span>
+    </a>
+    <a class="link" href="https://example.com" target="_blank" rel="noopener">
+      <span class="ic">&#127908;</span>
+      <span class="tx">Podcast: The Simple Part<small>New episode every other Tuesday</small></span>
+      <span class="arrow">&rarr;</span>
+    </a>
+    <a class="link" href="https://example.com" target="_blank" rel="noopener">
+      <span class="ic">&#128214;</span>
+      <span class="tx">Free guide: A field guide to saying less<small>40 pages on cutting interfaces down</small></span>
+      <span class="arrow">&rarr;</span>
+    </a>
+    <a class="link" href="mailto:hello@example.com">
+      <span class="ic">&#9993;</span>
+      <span class="tx">Work with me<small>hello@example.com</small></span>
+      <span class="arrow">&rarr;</span>
+    </a>
+  </div>
+
+  <div class="subscribe" id="sub">
+    <div class="sub-form">
+      <h3>Design notes, every Friday</h3>
+      <p>One short email a week. No spam, unsubscribe anytime.</p>
+      <form class="sub-row" id="subForm" novalidate>
+        <input type="email" id="email" placeholder="you@email.com" aria-label="Email address" />
+        <button type="submit">Subscribe</button>
+      </form>
+      <div class="sub-err" id="subErr"></div>
+    </div>
+    <div class="sub-ok">
+      <span class="tick">&#10003;</span>
+      <span>You're on the list. Check your inbox to confirm.</span>
+    </div>
+  </div>
+
+  <div class="share">
+    <button id="shareBtn"><span>&#128279;</span> Copy link to this page</button>
+  </div>
+
+  <footer>Built by quickbuildlab &middot; example page</footer>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+
+  function toast(msg) {
+    var t = $("toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    clearTimeout(t._h);
+    t._h = setTimeout(function () { t.classList.remove("show"); }, 2200);
+  }
+
+  // email subscribe
+  $("subForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var val = $("email").value.trim();
+    var ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
+    if (!ok) { $("subErr").textContent = "Enter a valid email address."; return; }
+    $("subErr").textContent = "";
+    $("sub").classList.add("done");
+  });
+  $("email").addEventListener("input", function () { $("subErr").textContent = ""; });
+
+  // share / copy link
+  $("shareBtn").addEventListener("click", function () {
+    var url = window.location.href;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).then(function () { toast("Link copied to clipboard"); })
+        .catch(function () { toast("Copy failed — " + url); });
+    } else {
+      try {
+        var ta = document.createElement("textarea");
+        ta.value = url; ta.style.position = "fixed"; ta.style.opacity = "0";
+        document.body.appendChild(ta); ta.select(); document.execCommand("copy");
+        document.body.removeChild(ta); toast("Link copied to clipboard");
+      } catch (e) { toast(url); }
+    }
+  });
+
+  // gentle nudge that outbound links are placeholders
+  document.querySelectorAll('a.link[href="https://example.com"]').forEach(function (a) {
+    a.addEventListener("click", function () { toast("Demo link — you'd point this to your real page"); });
+  });
+})();
+</script>
+</body>
+</html>

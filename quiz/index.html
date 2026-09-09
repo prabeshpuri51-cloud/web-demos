@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Quiz Rush</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" />
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg:#12131a; --card:#1b1d27; --card-2:#20232e;
+    --ink:#e9ebf2; --ink-soft:#a2a6b8; --ink-faint:#6f7488;
+    --line:#2b2e3c; --accent:#4ade80; --accent-dim:#1f3b2a;
+    --right:#4ade80; --right-bg:#16281c; --wrong:#f87171; --wrong-bg:#2a1a1a;
+    --amber:#fbbf24; --heat:#fb923c;
+    font-family:"Manrope", system-ui, -apple-system, sans-serif;
+  }
+  body { background: var(--bg); color: var(--ink); line-height: 1.5; -webkit-font-smoothing: antialiased;
+    display: flex; align-items: flex-start; justify-content: center; padding: 2rem 1rem 3rem; }
+  .quiz { width: 100%; max-width: 600px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 1.7rem; position: relative; overflow: hidden; }
+  [hidden] { display: none !important; }
+
+  h1 { font-size: 1.55rem; font-weight: 800; letter-spacing: -0.02em; }
+  .muted { color: var(--ink-soft); font-size: 0.92rem; }
+  .btn { font: inherit; font-weight: 700; font-size: 0.95rem; cursor: pointer;
+    padding: 0.7rem 1.3rem; border-radius: 11px; border: 1px solid var(--accent);
+    background: var(--accent); color: #0c1a12; }
+  .btn.ghost { background: transparent; color: var(--accent); }
+  .btn.small { padding: 0.5rem 0.95rem; font-size: 0.85rem; }
+  .btn:disabled { opacity: 0.45; cursor: default; }
+
+  /* ---------- START / DASHBOARD ---------- */
+  .start-head { text-align: center; margin-bottom: 1.4rem; }
+  .start-head .kick { font-size: 0.78rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); }
+  .start-head p { margin-top: 0.5rem; }
+  .levels-label { font-size: 0.78rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--ink-faint); margin-bottom: 0.7rem; }
+  .levels { display: flex; flex-direction: column; gap: 0.8rem; }
+  .level { display: flex; align-items: center; gap: 0.95rem; text-align: left; font: inherit; cursor: pointer;
+    padding: 1.05rem 1.2rem; border-radius: 14px; border: 1.5px solid var(--lv-color); background: var(--lv-tint);
+    color: var(--ink); transition: transform 0.12s ease, box-shadow 0.15s ease; }
+  .level:hover { transform: translateY(-2px); box-shadow: 0 0 0 3px var(--lv-tint); }
+  .level .meter { display: flex; gap: 3px; align-items: flex-end; flex: none; height: 20px; }
+  .level .meter i { width: 5px; background: var(--lv-color); border-radius: 2px; opacity: 0.3; }
+  .level .meter i:nth-child(1) { height: 8px; }
+  .level .meter i:nth-child(2) { height: 14px; }
+  .level .meter i:nth-child(3) { height: 20px; }
+  .level[data-lvl="1"] .meter i:nth-child(-n+1),
+  .level[data-lvl="2"] .meter i:nth-child(-n+2),
+  .level[data-lvl="3"] .meter i:nth-child(-n+3) { opacity: 1; }
+  .level .lv-main { flex: 1; }
+  .level .lv-main b { display: block; font-size: 1.05rem; font-weight: 800; }
+  .level .lv-main span { font-size: 0.82rem; color: var(--ink-soft); }
+  .level .lv-go { display: flex; align-items: center; gap: 0.5rem; flex: none; font-size: 0.8rem; font-weight: 800; color: var(--lv-color); }
+  .level .lv-go .best { color: var(--ink-faint); font-weight: 700; }
+  .rules { margin-top: 1.3rem; display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem 1rem; font-size: 0.83rem; color: var(--ink-soft); }
+  .rules div { display: flex; gap: 0.5rem; align-items: flex-start; }
+  .rules .b { color: var(--accent); font-weight: 800; }
+
+  /* ---------- QUIZ ---------- */
+  .quiz-topbar { display: flex; margin-bottom: 0.9rem; }
+  .quit { font: inherit; font-weight: 700; font-size: 0.8rem; cursor: pointer; color: var(--ink-faint);
+    background: transparent; border: 1px solid var(--line); border-radius: 9px; padding: 0.35rem 0.75rem;
+    display: inline-flex; align-items: center; gap: 0.35rem; }
+  .quit:hover { border-color: var(--wrong); color: var(--wrong); }
+  .hud { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.9rem; }
+  .hud .qnum { font-size: 0.8rem; font-weight: 800; color: var(--ink-faint); }
+  .hud .spacer { flex: 1; }
+  .streak { display: flex; align-items: center; gap: 0.35rem; font-size: 0.85rem; font-weight: 800; color: var(--heat);
+    opacity: 0; transform: scale(0.8); transition: opacity 0.2s, transform 0.2s; }
+  .streak.on { opacity: 1; transform: scale(1); }
+  .streak .mult { color: var(--amber); }
+  .points { font-size: 1.05rem; font-weight: 800; font-variant-numeric: tabular-nums; }
+  .timer-ring { width: 42px; height: 42px; flex: none; position: relative; }
+  .timer-ring svg { transform: rotate(-90deg); }
+  .timer-ring .num { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    font-size: 0.82rem; font-weight: 800; font-variant-numeric: tabular-nums; }
+
+  .qbar { height: 5px; background: var(--card-2); border-radius: 999px; overflow: hidden; margin-bottom: 1.3rem; }
+  .qbar > i { display: block; height: 100%; background: var(--accent); width: 0; transition: width 0.35s ease; }
+
+  .q { font-size: 1.18rem; font-weight: 800; line-height: 1.4; margin-bottom: 1.15rem; }
+  .opts { display: flex; flex-direction: column; gap: 0.6rem; }
+  .opt { text-align: left; font: inherit; font-size: 0.96rem; font-weight: 600; cursor: pointer;
+    padding: 0.82rem 0.95rem; border-radius: 11px; border: 1px solid var(--line);
+    background: var(--card-2); color: var(--ink); display: flex; gap: 0.75rem; align-items: center;
+    opacity: 1; animation: pop 0.28s ease backwards; }
+  .opt:nth-child(1){animation-delay:.03s} .opt:nth-child(2){animation-delay:.09s}
+  .opt:nth-child(3){animation-delay:.15s} .opt:nth-child(4){animation-delay:.21s}
+  @keyframes pop { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  .opt:hover:not(:disabled) { border-color: var(--ink-faint); }
+  .opt .mk { width: 25px; height: 25px; border-radius: 7px; border: 1px solid var(--ink-faint);
+    flex: none; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 800; color: var(--ink-faint); }
+  .opt .txt { flex: 1; }
+  .opt.right { border-color: var(--right); background: var(--right-bg); }
+  .opt.right .mk { border-color: var(--right); background: var(--right); color: #0c1a12; }
+  .opt.wrong { border-color: var(--wrong); background: var(--wrong-bg); }
+  .opt.wrong .mk { border-color: var(--wrong); background: var(--wrong); color: #fff; }
+  .opt.faded { opacity: 0.4; border-style: dashed; animation: cut 0.3s ease; }
+  .opt.faded .txt { text-decoration: line-through; color: var(--ink-faint); }
+  .opt.faded .mk { border-color: var(--wrong); color: var(--wrong); }
+  @keyframes cut { 0% { transform: scale(1); } 50% { transform: scale(0.97); } 100% { transform: scale(1); } }
+  .opt:disabled { cursor: default; }
+  .shake { animation: shake 0.4s ease; }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-7px)} 40%{transform:translateX(7px)} 60%{transform:translateX(-4px)} 80%{transform:translateX(4px)} }
+
+  .gain { position: absolute; right: 1.7rem; font-size: 1.1rem; font-weight: 800; color: var(--accent);
+    pointer-events: none; opacity: 0; }
+  .gain.fly { animation: fly 0.9s ease forwards; }
+  @keyframes fly { 0%{opacity:0; transform:translateY(10px)} 15%{opacity:1} 100%{opacity:0; transform:translateY(-34px)} }
+
+  .explain { margin-top: 1rem; font-size: 0.88rem; color: var(--ink-soft); background: var(--card-2);
+    border-left: 3px solid var(--accent); border-radius: 8px; padding: 0.75rem 0.9rem; }
+  .foot { margin-top: 1.35rem; display: flex; justify-content: space-between; align-items: center; gap: 0.6rem; }
+  .lifeline { font: inherit; font-weight: 800; font-size: 0.82rem; cursor: pointer; padding: 0.5rem 0.85rem;
+    border-radius: 9px; border: 1px dashed var(--ink-faint); background: transparent; color: var(--ink-soft); }
+  .lifeline:disabled { opacity: 0.35; cursor: default; text-decoration: line-through; }
+
+  /* ---------- RESULT ---------- */
+  .result-inner { text-align: center; }
+  .badge { display: inline-block; font-size: 0.78rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--accent); background: var(--accent-dim); border-radius: 999px; padding: 0.35rem 1rem; margin-bottom: 0.7rem; }
+  .final-points { font-size: 2.6rem; font-weight: 800; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+  .final-points small { display: block; font-size: 0.8rem; font-weight: 700; color: var(--ink-faint); letter-spacing: 0.06em; text-transform: uppercase; }
+  .newbest { color: var(--amber); font-weight: 800; font-size: 0.85rem; margin-top: 0.3rem; }
+  .rgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; margin: 1.3rem 0; }
+  .rstat { background: var(--card-2); border: 1px solid var(--line); border-radius: 11px; padding: 0.75rem 0.5rem; }
+  .rstat .k { font-size: 0.68rem; color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.05em; }
+  .rstat .v { font-size: 1.15rem; font-weight: 800; font-variant-numeric: tabular-nums; margin-top: 0.15rem; }
+  .review { text-align: left; margin: 1.2rem 0; display: flex; flex-direction: column; gap: 0.45rem; }
+  .review .row { display: flex; gap: 0.55rem; align-items: flex-start; font-size: 0.85rem; }
+  .review .ico { flex: none; width: 17px; height: 17px; border-radius: 5px; display: flex; align-items: center; justify-content: center; font-size: 0.68rem; font-weight: 800; margin-top: 2px; }
+  .review .ico.ok { background: var(--right); color: #0c1a12; }
+  .review .ico.no { background: var(--wrong); color: #fff; }
+  .review .row span { color: var(--ink-soft); }
+  .result-actions { display: flex; gap: 0.6rem; justify-content: center; flex-wrap: wrap; }
+
+  footer { text-align: center; margin-top: 1.4rem; font-size: 0.76rem; color: var(--ink-faint); }
+</style>
+</head>
+<body>
+<div class="quiz">
+  <div class="card">
+
+    <!-- ============ START ============ -->
+    <section id="screen-start">
+      <div class="start-head">
+        <div class="kick">Quiz Rush</div>
+        <h1>Beat the clock. Build a streak.</h1>
+        <p class="muted">Every question is timed. Answer fast for bonus points, and get answers in a row to multiply your score.</p>
+      </div>
+      <div class="levels-label">Choose your level</div>
+      <div class="levels" id="levels"></div>
+      <div class="rules">
+        <div><span class="b">&#9201;</span> 15s per question &mdash; the faster you answer, the more points</div>
+        <div><span class="b">&#128293;</span> 3 in a row = &times;2 points &middot; 5 in a row = &times;3</div>
+        <div><span class="b">50:50</span> One lifeline per game removes two wrong answers</div>
+        <div><span class="b">&#9000;</span> Answer with keys 1&ndash;4, Enter for next</div>
+      </div>
+    </section>
+
+    <!-- ============ QUIZ ============ -->
+    <section id="screen-quiz" hidden>
+      <div class="quiz-topbar">
+        <button class="quit" id="quitBtn">&larr; Quit</button>
+      </div>
+      <div class="hud">
+        <span class="qnum" id="qnum">Q1 / 12</span>
+        <span class="streak" id="streak">&#128293; <span id="streakN">2</span> <span class="mult" id="mult">&times;2</span></span>
+        <span class="spacer"></span>
+        <span class="points" id="points">0</span>
+        <span class="timer-ring" id="timerRing">
+          <svg width="42" height="42" viewBox="0 0 42 42">
+            <circle cx="21" cy="21" r="17" fill="none" stroke="#2b2e3c" stroke-width="4" />
+            <circle id="timerArc" cx="21" cy="21" r="17" fill="none" stroke="#4ade80" stroke-width="4" stroke-linecap="round" stroke-dasharray="106.8 106.8" />
+          </svg>
+          <span class="num" id="timerNum">15</span>
+        </span>
+      </div>
+      <div class="qbar"><i id="qbar"></i></div>
+      <div class="q" id="qText"></div>
+      <div class="opts" id="opts"></div>
+      <span class="gain" id="gain"></span>
+      <div class="explain" id="explain" hidden></div>
+      <div class="foot">
+        <button class="lifeline" id="lifeline">50 : 50</button>
+        <button class="btn" id="nextBtn" hidden>Next</button>
+      </div>
+    </section>
+
+    <!-- ============ RESULT ============ -->
+    <section id="screen-result" hidden>
+      <div class="result-inner">
+        <div class="badge" id="badge">Sharp</div>
+        <div class="final-points"><span id="finalPoints">0</span><small>points</small></div>
+        <div class="newbest" id="newbest" hidden>&#11088; New best for this level</div>
+        <div class="rgrid">
+          <div class="rstat"><div class="k">Accuracy</div><div class="v" id="rAcc">0%</div></div>
+          <div class="rstat"><div class="k">Best streak</div><div class="v" id="rStreak">0</div></div>
+          <div class="rstat"><div class="k">Avg time</div><div class="v" id="rTime">0.0s</div></div>
+        </div>
+        <div class="review" id="review"></div>
+        <div class="result-actions">
+          <button class="btn small" id="retryBtn">Retry missed</button>
+          <button class="btn small ghost" id="againBtn">Play again</button>
+          <button class="btn small ghost" id="homeBtn">Change level</button>
+        </div>
+      </div>
+    </section>
+
+  </div>
+  <footer>Built by quickbuildlab &middot; example tool</footer>
+</div>
+
+<script>
+(function () {
+  var LEVELS = {
+    easy: { name: "Easy", dot: "#4ade80", tint: "rgba(74,222,128,0.09)", lvl: 1, blurb: "Warm-up questions", time: 15, qs: [
+      { q: "What is the capital of France?", o: ["London", "Paris", "Berlin", "Madrid"], a: 1, e: "Paris has been the capital of France since 987 AD." },
+      { q: "How many days are there in a week?", o: ["5", "6", "7", "8"], a: 2, e: "Seven days, a system inherited from ancient Babylon." },
+      { q: "Mixing blue and yellow paint makes which colour?", o: ["Orange", "Purple", "Green", "Brown"], a: 2, e: "Blue and yellow are the classic pair for making green." },
+      { q: "How many legs does a spider have?", o: ["6", "8", "10", "4"], a: 1, e: "All spiders have eight legs; insects have six." },
+      { q: "What is H2O more commonly known as?", o: ["Salt", "Air", "Water", "Oil"], a: 2, e: "Two hydrogen atoms bonded to one oxygen atom." },
+      { q: "Which is the largest ocean on Earth?", o: ["Atlantic", "Indian", "Arctic", "Pacific"], a: 3, e: "The Pacific covers about a third of the planet's surface." },
+      { q: "In which direction does the Sun rise?", o: ["West", "East", "North", "South"], a: 1, e: "The Earth rotates eastward, so the Sun appears to rise in the east." },
+      { q: "How many continents are there?", o: ["5", "6", "7", "8"], a: 2, e: "Asia, Africa, North America, South America, Antarctica, Europe, Australia." },
+      { q: "What do bees collect from flowers to make honey?", o: ["Pollen", "Nectar", "Water", "Sap"], a: 1, e: "Bees gather nectar and convert it into honey in the hive." },
+      { q: "How many colours are in a rainbow?", o: ["5", "6", "7", "8"], a: 2, e: "Red, orange, yellow, green, blue, indigo, violet." },
+      { q: "What is a baby dog called?", o: ["Kitten", "Puppy", "Cub", "Foal"], a: 1, e: "A young dog is a puppy; a young cat is a kitten." },
+      { q: "Which planet do we live on?", o: ["Mars", "Venus", "Earth", "Jupiter"], a: 2, e: "Earth is the third planet from the Sun." }
+    ]},
+    medium: { name: "Medium", dot: "#fbbf24", tint: "rgba(251,191,36,0.09)", lvl: 2, blurb: "You'll need to think", time: 15, qs: [
+      { q: "Which planet in our solar system is the hottest?", o: ["Mercury", "Venus", "Mars", "Jupiter"], a: 1, e: "Venus's thick atmosphere traps heat, beating Mercury despite being farther out." },
+      { q: "What gas do plants absorb from the air for photosynthesis?", o: ["Oxygen", "Nitrogen", "Carbon dioxide", "Hydrogen"], a: 2, e: "Plants take in CO2 and release oxygen." },
+      { q: "In which year did humans first walk on the Moon?", o: ["1965", "1969", "1972", "1958"], a: 1, e: "Apollo 11, 20 July 1969." },
+      { q: "What is the chemical symbol for gold?", o: ["Go", "Gd", "Au", "Ag"], a: 2, e: "Au, from the Latin 'aurum'. Ag is silver." },
+      { q: "Which country hosted the first modern Olympic Games in 1896?", o: ["France", "Greece", "United Kingdom", "United States"], a: 1, e: "Athens, Greece, home of the ancient games." },
+      { q: "What is the largest organ in the human body?", o: ["Liver", "Brain", "Skin", "Lungs"], a: 2, e: "The skin, by surface area and weight." },
+      { q: "Which is generally considered the longest river in the world?", o: ["Amazon", "Nile", "Yangtze", "Mississippi"], a: 1, e: "The Nile at roughly 6,650 km; the Amazon is a close, debated second." },
+      { q: "Mount Everest lies on the border of Nepal and which country?", o: ["India", "China", "Bhutan", "Pakistan"], a: 1, e: "The Nepal-China (Tibet) border runs across its summit." },
+      { q: "Who formulated the three laws of motion?", o: ["Einstein", "Newton", "Galileo", "Darwin"], a: 1, e: "Isaac Newton, published 1687." },
+      { q: "What is the most abundant gas in Earth's atmosphere?", o: ["Oxygen", "Carbon dioxide", "Nitrogen", "Argon"], a: 2, e: "Nitrogen is about 78% of the air." },
+      { q: "How many strings does a standard guitar have?", o: ["4", "5", "6", "7"], a: 2, e: "Six strings on a standard acoustic or electric." },
+      { q: "What is the currency of Japan?", o: ["Won", "Yuan", "Yen", "Ringgit"], a: 2, e: "The Japanese yen; the Chinese currency is the yuan." }
+    ]},
+    hard: { name: "Hard", dot: "#f87171", tint: "rgba(248,113,113,0.09)", lvl: 3, blurb: "For the confident", time: 20, qs: [
+      { q: "The speed of light in a vacuum is approximately:", o: ["300,000 km/s", "30,000 km/s", "3,000 km/s", "3 million km/s"], a: 0, e: "About 299,792 km per second." },
+      { q: "Which element has the atomic number 1?", o: ["Helium", "Hydrogen", "Oxygen", "Carbon"], a: 1, e: "Hydrogen, the lightest and most abundant element in the universe." },
+      { q: "In which year did the Berlin Wall fall?", o: ["1987", "1989", "1991", "1985"], a: 1, e: "The wall was opened on 9 November 1989." },
+      { q: "What is the smallest prime number?", o: ["0", "1", "2", "3"], a: 2, e: "2 is the smallest prime, and the only even one." },
+      { q: "Who painted 'The Starry Night'?", o: ["Monet", "Van Gogh", "Picasso", "Dali"], a: 1, e: "Vincent van Gogh painted it in 1889." },
+      { q: "Which organelle is known as the powerhouse of the cell?", o: ["Nucleus", "Ribosome", "Mitochondrion", "Golgi body"], a: 2, e: "Mitochondria produce most of the cell's energy (ATP)." },
+      { q: "Which country has the most natural lakes?", o: ["Russia", "Canada", "United States", "Finland"], a: 1, e: "Canada has more lakes than the rest of the world combined." },
+      { q: "What is the capital of Australia?", o: ["Sydney", "Melbourne", "Canberra", "Perth"], a: 2, e: "Canberra was purpose-built as the capital in 1913." },
+      { q: "Who wrote the play 'Hamlet'?", o: ["Marlowe", "Shakespeare", "Chaucer", "Jonson"], a: 1, e: "William Shakespeare, around 1600." },
+      { q: "Which is the only metal that is liquid at room temperature?", o: ["Lead", "Mercury", "Gallium", "Sodium"], a: 1, e: "Mercury is liquid down to about -39 degrees C." },
+      { q: "The Mona Lisa is displayed in which museum?", o: ["The Prado", "The Louvre", "The Uffizi", "The Met"], a: 1, e: "The Louvre in Paris." },
+      { q: "Which blood type is known as the universal donor?", o: ["AB positive", "O negative", "A positive", "B negative"], a: 1, e: "O negative red cells can be given to almost anyone." }
+    ]}
+  };
+
+  var $ = function (id) { return document.getElementById(id); };
+  var STORE = "quizrush_best_v1";
+  var best = {};
+  try { best = JSON.parse(localStorage.getItem(STORE)) || {}; } catch (e) { best = {}; }
+  function saveBest() { try { localStorage.setItem(STORE, JSON.stringify(best)); } catch (e) {} }
+
+  var levelKey = "easy", perTime = 15;
+  var pool = [], idx = 0, points = 0, streak = 0, bestStreak = 0, answered = false;
+  var results = [], missed = [], times = [], usedFifty = false;
+  var tLeft = 0, tInt = null, qStart = 0, displayPoints = 0, ptInt = null;
+  var RING = 2 * Math.PI * 17;
+
+  // dashboard
+  var lv = $("levels");
+  Object.keys(LEVELS).forEach(function (k) {
+    var L = LEVELS[k];
+    var b = document.createElement("button");
+    b.className = "level";
+    b.setAttribute("data-lvl", L.lvl);
+    b.style.setProperty("--lv-color", L.dot);
+    b.style.setProperty("--lv-tint", L.tint);
+    var bv = best[k] ? ('<span class="best">Best ' + best[k] + '</span>') : "";
+    b.innerHTML = '<span class="meter"><i></i><i></i><i></i></span>' +
+      '<span class="lv-main"><b>' + L.name + '</b><span>' + L.qs.length + ' questions &middot; ' + L.time + 's each</span></span>' +
+      '<span class="lv-go">' + bv + 'Play &rarr;</span>';
+    b.addEventListener("click", function () { levelKey = k; perTime = L.time; startGame(); });
+    lv.appendChild(b);
+  });
+
+  function shuffle(arr) { var a = arr.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+  function show(id) { ["screen-start", "screen-quiz", "screen-result"].forEach(function (s) { $(s).hidden = (s !== id); }); }
+  function mult() { return streak >= 5 ? 3 : (streak >= 3 ? 2 : 1); }
+
+  function startGame() { pool = shuffle(LEVELS[levelKey].qs); begin(); }
+  function retryMissed() { if (!missed.length) return; pool = shuffle(missed); begin(); }
+
+  function begin() {
+    idx = 0; points = 0; displayPoints = 0; streak = 0; bestStreak = 0;
+    results = []; missed = []; times = []; usedFifty = false;
+    $("points").textContent = "0";
+    $("lifeline").disabled = false;
+    $("lifeline").textContent = "50 : 50";
+    show("screen-quiz");
+    render();
+  }
+
+  function render() {
+    var item = pool[idx];
+    answered = false;
+    $("qnum").textContent = "Q" + (idx + 1) + " / " + pool.length;
+    $("qbar").style.width = (idx / pool.length * 100) + "%";
+    $("qText").textContent = item.q;
+    $("explain").hidden = true;
+    $("nextBtn").hidden = true;
+    $("lifeline").hidden = false;
+    updateStreakBadge();
+
+    var box = $("opts");
+    box.innerHTML = "";
+    item.o.forEach(function (opt, i) {
+      var b = document.createElement("button");
+      b.className = "opt";
+      b.innerHTML = '<span class="mk">' + (i + 1) + '</span><span class="txt">' + opt + '</span>';
+      b.addEventListener("click", function () { choose(i); });
+      box.appendChild(b);
+    });
+
+    tLeft = perTime;
+    qStart = Date.now();
+    setTimer(1);
+    clearInterval(tInt);
+    tInt = setInterval(function () {
+      tLeft--;
+      setTimer(tLeft / perTime);
+      if (tLeft <= 0) { timeUp(); }
+    }, 1000);
+  }
+
+  function setTimer(frac) {
+    $("timerNum").textContent = Math.max(0, tLeft);
+    var arc = $("timerArc");
+    arc.setAttribute("stroke-dasharray", (Math.max(0, frac) * RING).toFixed(1) + " " + RING.toFixed(1));
+    arc.setAttribute("stroke", tLeft <= 5 ? "#f87171" : "#4ade80");
+  }
+
+  function updateStreakBadge() {
+    var el = $("streak");
+    if (streak >= 2) {
+      el.classList.add("on");
+      $("streakN").textContent = streak;
+      $("mult").textContent = mult() > 1 ? "×" + mult() : "";
+    } else { el.classList.remove("on"); }
+  }
+
+  function fifty() {
+    if (usedFifty || answered) return;
+    usedFifty = true;
+    $("lifeline").disabled = true;
+    $("lifeline").textContent = "50 : 50  used";
+    var item = pool[idx];
+    var wrong = [];
+    item.o.forEach(function (_, i) { if (i !== item.a) wrong.push(i); });
+    wrong = shuffle(wrong).slice(0, 2);
+    var btns = $("opts").querySelectorAll(".opt");
+    wrong.forEach(function (i) {
+      btns[i].classList.add("faded");
+      btns[i].disabled = true;
+      btns[i].querySelector(".mk").textContent = "✕";
+    });
+  }
+  $("lifeline").addEventListener("click", fifty);
+
+  $("quitBtn").addEventListener("click", function () {
+    clearInterval(tInt);
+    refreshDash();
+    show("screen-start");
+  });
+
+  function timeUp() {
+    if (answered) return;
+    answered = true;
+    clearInterval(tInt);
+    var item = pool[idx];
+    streak = 0;
+    missed.push(item);
+    results.push({ q: item.q, correct: false });
+    times.push(perTime);
+    var btns = $("opts").querySelectorAll(".opt");
+    btns.forEach(function (b, bi) { b.disabled = true; if (bi === item.a) b.classList.add("right"); });
+    btns[item.a].querySelector(".mk").textContent = "✓";
+    $("opts").classList.add("shake");
+    setTimeout(function () { $("opts").classList.remove("shake"); }, 400);
+    afterAnswer(item, "Time's up. " + item.e);
+  }
+
+  function choose(i) {
+    if (answered) return;
+    answered = true;
+    clearInterval(tInt);
+    var item = pool[idx];
+    var correct = i === item.a;
+    var used = (Date.now() - qStart) / 1000;
+    times.push(Math.min(used, perTime));
+
+    var btns = $("opts").querySelectorAll(".opt");
+    btns.forEach(function (b, bi) {
+      b.disabled = true;
+      if (bi === item.a) b.classList.add("right");
+      if (bi === i && !correct) b.classList.add("wrong");
+    });
+    btns[item.a].querySelector(".mk").textContent = "✓";
+    if (!correct) btns[i].querySelector(".mk").textContent = "✗";
+
+    if (correct) {
+      streak++;
+      bestStreak = Math.max(bestStreak, streak);
+      var speedBonus = Math.round(100 * Math.max(0, (perTime - used) / perTime));
+      var gained = (100 + speedBonus) * mult();
+      points += gained;
+      flyGain("+" + gained);
+      animatePoints();
+    } else {
+      streak = 0;
+      missed.push(item);
+      $("opts").classList.add("shake");
+      setTimeout(function () { $("opts").classList.remove("shake"); }, 400);
+    }
+    results.push({ q: item.q, correct: correct });
+    updateStreakBadge();
+    afterAnswer(item, item.e);
+  }
+
+  function afterAnswer(item, text) {
+    $("lifeline").hidden = true;
+    $("explain").textContent = text;
+    $("explain").hidden = false;
+    $("nextBtn").hidden = false;
+    $("nextBtn").textContent = idx === pool.length - 1 ? "See results" : "Next question";
+  }
+
+  function flyGain(txt) {
+    var g = $("gain");
+    g.textContent = txt;
+    g.classList.remove("fly");
+    void g.offsetWidth;
+    g.classList.add("fly");
+  }
+  function animatePoints() {
+    clearInterval(ptInt);
+    ptInt = setInterval(function () {
+      var step = Math.ceil((points - displayPoints) / 6);
+      displayPoints += step;
+      if (displayPoints >= points) { displayPoints = points; clearInterval(ptInt); }
+      $("points").textContent = displayPoints.toLocaleString("en-US");
+    }, 30);
+  }
+
+  $("nextBtn").addEventListener("click", advance);
+  function advance() { if (idx === pool.length - 1) { finish(); return; } idx++; render(); }
+
+  document.addEventListener("keydown", function (ev) {
+    if ($("screen-quiz").hidden) return;
+    if (["1", "2", "3", "4"].indexOf(ev.key) > -1 && !answered) {
+      var b = $("opts").querySelectorAll(".opt")[parseInt(ev.key, 10) - 1];
+      if (b && !b.disabled) choose(parseInt(ev.key, 10) - 1);
+    } else if ((ev.key === "Enter" || ev.key === " ") && answered) { ev.preventDefault(); advance(); }
+  });
+
+  function finish() {
+    clearInterval(tInt);
+    show("screen-result");
+    var total = pool.length;
+    var got = results.filter(function (r) { return r.correct; }).length;
+    var acc = Math.round(got / total * 100);
+    var avg = times.length ? (times.reduce(function (a, b) { return a + b; }, 0) / times.length) : 0;
+
+    $("finalPoints").textContent = points.toLocaleString("en-US");
+    $("rAcc").textContent = acc + "%";
+    $("rStreak").textContent = bestStreak;
+    $("rTime").textContent = avg.toFixed(1) + "s";
+
+    var badge = "Warming up";
+    if (acc === 100) badge = "Flawless";
+    else if (acc >= 85) badge = "Quiz legend";
+    else if (acc >= 70) badge = "Sharp";
+    else if (acc >= 50) badge = "Getting there";
+    $("badge").textContent = badge;
+
+    var isBest = !best[levelKey] || points > best[levelKey];
+    $("newbest").hidden = !isBest;
+    if (isBest) { best[levelKey] = points; saveBest(); }
+
+    var rev = $("review");
+    rev.innerHTML = "";
+    results.forEach(function (r, i) {
+      var row = document.createElement("div");
+      row.className = "row";
+      row.innerHTML = '<span class="ico ' + (r.correct ? "ok" : "no") + '">' + (r.correct ? "✓" : "✗") +
+        '</span><span>' + (i + 1) + ". " + r.q + '</span>';
+      rev.appendChild(row);
+    });
+    $("retryBtn").disabled = missed.length === 0;
+    $("retryBtn").textContent = missed.length ? "Retry the " + missed.length + " missed" : "Nothing missed";
+  }
+
+  $("retryBtn").addEventListener("click", retryMissed);
+  $("againBtn").addEventListener("click", startGame);
+  function refreshDash() {
+    lv.querySelectorAll(".level").forEach(function (el, i) {
+      var k = Object.keys(LEVELS)[i];
+      var go = el.querySelector(".lv-go");
+      if (go) go.innerHTML = (best[k] ? '<span class="best">Best ' + best[k] + '</span>' : "") + "Play →";
+    });
+  }
+  $("homeBtn").addEventListener("click", function () { refreshDash(); show("screen-start"); });
+})();
+</script>
+</body>
+</html>
