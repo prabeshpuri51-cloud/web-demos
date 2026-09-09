@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Loan / EMI Calculator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" />
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg:#12131a; --card:#1b1d27; --card-2:#20232e;
+    --ink:#e9ebf2; --ink-soft:#a2a6b8; --ink-faint:#6f7488;
+    --line:#2b2e3c; --accent:#4ade80; --accent-dim:#1f3b2a;
+    --c-principal:#4ade80; --c-interest:#fbbf24;
+    --radius:14px;
+    font-family:"Manrope", system-ui, -apple-system, sans-serif;
+  }
+  body { background: var(--bg); color: var(--ink); line-height: 1.5; -webkit-font-smoothing: antialiased; padding: 2rem 1rem 3rem; }
+  .wrap { max-width: 940px; margin: 0 auto; }
+
+  header { margin-bottom: 1.6rem; }
+  h1 { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em; }
+  header p { color: var(--ink-soft); font-size: 0.92rem; margin-top: 0.25rem; }
+
+  .grid { display: grid; grid-template-columns: 330px 1fr; gap: 1.1rem; align-items: start; }
+  @media (max-width: 780px) { .grid { grid-template-columns: 1fr; } }
+
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 1.4rem; }
+
+  .field { margin-bottom: 1.25rem; }
+  .field:last-child { margin-bottom: 0; }
+  label { display: block; font-size: 0.82rem; font-weight: 600; color: var(--ink-soft); margin-bottom: 0.45rem; }
+  .input-row { display: flex; align-items: center; gap: 0.5rem; }
+  input[type="number"], select {
+    width: 100%; font: inherit; font-size: 0.95rem; font-weight: 500; padding: 0.62rem 0.7rem;
+    border: 1px solid var(--line); border-radius: 10px; background: var(--card-2); color: var(--ink);
+    -webkit-appearance: none; appearance: none;
+  }
+  input[type="number"]:focus, select:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: var(--accent); }
+  select option { color: #111; }
+  .suffix { font-size: 0.84rem; color: var(--ink-faint); white-space: nowrap; }
+  input[type="range"] { width: 100%; margin-top: 0.6rem; accent-color: var(--accent); }
+  .rangeval { font-size: 0.78rem; color: var(--ink-faint); margin-top: 0.35rem; }
+
+  .result-panel {
+    background: linear-gradient(180deg, var(--card-2), var(--card));
+    border: 1px solid var(--line); border-left: 3px solid var(--accent);
+    border-radius: 12px; padding: 1.1rem 1.25rem; margin-bottom: 1.35rem;
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.4rem 1.5rem;
+  }
+  .emi-label { font-size: 0.8rem; font-weight: 600; color: var(--ink-soft); }
+  .emi-value { font-size: 2.15rem; font-weight: 800; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; line-height: 1.1; color: var(--accent); }
+  .emi-sub { font-size: 0.82rem; color: var(--ink-faint); }
+
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.7rem; margin-bottom: 1.5rem; }
+  @media (max-width: 460px) { .stats { grid-template-columns: 1fr; } }
+  .stat { background: var(--card-2); border: 1px solid var(--line); border-radius: 10px; padding: 0.78rem 0.9rem; }
+  .stat .k { font-size: 0.76rem; color: var(--ink-faint); font-weight: 500; }
+  .stat .v { font-size: 1.08rem; font-weight: 700; font-variant-numeric: tabular-nums; margin-top: 0.2rem; }
+
+  .charts { display: grid; grid-template-columns: 160px 1fr; gap: 1.5rem; align-items: center; }
+  @media (max-width: 560px) { .charts { grid-template-columns: 1fr; } }
+  .donut-wrap { text-align: center; }
+  .legend { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem 1rem; margin-top: 0.65rem; font-size: 0.78rem; color: var(--ink-soft); }
+  .legend span { display: inline-flex; align-items: center; gap: 0.35rem; }
+  .dot { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+  .bars-title { font-size: 0.8rem; color: var(--ink-faint); font-weight: 500; margin-bottom: 0.55rem; }
+
+  .sched { margin-top: 1.4rem; border-top: 1px solid var(--line); padding-top: 1.05rem; }
+  .sched summary { cursor: pointer; font-size: 0.86rem; font-weight: 700; color: var(--accent); list-style: none; }
+  .sched summary::-webkit-details-marker { display: none; }
+  .sched summary::before { content: "+ "; }
+  .sched[open] summary::before { content: "\2013 "; }
+  table { width: 100%; border-collapse: collapse; margin-top: 0.85rem; font-size: 0.83rem; font-variant-numeric: tabular-nums; }
+  th, td { text-align: right; padding: 0.45rem 0.5rem; border-bottom: 1px solid var(--line); }
+  th:first-child, td:first-child { text-align: left; }
+  th { color: var(--ink-faint); font-weight: 600; font-size: 0.77rem; }
+  tbody tr:hover { background: var(--card-2); }
+  .tbl-scroll { max-height: 280px; overflow-y: auto; }
+
+  footer { text-align: center; margin-top: 1.9rem; font-size: 0.78rem; color: var(--ink-faint); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Loan / EMI Calculator</h1>
+    <p>Estimate your monthly payment, total interest, and payoff schedule.</p>
+  </header>
+
+  <div class="grid">
+    <form class="card" id="form" autocomplete="off">
+      <div class="field">
+        <label for="amount">Loan amount</label>
+        <div class="input-row">
+          <select id="currency" aria-label="Currency">
+            <option value="$">$ USD</option>
+            <option value="&pound;">&pound; GBP</option>
+            <option value="&euro;">&euro; EUR</option>
+            <option value="&#8377;">&#8377; INR</option>
+            <option value="Rs ">Rs NPR</option>
+            <option value="A$">A$ AUD</option>
+          </select>
+          <input type="number" id="amount" value="25000" min="0" step="500" />
+        </div>
+        <input type="range" id="amountR" min="1000" max="200000" step="1000" value="25000" />
+      </div>
+
+      <div class="field">
+        <label for="rate">Annual interest rate</label>
+        <div class="input-row">
+          <input type="number" id="rate" value="8.5" min="0" step="0.1" />
+          <span class="suffix">% per year</span>
+        </div>
+        <input type="range" id="rateR" min="0" max="30" step="0.1" value="8.5" />
+      </div>
+
+      <div class="field">
+        <label for="years">Loan term</label>
+        <div class="input-row">
+          <input type="number" id="years" value="5" min="1" step="1" />
+          <span class="suffix">years</span>
+        </div>
+        <input type="range" id="yearsR" min="1" max="30" step="1" value="5" />
+        <div class="rangeval" id="monthsNote">60 monthly payments</div>
+      </div>
+    </form>
+
+    <div class="card">
+      <div class="result-panel">
+        <div>
+          <div class="emi-label">Monthly payment (EMI)</div>
+          <div class="emi-value" id="emi">$0</div>
+        </div>
+        <div class="emi-sub" id="emiCount">over 0 months</div>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><div class="k">Principal</div><div class="v" id="sPrincipal">$0</div></div>
+        <div class="stat"><div class="k">Total interest</div><div class="v" id="sInterest">$0</div></div>
+        <div class="stat"><div class="k">Total paid</div><div class="v" id="sTotal">$0</div></div>
+      </div>
+
+      <div class="charts">
+        <div class="donut-wrap">
+          <svg width="150" height="150" viewBox="0 0 150 150" role="img" aria-label="Principal vs interest split">
+            <circle cx="75" cy="75" r="56" fill="none" stroke="var(--c-principal)" stroke-width="18" />
+            <circle id="donutArc" cx="75" cy="75" r="56" fill="none" stroke="var(--c-interest)" stroke-width="18"
+                    stroke-dasharray="0 999" transform="rotate(-90 75 75)" />
+            <text x="75" y="71" text-anchor="middle" font-size="11" fill="#6f7488">Interest</text>
+            <text x="75" y="89" text-anchor="middle" font-size="15" font-weight="800" fill="#e9ebf2" id="donutPct">0%</text>
+          </svg>
+          <div class="legend">
+            <span><i class="dot" style="background:var(--c-principal)"></i>Principal</span>
+            <span><i class="dot" style="background:var(--c-interest)"></i>Interest</span>
+          </div>
+        </div>
+        <div>
+          <div class="bars-title">Principal vs interest paid, by year</div>
+          <svg id="bars" width="100%" height="185" preserveAspectRatio="none" role="img" aria-label="Yearly principal and interest bars"></svg>
+        </div>
+      </div>
+
+      <details class="sched">
+        <summary>Amortization schedule</summary>
+        <div class="tbl-scroll">
+          <table>
+            <thead><tr><th>Month</th><th>Payment</th><th>Principal</th><th>Interest</th><th>Balance</th></tr></thead>
+            <tbody id="schedBody"></tbody>
+          </table>
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <footer>Built by quickbuildlab &middot; example tool</footer>
+</div>
+
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var cur = "$";
+  var fmt = function (n) { return cur + Math.round(n).toLocaleString("en-US"); };
+
+  function link(numId, rangeId) {
+    var n = $(numId), r = $(rangeId);
+    n.addEventListener("input", function () { r.value = n.value; calc(); });
+    r.addEventListener("input", function () { n.value = r.value; calc(); });
+  }
+  link("amount", "amountR");
+  link("rate", "rateR");
+  link("years", "yearsR");
+  $("currency").addEventListener("change", function () { cur = $("currency").value; calc(); });
+
+  function calc() {
+    var P = parseFloat($("amount").value) || 0;
+    var annual = parseFloat($("rate").value) || 0;
+    var years = parseInt($("years").value, 10) || 1;
+    var n = years * 12;
+    var r = annual / 100 / 12;
+
+    $("monthsNote").textContent = n + " monthly payments";
+    var emi = r === 0 ? P / n : P * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1);
+
+    var balance = P, totalInterest = 0, yearly = [], rows = "";
+    for (var m = 1; m <= n; m++) {
+      var interest = balance * r;
+      var principal = emi - interest;
+      var pay = emi;
+      if (m === n) { principal = balance; pay = principal + interest; }
+      balance -= principal;
+      if (balance < 0) balance = 0;
+      totalInterest += interest;
+
+      var y = Math.ceil(m / 12) - 1;
+      if (!yearly[y]) yearly[y] = { p: 0, i: 0 };
+      yearly[y].p += principal;
+      yearly[y].i += interest;
+
+      rows += "<tr><td>" + m + "</td><td>" + fmt(pay) + "</td><td>" + fmt(principal) +
+              "</td><td>" + fmt(interest) + "</td><td>" + fmt(balance) + "</td></tr>";
+    }
+
+    var totalPaid = P + totalInterest;
+    $("emi").textContent = fmt(emi);
+    $("emiCount").textContent = "over " + n + " months";
+    $("sPrincipal").textContent = fmt(P);
+    $("sInterest").textContent = fmt(totalInterest);
+    $("sTotal").textContent = fmt(totalPaid);
+    $("schedBody").innerHTML = rows;
+
+    var pct = totalPaid > 0 ? totalInterest / totalPaid : 0;
+    var circ = 2 * Math.PI * 56;
+    $("donutArc").setAttribute("stroke-dasharray", (pct * circ).toFixed(1) + " " + circ.toFixed(1));
+    $("donutPct").textContent = Math.round(pct * 100) + "%";
+
+    drawBars(yearly);
+  }
+
+  function drawBars(yearly) {
+    var svg = $("bars");
+    var W = svg.clientWidth || 520, H = 185, pad = 24;
+    var max = 0;
+    yearly.forEach(function (y) { max = Math.max(max, y.p + y.i); });
+    if (max === 0) max = 1;
+    var n = yearly.length;
+    var gap = (W - pad * 2) / n;
+    var bw = Math.min(gap * 0.6, 44);
+    var parts = ['<line x1="' + pad + '" y1="' + (H - pad) + '" x2="' + (W - pad) + '" y2="' + (H - pad) + '" stroke="#2b2e3c"/>'];
+    yearly.forEach(function (y, i) {
+      var x = pad + i * gap + (gap - bw) / 2;
+      var ph = (y.p / max) * (H - pad * 2);
+      var ih = (y.i / max) * (H - pad * 2);
+      parts.push('<rect x="' + x + '" y="' + (H - pad - ph - ih) + '" width="' + bw + '" height="' + ih + '" fill="#fbbf24" rx="2"/>');
+      parts.push('<rect x="' + x + '" y="' + (H - pad - ph) + '" width="' + bw + '" height="' + ph + '" fill="#4ade80" rx="2"/>');
+      if (n <= 15 || i % 2 === 0) {
+        parts.push('<text x="' + (x + bw / 2) + '" y="' + (H - pad + 14) + '" text-anchor="middle" font-size="9" fill="#6f7488">' + (i + 1) + '</text>');
+      }
+    });
+    svg.innerHTML = parts.join("");
+  }
+
+  window.addEventListener("resize", calc);
+  calc();
+})();
+</script>
+</body>
+</html>
