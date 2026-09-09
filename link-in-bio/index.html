@@ -22,21 +22,17 @@
   }
   .page { width: 100%; max-width: 430px; }
 
-  .demo-note {
-    display: flex; align-items: center; gap: 0.5rem; justify-content: center;
-    font-size: 0.76rem; color: var(--ink-faint); margin-bottom: 1.4rem;
-  }
+  .demo-note { display: flex; align-items: center; gap: 0.5rem; justify-content: center;
+    font-size: 0.76rem; color: var(--ink-faint); margin-bottom: 1.4rem; }
   .demo-note .chip { font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
     color: var(--accent); border: 1px solid var(--accent); border-radius: 999px; padding: 0.15rem 0.5rem; font-size: 0.68rem; }
 
-  .hero { text-align: center; margin-bottom: 1.7rem; }
-  .avatar {
-    width: 94px; height: 94px; border-radius: 50%; margin: 0 auto 1rem;
+  .hero { text-align: center; margin-bottom: 1.6rem; }
+  .avatar { width: 94px; height: 94px; border-radius: 50%; margin: 0 auto 1rem;
     background: linear-gradient(145deg, #4ade80, #22c55e);
     display: flex; align-items: center; justify-content: center;
     font-size: 2rem; font-weight: 800; color: #0c1a12;
-    box-shadow: 0 0 0 4px rgba(74, 222, 128, 0.12);
-  }
+    box-shadow: 0 0 0 4px rgba(74, 222, 128, 0.12); }
   .name { font-size: 1.45rem; font-weight: 800; letter-spacing: -0.02em; }
   .status { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; font-weight: 700;
     color: var(--accent); margin-top: 0.4rem; }
@@ -47,64 +43,118 @@
   .bio { color: var(--ink-soft); font-size: 0.92rem; margin-top: 0.7rem; }
 
   .socials { display: flex; justify-content: center; gap: 0.5rem; margin: 1.1rem 0 0; }
-  .socials a {
-    width: 40px; height: 40px; border-radius: 11px; border: 1px solid var(--line);
+  .socials a { width: 40px; height: 40px; border-radius: 11px; border: 1px solid var(--line);
     background: var(--card); display: flex; align-items: center; justify-content: center;
-    color: var(--ink-soft); text-decoration: none; transition: border-color 0.15s, color 0.15s, transform 0.12s;
-  }
+    color: var(--ink-soft); text-decoration: none; transition: border-color 0.15s, color 0.15s, transform 0.12s; }
   .socials a:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
   .socials svg { width: 18px; height: 18px; fill: currentColor; }
 
+  /* ---------- EXPANDING LINKS ---------- */
   .links { display: flex; flex-direction: column; gap: 0.7rem; }
+  .item { border: 1px solid var(--line); border-radius: 14px; background: var(--card); overflow: hidden;
+    transition: border-color 0.15s ease; }
+  .item.open { border-color: var(--accent); }
   .link {
-    display: flex; align-items: center; gap: 0.9rem;
-    padding: 0.95rem 1.1rem; border-radius: 14px;
-    background: var(--card); border: 1px solid var(--line);
-    color: var(--ink); text-decoration: none; font-weight: 700; font-size: 0.95rem;
-    transition: transform 0.12s ease, border-color 0.15s ease;
+    width: 100%; display: flex; align-items: center; gap: 0.9rem; font: inherit; cursor: pointer;
+    padding: 0.95rem 1.1rem; background: transparent; border: 0; color: var(--ink); text-align: left;
   }
-  .link:hover { transform: translateY(-2px); border-color: var(--accent); }
   .link .ic { width: 34px; height: 34px; border-radius: 9px; flex: none;
     background: var(--card-2); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
-  .link .tx { flex: 1; }
+  .link .tx { flex: 1; font-weight: 700; font-size: 0.95rem; }
   .link .tx small { display: block; font-weight: 500; font-size: 0.78rem; color: var(--ink-faint); margin-top: 1px; }
-  .link .arrow { color: var(--ink-faint); font-weight: 800; }
+  .link .chev { color: var(--ink-faint); font-weight: 800; transition: transform 0.25s ease; }
+  .item.open .chev { transform: rotate(180deg); color: var(--accent); }
 
+  .panel { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.3s ease; }
+  .item.open .panel { grid-template-rows: 1fr; }
+  .panel-inner { overflow: hidden; }
+  .panel-pad { padding: 0.2rem 1.1rem 1.1rem; border-top: 1px solid var(--line); margin-top: 0.1rem; }
+
+  /* portfolio */
+  .proj { display: flex; gap: 0.8rem; align-items: flex-start; padding: 0.7rem 0; border-bottom: 1px solid var(--line); }
+  .proj:last-child { border-bottom: 0; padding-bottom: 0; }
+  .proj:first-child { padding-top: 0.8rem; }
+  .proj .thumb { width: 42px; height: 42px; border-radius: 9px; flex: none; }
+  .proj b { font-size: 0.9rem; font-weight: 700; }
+  .proj .tag { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
+    color: var(--accent); margin-left: 0.4rem; }
+  .proj p { font-size: 0.82rem; color: var(--ink-soft); margin-top: 0.15rem; }
+
+  /* podcast */
+  .ep { display: flex; gap: 0.75rem; align-items: center; padding: 0.6rem 0; border-bottom: 1px solid var(--line); }
+  .ep:last-child { border-bottom: 0; padding-bottom: 0; }
+  .ep:first-child { padding-top: 0.8rem; }
+  .ep .play { width: 32px; height: 32px; border-radius: 50%; flex: none; border: 1px solid var(--ink-faint);
+    background: transparent; color: var(--ink); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; }
+  .ep.playing .play { border-color: var(--accent); background: var(--accent); color: #0c1a12; }
+  .ep .ep-main { flex: 1; }
+  .ep .ep-main b { font-size: 0.88rem; font-weight: 700; }
+  .ep .ep-main span { display: block; font-size: 0.76rem; color: var(--ink-faint); }
+  .ep .prog { height: 3px; background: var(--card-2); border-radius: 999px; margin-top: 0.35rem; overflow: hidden; display: none; }
+  .ep.playing .prog { display: block; }
+  .ep .prog > i { display: block; height: 100%; width: 0; background: var(--accent); animation: seek 18s linear forwards; }
+  @keyframes seek { to { width: 100%; } }
+
+  /* guide */
+  .guide { display: flex; gap: 0.9rem; padding-top: 0.8rem; }
+  .guide .cover { width: 74px; height: 96px; border-radius: 8px; flex: none;
+    background: linear-gradient(160deg, #4ade80, #16a34a); display: flex; align-items: flex-end; padding: 0.5rem;
+    font-size: 0.62rem; font-weight: 800; color: #0c1a12; line-height: 1.2; }
+  .guide ul { list-style: none; font-size: 0.82rem; color: var(--ink-soft); }
+  .guide li { padding: 0.15rem 0 0.15rem 1rem; position: relative; }
+  .guide li::before { content: "\2013"; position: absolute; left: 0; color: var(--accent); }
+  .mini-form { display: flex; gap: 0.4rem; margin-top: 0.7rem; }
+  .mini-form input { flex: 1; font: inherit; font-size: 0.85rem; padding: 0.55rem 0.7rem; border-radius: 9px;
+    border: 1px solid var(--line); background: var(--card-2); color: var(--ink); min-width: 0; }
+  .mini-form input:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: var(--accent); }
+  .mini-form button, .msg-form button { font: inherit; font-weight: 800; font-size: 0.82rem; cursor: pointer; white-space: nowrap;
+    padding: 0.55rem 0.9rem; border-radius: 9px; border: 1px solid var(--accent); background: var(--accent); color: #0c1a12; }
+  .mini-err { font-size: 0.76rem; color: #f87171; margin-top: 0.4rem; min-height: 1em; }
+  .mini-ok { display: none; align-items: center; gap: 0.5rem; font-size: 0.85rem; font-weight: 700; color: var(--accent); margin-top: 0.7rem; }
+  .done .mini-form, .done .msg-fields { display: none; }
+  .done .mini-ok, .done .msg-ok { display: flex; }
+
+  /* work with me */
+  .avail { font-size: 0.85rem; font-weight: 700; color: var(--accent); padding-top: 0.8rem; }
+  .svc { list-style: none; margin: 0.6rem 0 0.9rem; font-size: 0.84rem; color: var(--ink-soft); }
+  .svc li { padding: 0.22rem 0 0.22rem 1.3rem; position: relative; }
+  .svc li::before { content: "\2192"; position: absolute; left: 0; color: var(--accent); font-weight: 800; }
+  .msg-form { display: flex; flex-direction: column; gap: 0.5rem; }
+  .msg-form input, .msg-form textarea { font: inherit; font-size: 0.85rem; padding: 0.55rem 0.7rem; border-radius: 9px;
+    border: 1px solid var(--line); background: var(--card-2); color: var(--ink); width: 100%; resize: vertical; }
+  .msg-form input:focus, .msg-form textarea:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: var(--accent); }
+  .msg-form textarea { min-height: 60px; }
+  .msg-form button { align-self: flex-start; }
+  .msg-err { font-size: 0.76rem; color: #f87171; min-height: 1em; }
+  .msg-ok { display: none; align-items: center; gap: 0.5rem; font-size: 0.85rem; font-weight: 700; color: var(--accent); padding-top: 0.5rem; }
+  .ticky { width: 20px; height: 20px; border-radius: 50%; background: var(--accent); color: #0c1a12;
+    display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.72rem; flex: none; }
+
+  /* newsletter */
   .subscribe { margin: 1.4rem 0; background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 1.15rem 1.2rem; }
   .subscribe h3 { font-size: 0.98rem; font-weight: 800; }
   .subscribe p { font-size: 0.83rem; color: var(--ink-soft); margin: 0.25rem 0 0.9rem; }
   .sub-row { display: flex; gap: 0.5rem; }
-  .subscribe input {
-    flex: 1; font: inherit; font-size: 0.9rem; padding: 0.65rem 0.8rem; border-radius: 10px;
-    border: 1px solid var(--line); background: var(--card-2); color: var(--ink); min-width: 0;
-  }
+  .subscribe input { flex: 1; font: inherit; font-size: 0.9rem; padding: 0.65rem 0.8rem; border-radius: 10px;
+    border: 1px solid var(--line); background: var(--card-2); color: var(--ink); min-width: 0; }
   .subscribe input:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: var(--accent); }
-  .subscribe button {
-    font: inherit; font-weight: 800; font-size: 0.88rem; cursor: pointer; white-space: nowrap;
-    padding: 0.65rem 1.1rem; border-radius: 10px; border: 1px solid var(--accent);
-    background: var(--accent); color: #0c1a12;
-  }
+  .subscribe button { font: inherit; font-weight: 800; font-size: 0.88rem; cursor: pointer; white-space: nowrap;
+    padding: 0.65rem 1.1rem; border-radius: 10px; border: 1px solid var(--accent); background: var(--accent); color: #0c1a12; }
   .sub-err { font-size: 0.78rem; color: #f87171; margin-top: 0.5rem; min-height: 1em; }
   .sub-ok { display: none; align-items: center; gap: 0.55rem; font-size: 0.9rem; font-weight: 700; color: var(--accent); }
-  .sub-ok .tick { width: 22px; height: 22px; border-radius: 50%; background: var(--accent); color: #0c1a12;
-    display: flex; align-items: center; justify-content: center; font-weight: 800; }
   .subscribe.done .sub-form { display: none; }
   .subscribe.done .sub-ok { display: flex; }
 
   .share { display: flex; justify-content: center; margin-top: 1.4rem; }
-  .share button {
-    font: inherit; font-size: 0.82rem; font-weight: 700; cursor: pointer; color: var(--ink-soft);
+  .share button { font: inherit; font-size: 0.82rem; font-weight: 700; cursor: pointer; color: var(--ink-soft);
     background: transparent; border: 1px solid var(--line); border-radius: 999px; padding: 0.45rem 1rem;
-    display: inline-flex; align-items: center; gap: 0.45rem;
-  }
+    display: inline-flex; align-items: center; gap: 0.45rem; }
   .share button:hover { border-color: var(--accent); color: var(--accent); }
 
-  .toast {
-    position: fixed; left: 50%; bottom: 1.4rem; transform: translateX(-50%) translateY(20px);
+  .toast { position: fixed; left: 50%; bottom: 1.4rem; transform: translateX(-50%) translateY(20px);
     background: var(--card-2); border: 1px solid var(--line); color: var(--ink);
     font-size: 0.83rem; font-weight: 600; padding: 0.6rem 1rem; border-radius: 10px;
-    opacity: 0; pointer-events: none; transition: opacity 0.2s, transform 0.2s;
-  }
+    opacity: 0; pointer-events: none; transition: opacity 0.2s, transform 0.2s; }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
   footer { text-align: center; margin-top: 1.8rem; font-size: 0.76rem; color: var(--ink-faint); }
@@ -128,26 +178,109 @@
   </div>
 
   <div class="links">
-    <a class="link" href="https://example.com" target="_blank" rel="noopener">
-      <span class="ic">&#128188;</span>
-      <span class="tx">Portfolio<small>Case studies and selected work</small></span>
-      <span class="arrow">&rarr;</span>
-    </a>
-    <a class="link" href="https://example.com" target="_blank" rel="noopener">
-      <span class="ic">&#127908;</span>
-      <span class="tx">Podcast: The Simple Part<small>New episode every other Tuesday</small></span>
-      <span class="arrow">&rarr;</span>
-    </a>
-    <a class="link" href="https://example.com" target="_blank" rel="noopener">
-      <span class="ic">&#128214;</span>
-      <span class="tx">Free guide: A field guide to saying less<small>40 pages on cutting interfaces down</small></span>
-      <span class="arrow">&rarr;</span>
-    </a>
-    <a class="link" href="mailto:hello@example.com">
-      <span class="ic">&#9993;</span>
-      <span class="tx">Work with me<small>hello@example.com</small></span>
-      <span class="arrow">&rarr;</span>
-    </a>
+
+    <div class="item">
+      <button class="link" aria-expanded="false">
+        <span class="ic">&#128188;</span>
+        <span class="tx">Portfolio<small>3 recent case studies</small></span>
+        <span class="chev">&#9662;</span>
+      </button>
+      <div class="panel"><div class="panel-inner"><div class="panel-pad">
+        <div class="proj">
+          <span class="thumb" style="background:linear-gradient(140deg,#4ade80,#0891b2)"></span>
+          <div><b>Ledger</b><span class="tag">Fintech</span><p>Rebuilt a banking app's money-movement flow. 22% fewer support tickets in three months.</p></div>
+        </div>
+        <div class="proj">
+          <span class="thumb" style="background:linear-gradient(140deg,#f59e0b,#ec4899)"></span>
+          <div><b>Tally</b><span class="tag">Consumer</span><p>A habit tracker that fits one screen. Sits at 4.8 stars on the App Store.</p></div>
+        </div>
+        <div class="proj">
+          <span class="thumb" style="background:linear-gradient(140deg,#8b5cf6,#3b82f6)"></span>
+          <div><b>Foldit</b><span class="tag">Travel</span><p>Packing lists that build themselves from your trip length and weather.</p></div>
+        </div>
+      </div></div></div>
+    </div>
+
+    <div class="item">
+      <button class="link" aria-expanded="false">
+        <span class="ic">&#127908;</span>
+        <span class="tx">Podcast: The Simple Part<small>New episode every other Tuesday</small></span>
+        <span class="chev">&#9662;</span>
+      </button>
+      <div class="panel"><div class="panel-inner"><div class="panel-pad">
+        <div class="ep">
+          <button class="play" aria-label="Play">&#9654;</button>
+          <div class="ep-main"><b>14 &middot; Saying no to good ideas</b><span>34 min &middot; 2 weeks ago</span><div class="prog"><i></i></div></div>
+        </div>
+        <div class="ep">
+          <button class="play" aria-label="Play">&#9654;</button>
+          <div class="ep-main"><b>13 &middot; The one-screen rule</b><span>28 min &middot; 1 month ago</span><div class="prog"><i></i></div></div>
+        </div>
+        <div class="ep">
+          <button class="play" aria-label="Play">&#9654;</button>
+          <div class="ep-main"><b>12 &middot; Interviewing users without leading them</b><span>41 min &middot; 6 weeks ago</span><div class="prog"><i></i></div></div>
+        </div>
+        <div class="ep">
+          <button class="play" aria-label="Play">&#9654;</button>
+          <div class="ep-main"><b>11 &middot; When a setting is the wrong answer</b><span>25 min &middot; 2 months ago</span><div class="prog"><i></i></div></div>
+        </div>
+      </div></div></div>
+    </div>
+
+    <div class="item">
+      <button class="link" aria-expanded="false">
+        <span class="ic">&#128214;</span>
+        <span class="tx">Free guide: A field guide to saying less<small>40-page PDF</small></span>
+        <span class="chev">&#9662;</span>
+      </button>
+      <div class="panel"><div class="panel-inner"><div class="panel-pad">
+        <div class="guide" id="guideBox">
+          <span class="cover">A field guide to saying less</span>
+          <div>
+            <ul>
+              <li>Cutting a screen to one job</li>
+              <li>The three-label limit</li>
+              <li>When to remove a feature</li>
+              <li>Saying less in error messages</li>
+            </ul>
+            <form class="mini-form" id="guideForm" novalidate>
+              <input type="email" id="guideEmail" placeholder="you@email.com" aria-label="Email for the guide" />
+              <button type="submit">Email me the PDF</button>
+            </form>
+            <div class="mini-err" id="guideErr"></div>
+            <div class="mini-ok"><span class="ticky">&#10003;</span> On its way &mdash; check your inbox.</div>
+          </div>
+        </div>
+      </div></div></div>
+    </div>
+
+    <div class="item">
+      <button class="link" aria-expanded="false">
+        <span class="ic">&#9993;</span>
+        <span class="tx">Work with me<small>Currently booking for Q3</small></span>
+        <span class="chev">&#9662;</span>
+      </button>
+      <div class="panel"><div class="panel-inner"><div class="panel-pad">
+        <div class="avail">Booking projects starting July &ndash; September</div>
+        <ul class="svc">
+          <li>Product design audit (1&ndash;2 weeks)</li>
+          <li>0&rarr;1 app design</li>
+          <li>Design system setup</li>
+        </ul>
+        <div id="msgBox">
+          <form class="msg-form" id="msgForm" novalidate>
+            <div class="msg-fields">
+              <input type="email" id="msgEmail" placeholder="Your email" aria-label="Your email" />
+              <textarea id="msgText" placeholder="A line or two about your project" aria-label="Message"></textarea>
+              <div class="msg-err" id="msgErr"></div>
+              <button type="submit">Send message</button>
+            </div>
+          </form>
+          <div class="msg-ok"><span class="ticky">&#10003;</span> Message sent. I'll reply within two days.</div>
+        </div>
+      </div></div></div>
+    </div>
+
   </div>
 
   <div class="subscribe" id="sub">
@@ -160,10 +293,7 @@
       </form>
       <div class="sub-err" id="subErr"></div>
     </div>
-    <div class="sub-ok">
-      <span class="tick">&#10003;</span>
-      <span>You're on the list. Check your inbox to confirm.</span>
-    </div>
+    <div class="sub-ok"><span class="ticky">&#10003;</span> You're on the list. Check your inbox to confirm.</div>
   </div>
 
   <div class="share">
@@ -178,6 +308,7 @@
 <script>
 (function () {
   var $ = function (id) { return document.getElementById(id); };
+  var validEmail = function (v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); };
 
   function toast(msg) {
     var t = $("toast");
@@ -187,23 +318,76 @@
     t._h = setTimeout(function () { t.classList.remove("show"); }, 2200);
   }
 
-  // email subscribe
+  // accordion
+  var items = document.querySelectorAll(".links .item");
+  items.forEach(function (it) {
+    var btn = it.querySelector(".link");
+    btn.addEventListener("click", function () {
+      var open = it.classList.contains("open");
+      items.forEach(function (o) { o.classList.remove("open"); o.querySelector(".link").setAttribute("aria-expanded", "false"); });
+      if (!open) { it.classList.add("open"); btn.setAttribute("aria-expanded", "true"); }
+    });
+  });
+
+  // podcast play toggles
+  document.querySelectorAll(".ep .play").forEach(function (p) {
+    p.addEventListener("click", function (e) {
+      e.stopPropagation();
+      var ep = p.closest(".ep");
+      var wasPlaying = ep.classList.contains("playing");
+      document.querySelectorAll(".ep").forEach(function (x) {
+        x.classList.remove("playing");
+        x.querySelector(".play").innerHTML = "&#9654;";
+        var bar = x.querySelector(".prog > i");
+        bar.style.animation = "none"; void bar.offsetWidth;
+      });
+      if (!wasPlaying) {
+        ep.classList.add("playing");
+        p.innerHTML = "&#10073;&#10073;";
+        var bar = ep.querySelector(".prog > i");
+        bar.style.animation = "";
+        bar.style.animation = "seek 18s linear forwards";
+      }
+    });
+  });
+
+  // guide email
+  $("guideForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    if (!validEmail($("guideEmail").value.trim())) { $("guideErr").textContent = "Enter a valid email."; return; }
+    $("guideErr").textContent = "";
+    $("guideBox").classList.add("done");
+  });
+  $("guideEmail").addEventListener("input", function () { $("guideErr").textContent = ""; });
+
+  // work-with-me message
+  $("msgForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var okE = validEmail($("msgEmail").value.trim());
+    var okT = $("msgText").value.trim().length >= 4;
+    if (!okE) { $("msgErr").textContent = "Enter a valid email."; return; }
+    if (!okT) { $("msgErr").textContent = "Add a short message first."; return; }
+    $("msgErr").textContent = "";
+    $("msgBox").classList.add("done");
+  });
+  $("msgEmail").addEventListener("input", function () { $("msgErr").textContent = ""; });
+  $("msgText").addEventListener("input", function () { $("msgErr").textContent = ""; });
+
+  // newsletter
   $("subForm").addEventListener("submit", function (e) {
     e.preventDefault();
-    var val = $("email").value.trim();
-    var ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
-    if (!ok) { $("subErr").textContent = "Enter a valid email address."; return; }
+    if (!validEmail($("email").value.trim())) { $("subErr").textContent = "Enter a valid email address."; return; }
     $("subErr").textContent = "";
     $("sub").classList.add("done");
   });
   $("email").addEventListener("input", function () { $("subErr").textContent = ""; });
 
-  // share / copy link
+  // copy link
   $("shareBtn").addEventListener("click", function () {
     var url = window.location.href;
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(url).then(function () { toast("Link copied to clipboard"); })
-        .catch(function () { toast("Copy failed — " + url); });
+        .catch(function () { toast(url); });
     } else {
       try {
         var ta = document.createElement("textarea");
@@ -212,11 +396,6 @@
         document.body.removeChild(ta); toast("Link copied to clipboard");
       } catch (e) { toast(url); }
     }
-  });
-
-  // gentle nudge that outbound links are placeholders
-  document.querySelectorAll('a.link[href="https://example.com"]').forEach(function (a) {
-    a.addEventListener("click", function () { toast("Demo link — you'd point this to your real page"); });
   });
 })();
 </script>
