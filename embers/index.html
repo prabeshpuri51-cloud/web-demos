@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EMBERS — Fire. Flavor. Theatre.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0806;
+    --bg-alt:#130d09;
+    --text:#f5ede1;
+    --text-dim:#a89a89;
+    --accent:#ff6a2a;
+    --accent-soft:#ff9a5a;
+    --gold:#d4af6a;
+    --line:rgba(245,237,225,0.12);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Manrope',sans-serif;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.serif{font-family:'Playfair Display',serif;}
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:22px 5vw;
+    background:linear-gradient(to bottom, rgba(10,8,6,0.85), transparent);
+    transition:background .4s ease, padding .4s ease;
+  }
+  nav.scrolled{ background:rgba(10,8,6,0.92); backdrop-filter:blur(8px); padding:14px 5vw; border-bottom:1px solid var(--line); }
+  .logo{ font-size:1.5rem; letter-spacing:0.12em; font-weight:600; color:var(--text); text-decoration:none; }
+  .logo span{ color:var(--accent); }
+  .nav-links{ display:flex; gap:2.5rem; list-style:none; }
+  .nav-links a{ color:var(--text-dim); text-decoration:none; font-size:0.85rem; letter-spacing:0.08em; text-transform:uppercase; transition:color .3s; }
+  .nav-links a:hover{ color:var(--accent-soft); }
+  .reserve-btn{
+    border:1px solid var(--gold); color:var(--gold); background:transparent;
+    padding:10px 22px; font-size:0.8rem; letter-spacing:0.1em; text-transform:uppercase;
+    border-radius:2px; cursor:pointer; transition:all .3s; font-family:'Manrope',sans-serif;
+  }
+  .reserve-btn:hover{ background:var(--gold); color:var(--bg); }
+  @media (max-width:800px){ .nav-links{ display:none; } }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative; height:100vh; width:100%; overflow:hidden;
+    display:flex; align-items:center; justify-content:center; text-align:center;
+  }
+  .hero-bg{
+    position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+    animation:heroZoom 18s ease-in-out infinite alternate;
+  }
+  @keyframes heroZoom{ from{ transform:scale(1);} to{ transform:scale(1.12);} }
+  .hero::after{
+    content:''; position:absolute; inset:0;
+    background:linear-gradient(to bottom, rgba(10,8,6,0.55) 0%, rgba(10,8,6,0.35) 40%, rgba(10,8,6,0.9) 100%);
+  }
+  .hero-content{ position:relative; z-index:2; max-width:900px; padding:0 24px; }
+  .hero-eyebrow{
+    color:var(--accent-soft); letter-spacing:0.35em; text-transform:uppercase;
+    font-size:0.75rem; margin-bottom:1.2rem; display:block; opacity:0.9;
+  }
+  .hero h1{
+    font-size:clamp(3rem, 8vw, 6.5rem); font-weight:600; line-height:1.02;
+    text-shadow:0 4px 40px rgba(0,0,0,0.6);
+  }
+  .hero h1 em{ font-style:italic; color:var(--accent); }
+  .hero p{
+    margin-top:1.5rem; font-size:1.05rem; color:var(--text-dim);
+    max-width:520px; margin-left:auto; margin-right:auto; line-height:1.6;
+  }
+  .hero-cta{
+    margin-top:2.5rem; display:inline-flex; align-items:center; gap:10px;
+    background:var(--accent); color:#160a04; padding:16px 36px; text-decoration:none;
+    font-weight:600; letter-spacing:0.05em; text-transform:uppercase; font-size:0.85rem;
+    border-radius:2px; transition:transform .3s, box-shadow .3s;
+    box-shadow:0 10px 40px -10px rgba(255,106,42,0.6);
+  }
+  .hero-cta:hover{ transform:translateY(-3px); box-shadow:0 16px 50px -10px rgba(255,106,42,0.8); }
+  .scroll-cue{
+    position:absolute; bottom:38px; left:50%; transform:translateX(-50%); z-index:2;
+    display:flex; flex-direction:column; align-items:center; gap:8px;
+    color:var(--text-dim); font-size:0.7rem; letter-spacing:0.2em; text-transform:uppercase;
+  }
+  .scroll-cue .stick{ width:1px; height:36px; background:linear-gradient(to bottom, var(--accent), transparent); animation:sink 1.8s ease-in-out infinite; }
+  @keyframes sink{ 0%,100%{ opacity:0.3; transform:translateY(0);} 50%{ opacity:1; transform:translateY(6px);} }
+
+  /* ---------- FIRE TRANSITION ---------- */
+  .transition-pin{ position:relative; height:280vh; background:#000; }
+  .transition-sticky{
+    position:sticky; top:0; height:100vh; width:100%; overflow:hidden;
+    display:flex; align-items:center; justify-content:center; background:#000;
+  }
+  .fire-video{
+    position:absolute; top:50%; left:50%; width:100%; height:100%; object-fit:cover;
+    transform:translate(-50%,-50%) scale(1);
+    filter:brightness(1) saturate(1);
+    will-change:transform, filter;
+  }
+  .transition-overlay{ position:absolute; inset:0; background:#000; opacity:0; pointer-events:none; }
+  .transition-text{
+    position:relative; z-index:2; text-align:center; color:var(--text);
+    opacity:0; transition:opacity .3s;
+  }
+  .transition-text .serif{ font-size:clamp(1.8rem,4vw,3.2rem); letter-spacing:0.04em; }
+  .transition-text span{ display:block; color:var(--accent-soft); font-size:0.8rem; letter-spacing:0.3em; text-transform:uppercase; margin-bottom:1rem; }
+
+  /* ---------- MENU ---------- */
+  .menu{ position:relative; background:var(--bg); padding:8vh 6vw 12vh; }
+  .menu-head{ text-align:center; max-width:640px; margin:0 auto 5rem; }
+  .menu-head span{ color:var(--accent-soft); letter-spacing:0.35em; text-transform:uppercase; font-size:0.75rem; }
+  .menu-head h2{ font-size:clamp(2.2rem,5vw,3.5rem); margin-top:1rem; font-weight:600; }
+  .menu-head p{ color:var(--text-dim); margin-top:1rem; line-height:1.6; }
+
+  .menu-grid{
+    display:grid; grid-template-columns:repeat(3, 1fr); gap:2rem; max-width:1200px; margin:0 auto;
+  }
+  .dish-card{
+    position:relative; border-radius:6px; overflow:hidden; aspect-ratio:3/4;
+    background:var(--bg-alt); opacity:0; transform:translateY(50px);
+    transition:opacity .8s ease, transform .8s ease;
+  }
+  .dish-card.visible{ opacity:1; transform:translateY(0); }
+  .dish-card img{
+    position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+    transition:transform .7s ease, filter .7s ease;
+    filter:brightness(0.85);
+  }
+  .dish-card:hover img{ transform:scale(1.08); filter:brightness(0.65); }
+  .dish-card::after{
+    content:''; position:absolute; inset:0;
+    background:linear-gradient(to top, rgba(10,8,6,0.95) 0%, rgba(10,8,6,0.15) 55%, transparent 75%);
+  }
+  .dish-info{
+    position:absolute; left:0; right:0; bottom:0; z-index:2; padding:1.6rem 1.4rem;
+  }
+  .dish-tag{ color:var(--accent-soft); font-size:0.68rem; letter-spacing:0.2em; text-transform:uppercase; }
+  .dish-name{ font-size:1.3rem; margin-top:0.4rem; line-height:1.25; }
+  .dish-row{ display:flex; justify-content:space-between; align-items:flex-end; margin-top:0.6rem; }
+  .dish-desc{ color:var(--text-dim); font-size:0.82rem; max-width:75%; line-height:1.4; }
+  .dish-price{ color:var(--gold); font-family:'Playfair Display',serif; font-size:1.1rem; white-space:nowrap; }
+
+  .dish-card.feature{ grid-column:span 2; }
+
+  @media (max-width:900px){
+    .menu-grid{ grid-template-columns:1fr 1fr; }
+    .dish-card.feature{ grid-column:span 2; aspect-ratio:16/9; }
+  }
+  @media (max-width:600px){
+    .menu-grid{ grid-template-columns:1fr; }
+    .dish-card.feature{ grid-column:span 1; aspect-ratio:4/3; }
+  }
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    background:var(--bg-alt); border-top:1px solid var(--line);
+    padding:7vh 6vw 4vh; text-align:center;
+  }
+  footer .logo{ font-size:1.8rem; display:inline-block; margin-bottom:1.5rem; }
+  .footer-grid{
+    display:flex; justify-content:center; gap:4rem; flex-wrap:wrap;
+    margin-bottom:3rem; color:var(--text-dim); font-size:0.9rem; line-height:1.8;
+  }
+  .footer-grid strong{ display:block; color:var(--text); font-family:'Playfair Display',serif; font-size:1rem; margin-bottom:0.4rem; font-weight:500; }
+  .footer-note{ color:var(--text-dim); font-size:0.75rem; letter-spacing:0.05em; opacity:0.6; }
+</style>
+</head>
+<body>
+
+<nav id="navbar">
+  <a href="#" class="logo">EMBER<span>S</span></a>
+  <ul class="nav-links">
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#about">Story</a></li>
+    <li><a href="#visit">Visit</a></li>
+  </ul>
+  <button class="reserve-btn">Reserve</button>
+</nav>
+
+<header class="hero">
+  <img class="hero-bg" src="assets/hero-chef.jpg" alt="Chef flambeing food in a wok">
+  <div class="hero-content">
+    <span class="hero-eyebrow">Fine Dining · Open Fire Kitchen</span>
+    <h1>Flavor, <em>forged</em><br>in flame.</h1>
+    <p>An open kitchen where every dish begins with fire — plated with precision, served with theatre.</p>
+    <a href="#menu" class="hero-cta">View the Menu</a>
+  </div>
+  <div class="scroll-cue">
+    <span>Scroll</span>
+    <div class="stick"></div>
+  </div>
+</header>
+
+<section class="transition-pin" id="transitionPin">
+  <div class="transition-sticky">
+    <video class="fire-video" id="fireVideo" muted loop playsinline preload="auto">
+      <source src="assets/fire-transition-wok.mp4" type="video/mp4">
+    </video>
+    <div class="transition-overlay" id="transitionOverlay"></div>
+    <div class="transition-text" id="transitionText">
+      <span>Straight From The Flame</span>
+      <div class="serif">Tonight's Menu</div>
+    </div>
+  </div>
+</section>
+
+<section class="menu" id="menu">
+  <div class="menu-head">
+    <span>Signature Plates</span>
+    <h2>Tonight's Menu</h2>
+    <p>Five dishes, one fire. Rotated nightly with whatever the flame does best.</p>
+  </div>
+  <div class="menu-grid">
+    <div class="dish-card feature">
+      <img src="assets/dish-3.jpg" alt="Binchotan wagyu">
+      <div class="dish-info">
+        <div class="dish-tag">Signature</div>
+        <div class="dish-name serif">Binchotan Wagyu, Charred Scallion</div>
+        <div class="dish-row">
+          <div class="dish-desc">A5 wagyu seared over binchotan coal, smoked scallion ash</div>
+          <div class="dish-price">$58</div>
+        </div>
+      </div>
+    </div>
+    <div class="dish-card">
+      <img src="assets/dish-1.jpg" alt="Charred sablefish">
+      <div class="dish-info">
+        <div class="dish-tag">Starter</div>
+        <div class="dish-name serif">Charred Sablefish</div>
+        <div class="dish-row">
+          <div class="dish-desc">Whipped root, crisp shallot</div>
+          <div class="dish-price">$34</div>
+        </div>
+      </div>
+    </div>
+    <div class="dish-card">
+      <img src="assets/dish-2.jpg" alt="Golden yolk dumplings">
+      <div class="dish-info">
+        <div class="dish-tag">Small Plate</div>
+        <div class="dish-name serif">Golden Yolk Dumplings</div>
+        <div class="dish-row">
+          <div class="dish-desc">Chili oil, jade greens</div>
+          <div class="dish-price">$28</div>
+        </div>
+      </div>
+    </div>
+    <div class="dish-card">
+      <img src="assets/dish-4.jpg" alt="Burnt honey mille-feuille">
+      <div class="dish-info">
+        <div class="dish-tag">Dessert</div>
+        <div class="dish-name serif">Burnt Honey Mille-Feuille</div>
+        <div class="dish-row">
+          <div class="dish-desc">Layered, torched to order</div>
+          <div class="dish-price">$16</div>
+        </div>
+      </div>
+    </div>
+    <div class="dish-card">
+      <img src="assets/dish-5.jpg" alt="Smoked cherry cocktail">
+      <div class="dish-info">
+        <div class="dish-tag">Bar</div>
+        <div class="dish-name serif">Smoked Cherry Blossom</div>
+        <div class="dish-row">
+          <div class="dish-desc">Bourbon, cherry, thyme smoke</div>
+          <div class="dish-price">$18</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer id="visit">
+  <a href="#" class="logo">EMBER<span style="color:var(--accent)">S</span></a>
+  <div class="footer-grid">
+    <div>
+      <strong>Visit</strong>
+      12 Ember Lane<br>Kathmandu
+    </div>
+    <div>
+      <strong>Hours</strong>
+      Dinner Nightly<br>5:00 PM – 11:00 PM
+    </div>
+    <div>
+      <strong>Reserve</strong>
+      +977-1-000-0000<br>hello@embers.example
+    </div>
+  </div>
+  <div class="footer-note">© 2026 EMBERS. Placeholder demo content — for portfolio purposes only.</div>
+</footer>
+
+<script>
+  // Nav background on scroll
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // Fire transition: scroll-driven zoom into flame, then flash to black
+  const pin = document.getElementById('transitionPin');
+  const video = document.getElementById('fireVideo');
+  const overlay = document.getElementById('transitionOverlay');
+  const transitionText = document.getElementById('transitionText');
+  let ticking = false;
+  let videoStarted = false;
+
+  function clamp(v, min, max){ return Math.max(min, Math.min(max, v)); }
+
+  function updateTransition(){
+    const rect = pin.getBoundingClientRect();
+    const total = rect.height - window.innerHeight;
+    const progress = clamp(-rect.top / total, 0, 1);
+
+    if (progress > 0 && progress < 1 && !videoStarted){
+      video.play().catch(()=>{});
+      videoStarted = true;
+    }
+
+    const scale = 1 + progress * 4.5;
+    const brightness = 1 + progress * 1.6;
+    const saturate = 1 + progress * 0.6;
+    video.style.transform = `translate(-50%,-50%) scale(${scale})`;
+    video.style.filter = `brightness(${brightness}) saturate(${saturate})`;
+
+    const flashStart = 0.6, flashEnd = 0.92;
+    const flash = clamp((progress - flashStart) / (flashEnd - flashStart), 0, 1);
+    overlay.style.opacity = flash;
+
+    const textStart = 0.25, textEnd = 0.45;
+    let textOpacity = 0;
+    if (progress > textStart){
+      textOpacity = progress < textEnd
+        ? (progress - textStart) / (textEnd - textStart)
+        : 1;
+    }
+    transitionText.style.opacity = clamp(textOpacity, 0, 1);
+
+    ticking = false;
+  }
+
+  window.addEventListener('scroll', () => {
+    if (!ticking){
+      requestAnimationFrame(updateTransition);
+      ticking = true;
+    }
+  });
+  updateTransition();
+
+  // Menu card reveal
+  const cards = document.querySelectorAll('.dish-card');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting){
+        setTimeout(() => entry.target.classList.add('visible'), i * 90);
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  cards.forEach(c => io.observe(c));
+</script>
+
+</body>
+</html>
