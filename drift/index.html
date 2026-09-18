@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DRIFT — Specialty Coffee</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,700;1,500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#120d0a;
+    --bg-surface:#1c140f;
+    --text:#f3ece2;
+    --text-muted:#a8988a;
+    --accent:#c9773f;
+    --accent-hover:#e3a873;
+    --border:rgba(243,236,226,0.12);
+    --disabled-bg:rgba(243,236,226,0.06);
+    --disabled-text:rgba(168,152,138,0.5);
+    --focus-ring:#e3a873;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--bg);color:var(--text);font-family:'Manrope',sans-serif;overflow-x:hidden;}
+  .display{font-family:'Fraunces',serif;}
+  :focus-visible{ outline:2px solid var(--focus-ring); outline-offset:2px; }
+
+  /* NAV */
+  nav{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:22px 5vw;
+    background:linear-gradient(to bottom, rgba(18,13,10,0.85), transparent);
+    transition:background .4s ease, padding .4s ease;
+  }
+  nav.scrolled{ background:rgba(18,13,10,0.94); backdrop-filter:blur(8px); padding:14px 5vw; border-bottom:1px solid var(--border); }
+  .logo{ font-family:'Fraunces',serif; font-size:1.6rem; font-weight:600; color:var(--text); text-decoration:none; white-space:nowrap; }
+  .logo em{ font-style:italic; color:var(--accent); }
+  .nav-links{ display:flex; gap:2.5rem; list-style:none; }
+  .nav-links a{ color:var(--text-muted); text-decoration:none; font-size:0.85rem; letter-spacing:0.05em; text-transform:uppercase; transition:color .3s; }
+  .nav-links a:hover{ color:var(--accent-hover); }
+  @media (max-width:800px){ .nav-links{ display:none; } }
+
+  /* BUTTON — primary (§3.1) */
+  .btn-primary{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    background:var(--accent); color:var(--bg); border:none; text-decoration:none;
+    padding:12px 24px; border-radius:4px; font-family:'Manrope',sans-serif;
+    font-size:0.85rem; font-weight:600; letter-spacing:0.03em; text-transform:uppercase;
+    cursor:pointer; transition:background 150ms, transform 150ms;
+    min-height:44px;
+  }
+  .btn-primary:hover:not(:disabled){ background:var(--accent-hover); transform:translateY(-2px); }
+  .btn-primary:active:not(:disabled){ transform:translateY(0); filter:brightness(0.92); }
+  .btn-primary:disabled{ background:var(--disabled-bg); color:var(--disabled-text); cursor:not-allowed; }
+  .btn-ghost{
+    border:1px solid var(--accent); color:var(--accent); background:transparent;
+    padding:10px 22px; font-size:0.8rem; letter-spacing:0.05em; text-transform:uppercase;
+    border-radius:4px; cursor:pointer; transition:all .3s; font-family:'Manrope',sans-serif;
+    min-height:44px;
+  }
+  .btn-ghost:hover{ background:var(--accent); color:var(--bg); }
+
+  /* HERO */
+  .hero{ position:relative; height:100vh; width:100%; overflow:hidden; display:flex; align-items:center; }
+  .hero-bg{
+    position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:62% 35%;
+    animation:heroZoom 20s ease-in-out infinite alternate;
+  }
+  @media (max-width:600px){ .hero-bg{ object-position:45% 40%; } }
+  @keyframes heroZoom{ from{ transform:scale(1);} to{ transform:scale(1.1);} }
+  .hero::after{
+    content:''; position:absolute; inset:0;
+    background:linear-gradient(100deg, rgba(18,13,10,0.92) 20%, rgba(18,13,10,0.5) 50%, rgba(18,13,10,0.8) 100%);
+  }
+  .hero-content{ position:relative; z-index:2; max-width:620px; padding:0 6vw; }
+  .hero-eyebrow{ color:var(--accent-hover); letter-spacing:0.3em; text-transform:uppercase; font-size:0.75rem; margin-bottom:1.2rem; display:block; }
+  .hero h1{ font-size:clamp(2.8rem, 7vw, 5.2rem); font-weight:600; line-height:1.05; }
+  .hero h1 em{ font-style:italic; color:var(--accent-hover); }
+  .hero p{ margin-top:1.5rem; font-size:1.05rem; color:var(--text-muted); max-width:460px; line-height:1.6; }
+  .hero-cta{ margin-top:2.5rem; }
+  .scroll-cue{
+    position:absolute; bottom:38px; left:50%; transform:translateX(-50%); z-index:2;
+    display:flex; flex-direction:column; align-items:center; gap:8px;
+    color:var(--text-muted); font-size:0.7rem; letter-spacing:0.2em; text-transform:uppercase;
+  }
+  .scroll-cue .stick{ width:1px; height:36px; background:linear-gradient(to bottom, var(--accent), transparent); animation:sink 1.8s ease-in-out infinite; }
+  @keyframes sink{ 0%,100%{ opacity:0.3; transform:translateY(0);} 50%{ opacity:1; transform:translateY(6px);} }
+
+  /* STEAM TRANSITION — decorative, aria-hidden (§4) */
+  .steam-pin{ position:relative; height:260vh; background:#000; }
+  .steam-sticky{ position:sticky; top:0; height:100vh; width:100%; overflow:hidden; background:#000; }
+  .steam-video{
+    position:absolute; top:50%; left:50%; width:100%; height:100%; object-fit:cover;
+    transform:translate(-50%,-50%) scale(1); filter:brightness(1) contrast(1.05);
+    will-change:transform, filter;
+  }
+  .steam-tint{
+    position:absolute; inset:0; z-index:1; pointer-events:none;
+    background:linear-gradient(135deg, #c9773f, #2a160a); mix-blend-mode:color;
+  }
+  .steam-overlay{ position:absolute; inset:0; z-index:2; background:#000; opacity:0; pointer-events:none; }
+  .steam-text{
+    position:absolute; inset:0; z-index:3; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; text-align:center; opacity:0;
+  }
+  .steam-text span{ display:block; color:var(--accent-hover); font-size:0.8rem; letter-spacing:0.3em; text-transform:uppercase; margin-bottom:1rem; }
+  .steam-text .display{ font-size:clamp(1.8rem,4vw,3.2rem); }
+
+  .motion-override-btn{
+    position:absolute; bottom:24px; left:50%; transform:translateX(-50%); z-index:5;
+    background:transparent; border:1px solid var(--border); color:var(--text-muted);
+    padding:8px 16px; border-radius:999px; font-family:'Manrope',sans-serif; font-size:0.75rem;
+    cursor:pointer; transition:all 150ms;
+  }
+  .motion-override-btn:hover{ border-color:var(--accent); color:var(--accent-hover); }
+
+  @media (prefers-reduced-motion: reduce){
+    .steam-pin{ height:auto; }
+    .steam-sticky{ position:relative; }
+  }
+
+  /* MENU (§3.3) */
+  .menu{ position:relative; background:var(--bg); padding:8vh 6vw 4vh; }
+  .menu-head{ text-align:center; max-width:640px; margin:0 auto 4rem; }
+  .menu-head span{ color:var(--accent-hover); letter-spacing:0.3em; text-transform:uppercase; font-size:0.75rem; }
+  .menu-head h2{ font-size:clamp(2.2rem,5vw,3.5rem); margin-top:1rem; font-weight:600; }
+  .menu-head p{ color:var(--text-muted); margin-top:1rem; line-height:1.6; }
+
+  .menu-grid{
+    display:grid; grid-template-columns:repeat(3, 1fr); gap:2rem; max-width:1200px; margin:0 auto;
+  }
+  @media (max-width:900px){ .menu-grid{ grid-template-columns:1fr 1fr; } }
+  @media (max-width:600px){ .menu-grid{ grid-template-columns:1fr; } }
+
+  .drink-card{
+    background:var(--bg-surface); border:1px solid var(--border); border-radius:8px; overflow:hidden;
+    opacity:0; transform:translateY(30px); transition:opacity .8s ease, transform .8s ease;
+    display:flex; flex-direction:column;
+  }
+  .drink-card.visible{ opacity:1; transform:translateY(0); }
+  .drink-img{ aspect-ratio:4/3; overflow:hidden; }
+  .drink-img img{ width:100%; height:100%; object-fit:cover; display:block; transition:transform 300ms; }
+  .drink-card:hover .drink-img img{ transform:scale(1.04); }
+  .drink-body{ padding:1.4rem; display:flex; flex-direction:column; gap:0.9rem; flex:1; }
+  .drink-name{ font-size:1.2rem; font-weight:600; }
+  .drink-desc{
+    color:var(--text-muted); font-size:0.85rem; line-height:1.4;
+    display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
+  }
+
+  /* Size selector (§3.2) */
+  .size-group{ display:flex; gap:8px; }
+  .size-pill{
+    flex:1; text-align:center; padding:8px 4px; border-radius:999px; border:1px solid var(--border);
+    background:transparent; color:var(--text-muted); font-family:'Manrope',sans-serif; font-size:0.8rem;
+    cursor:pointer; transition:all 150ms; min-height:44px; display:flex; align-items:center; justify-content:center;
+  }
+  .size-pill:hover:not([aria-disabled="true"]){ border-color:var(--accent); }
+  .size-pill[aria-checked="true"]{ background:var(--accent); color:var(--bg); font-weight:600; border-color:var(--accent); }
+  .size-pill[aria-disabled="true"]{ color:var(--disabled-text); border-color:var(--disabled-bg); cursor:not-allowed; }
+
+  .drink-footer{ display:flex; align-items:center; justify-content:space-between; margin-top:auto; }
+  .drink-price{ font-family:'Fraunces',serif; font-size:1.3rem; color:var(--accent-hover); }
+
+  /* INFO */
+  .info-grid{ display:grid; grid-template-columns:1fr 1fr; gap:2rem; max-width:1000px; margin:6rem auto 0; }
+  @media (max-width:800px){ .info-grid{ grid-template-columns:1fr; } }
+  .info-photo{ border-radius:8px; overflow:hidden; opacity:0; transform:translateY(30px); transition:opacity .8s ease, transform .8s ease; }
+  .info-photo.visible{ opacity:1; transform:translateY(0); }
+  .info-photo img{ width:100%; height:100%; object-fit:cover; display:block; min-height:260px; filter:brightness(0.85); }
+  .info-card{
+    background:var(--bg-surface); border:1px solid var(--border); border-radius:8px; padding:2.5rem;
+    display:flex; flex-direction:column; justify-content:center; gap:1.6rem;
+    opacity:0; transform:translateY(30px); transition:opacity .8s ease, transform .8s ease;
+  }
+  .info-card.visible{ opacity:1; transform:translateY(0); }
+  .info-card span.label{ color:var(--accent-hover); letter-spacing:0.25em; text-transform:uppercase; font-size:0.7rem; }
+  .info-card .value{ font-family:'Fraunces',serif; font-size:1.15rem; margin-top:0.5rem; line-height:1.5; }
+
+  footer{ background:var(--bg-surface); border-top:1px solid var(--border); padding:7vh 6vw 4vh; text-align:center; margin-top:6vh; }
+  footer .logo{ font-size:1.8rem; display:inline-block; margin-bottom:1rem; }
+  .footer-note{ color:var(--text-muted); font-size:0.75rem; letter-spacing:0.05em; opacity:0.6; margin-top:1rem; }
+</style>
+</head>
+<body>
+
+<nav id="navbar">
+  <a href="#" class="logo">DR<em>i</em>FT</a>
+  <ul class="nav-links">
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#info">Hours</a></li>
+    <li><a href="#info">Location</a></li>
+  </ul>
+  <button class="btn-ghost">Order Ahead</button>
+</nav>
+
+<header class="hero">
+  <img class="hero-bg" src="assets/hero-barista.jpg" alt="Barista pouring latte art with steam rising">
+  <div class="hero-content">
+    <span class="hero-eyebrow">Specialty Coffee · Small Batch</span>
+    <h1>Slow down. <em>Drift</em> in.</h1>
+    <p>Single-origin pour overs, oat milk that actually tastes good, and a bar that never rushes your order.</p>
+    <a href="#menu" class="btn-primary hero-cta">See the Menu</a>
+  </div>
+  <div class="scroll-cue">
+    <span>Scroll</span>
+    <div class="stick"></div>
+  </div>
+</header>
+
+<section class="steam-pin" id="steamPin" aria-hidden="true">
+  <div class="steam-sticky">
+    <video class="steam-video" id="steamVideo" muted loop playsinline preload="auto">
+      <source src="assets/steam-transition.mp4" type="video/mp4">
+    </video>
+    <div class="steam-tint"></div>
+    <div class="steam-overlay" id="steamOverlay"></div>
+    <div class="steam-text" id="steamText">
+      <span>Fresh Off The Bar</span>
+      <div class="display">Today's Menu</div>
+    </div>
+    <button type="button" class="motion-override-btn" id="motionOverrideBtn" style="display:none;">
+      ▶ Preview animation (your system has reduced motion on)
+    </button>
+  </div>
+</section>
+
+<section class="menu" id="menu">
+  <div class="menu-head">
+    <span>The Menu</span>
+    <h2 class="display">What We're Pouring</h2>
+    <p>Pick a size, pick a drink. That's the whole menu.</p>
+  </div>
+
+  <div class="menu-grid" id="menuGrid">
+    <!-- cards injected by JS from DRINKS data -->
+  </div>
+
+  <div class="info-grid" id="info">
+    <div class="info-photo" id="infoPhoto">
+      <img src="assets/hero-barista.jpg" alt="Coffee bar detail">
+    </div>
+    <div class="info-card" id="infoCard">
+      <div>
+        <span class="label">Location</span>
+        <div class="value">8 Roastery Lane<br>Kathmandu</div>
+      </div>
+      <div>
+        <span class="label">Hours</span>
+        <div class="value">Mon – Sat, 7AM – 5PM<br>Closed Sundays</div>
+      </div>
+      <div>
+        <span class="label">Order Ahead</span>
+        <div class="value">+977-1-000-0000<br>hello@drift.example</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <a href="#" class="logo">DR<em style="color:var(--accent)">i</em>FT</a>
+  <div class="footer-note">© 2026 DRIFT. Placeholder demo content — for portfolio purposes only.</div>
+</footer>
+
+<script>
+  // ---- Nav scroll state ----
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // ---- Steam transition (mirrors EMBERS/Gentleman's Cut technique) ----
+  const pin = document.getElementById('steamPin');
+  const video = document.getElementById('steamVideo');
+  const overlay = document.getElementById('steamOverlay');
+  const steamText = document.getElementById('steamText');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let motionOverridden = false;
+  let ticking = false;
+  let videoStarted = false;
+
+  const overrideBtn = document.getElementById('motionOverrideBtn');
+  if (reduceMotion){
+    overrideBtn.style.display = 'block';
+    overrideBtn.addEventListener('click', () => {
+      motionOverridden = true;
+      pin.style.height = '260vh';
+      document.querySelector('.steam-sticky').style.position = 'sticky';
+      overrideBtn.style.display = 'none';
+      updateSteam();
+    });
+  }
+
+  function clamp(v, min, max){ return Math.max(min, Math.min(max, v)); }
+
+  function updateSteam(){
+    if (reduceMotion && !motionOverridden){
+      overlay.style.opacity = 0;
+      steamText.style.opacity = 0;
+      ticking = false;
+      return;
+    }
+    const rect = pin.getBoundingClientRect();
+    const total = rect.height - window.innerHeight;
+    const progress = clamp(-rect.top / total, 0, 1);
+
+    if (progress > 0 && progress < 1 && !videoStarted){
+      video.play().catch(()=>{});
+      videoStarted = true;
+    }
+
+    const scale = 1 + progress * 3.2;
+    const brightness = 1 + progress * 0.5;
+    video.style.transform = `translate(-50%,-50%) scale(${scale})`;
+    video.style.filter = `brightness(${brightness}) contrast(1.05)`;
+
+    const flashStart = 0.58, flashEnd = 0.9;
+    overlay.style.opacity = clamp((progress - flashStart) / (flashEnd - flashStart), 0, 1);
+
+    const textStart = 0.22, textEnd = 0.42;
+    let textOpacity = 0;
+    if (progress > textStart){
+      textOpacity = progress < textEnd ? (progress - textStart) / (textEnd - textStart) : 1;
+    }
+    steamText.style.opacity = clamp(textOpacity, 0, 1);
+
+    ticking = false;
+  }
+
+  window.addEventListener('scroll', () => {
+    if (!ticking){ requestAnimationFrame(updateSteam); ticking = true; }
+  });
+  updateSteam();
+
+  // ---- Drink data ----
+  const DRINKS = [
+    {
+      name: 'House Drip', img: 'assets/hero-barista.jpg',
+      desc: 'Filter coffee, roasted weekly, changes daily.',
+      sizes: { S: 3.00, M: 3.75, L: 4.25 }
+    },
+    {
+      name: 'Oat Milk Cortado', img: 'assets/drink-latte-dark.jpg',
+      desc: 'Espresso, steamed oat milk, thin foam.',
+      sizes: { S: 4.25, M: 4.75, L: null }
+    },
+    {
+      name: 'Iced Copper Latte', img: 'assets/drink-coldbrew.jpg',
+      desc: 'Espresso, cold milk, a dusting of cinnamon.',
+      sizes: { S: 4.75, M: 5.25, L: 5.75 }
+    },
+    {
+      name: 'Pour Over', img: 'assets/drink-pourover.jpg',
+      desc: 'Single origin, brewed to order, changes weekly.',
+      sizes: { S: null, M: 5.50, L: 6.25 }
+    },
+    {
+      name: 'Cold Brew', img: 'assets/hero-barista.jpg',
+      desc: 'Steeped 18 hours, served over ice.',
+      sizes: { S: 4.00, M: 4.50, L: 5.00 }
+    },
+    {
+      name: 'Mocha', img: 'assets/drink-latte-dark.jpg',
+      desc: 'Espresso, steamed milk, dark chocolate.',
+      sizes: { S: 4.50, M: 5.00, L: 5.50 }
+    }
+  ];
+
+  const grid = document.getElementById('menuGrid');
+
+  DRINKS.forEach((drink, i) => {
+    const card = document.createElement('div');
+    card.className = 'drink-card';
+
+    const firstAvailable = Object.entries(drink.sizes).find(([,p]) => p !== null)[0];
+
+    card.innerHTML = `
+      <div class="drink-img"><img src="${drink.img}" alt=""></div>
+      <div class="drink-body">
+        <div class="drink-name display">${drink.name}</div>
+        <div class="drink-desc">${drink.desc}</div>
+        <div class="size-group" role="radiogroup" aria-label="Size for ${drink.name}">
+          ${['S','M','L'].map(size => {
+            const price = drink.sizes[size];
+            const disabled = price === null;
+            const checked = size === firstAvailable;
+            return `<button type="button" class="size-pill" role="radio"
+              aria-checked="${checked}" ${disabled ? 'aria-disabled="true" tabindex="-1"' : `tabindex="${checked ? '0' : '-1'}"`}
+              data-size="${size}" data-price="${price ?? ''}">${size}</button>`;
+          }).join('')}
+        </div>
+        <div class="drink-footer">
+          <div class="drink-price display">$${drink.sizes[firstAvailable].toFixed(2)}</div>
+          <button type="button" class="btn-primary">Add to Order</button>
+        </div>
+      </div>
+    `;
+    grid.appendChild(card);
+
+    const pills = Array.from(card.querySelectorAll('.size-pill'));
+    const priceEl = card.querySelector('.drink-price');
+
+    function selectPill(pill){
+      pills.forEach(p => {
+        p.setAttribute('aria-checked', 'false');
+        p.tabIndex = -1;
+      });
+      pill.setAttribute('aria-checked', 'true');
+      pill.tabIndex = 0;
+      priceEl.textContent = `$${parseFloat(pill.dataset.price).toFixed(2)}`;
+    }
+
+    pills.forEach((pill, idx) => {
+      if (pill.getAttribute('aria-disabled') === 'true') return;
+      pill.addEventListener('click', () => selectPill(pill));
+      pill.addEventListener('keydown', (e) => {
+        if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+        e.preventDefault();
+        const enabled = pills.filter(p => p.getAttribute('aria-disabled') !== 'true');
+        const curIdx = enabled.indexOf(pill);
+        const nextIdx = e.key === 'ArrowRight'
+          ? (curIdx + 1) % enabled.length
+          : (curIdx - 1 + enabled.length) % enabled.length;
+        enabled[nextIdx].focus();
+        selectPill(enabled[nextIdx]);
+      });
+    });
+  });
+
+  // ---- Reveal on scroll ----
+  const revealEls = document.querySelectorAll('.drink-card, .info-photo, .info-card');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting){
+        setTimeout(() => entry.target.classList.add('visible'), i * 60);
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>

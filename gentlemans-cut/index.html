@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THE GENTLEMAN'S CUT — Barbershop</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0c0a09;
+    --bg-alt:#17130f;
+    --text:#f2ece1;
+    --text-dim:#a89a8c;
+    --accent:#b3282d;
+    --accent-soft:#d65a5e;
+    --gold:#c9a227;
+    --line:rgba(242,236,225,0.12);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--bg);color:var(--text);font-family:'Manrope',sans-serif;overflow-x:hidden;}
+  .display{font-family:'Bebas Neue',sans-serif;letter-spacing:0.03em;}
+  .serif{font-family:'Playfair Display',serif;}
+
+  /* NAV */
+  nav{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:22px 5vw;
+    background:linear-gradient(to bottom, rgba(12,10,9,0.85), transparent);
+    transition:background .4s ease, padding .4s ease;
+  }
+  nav.scrolled{ background:rgba(12,10,9,0.94); backdrop-filter:blur(8px); padding:14px 5vw; border-bottom:1px solid var(--line); }
+  .logo{ font-family:'Bebas Neue',sans-serif; font-size:1.7rem; letter-spacing:0.08em; color:var(--text); text-decoration:none; }
+  .logo span{ color:var(--accent); }
+  .nav-links{ display:flex; gap:2.5rem; list-style:none; }
+  .nav-links a{ color:var(--text-dim); text-decoration:none; font-size:0.85rem; letter-spacing:0.08em; text-transform:uppercase; transition:color .3s; }
+  .nav-links a:hover{ color:var(--gold); }
+  .book-btn{
+    border:1px solid var(--gold); color:var(--gold); background:transparent;
+    padding:10px 22px; font-size:0.8rem; letter-spacing:0.1em; text-transform:uppercase;
+    border-radius:2px; cursor:pointer; transition:all .3s; font-family:'Manrope',sans-serif;
+  }
+  .book-btn:hover{ background:var(--gold); color:var(--bg); }
+  @media (max-width:800px){ .nav-links{ display:none; } }
+  @media (max-width:480px){
+    .logo{ font-size:1.2rem; }
+    .book-btn{ padding:8px 14px; font-size:0.68rem; white-space:nowrap; }
+    nav{ padding:18px 4vw; }
+    nav.scrolled{ padding:12px 4vw; }
+  }
+
+  /* HERO */
+  .hero{ position:relative; height:100vh; width:100%; overflow:hidden; display:flex; align-items:center; text-align:left; }
+  .hero-bg{
+    position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:62% 22%;
+    animation:heroZoom 18s ease-in-out infinite alternate;
+  }
+  @media (max-width:600px){
+    .hero-bg{ object-position:58% 15%; }
+  }
+  @keyframes heroZoom{ from{ transform:scale(1);} to{ transform:scale(1.1);} }
+  .hero::after{
+    content:''; position:absolute; inset:0;
+    background:linear-gradient(100deg, rgba(12,10,9,0.92) 15%, rgba(12,10,9,0.55) 45%, rgba(12,10,9,0.75) 100%);
+  }
+  .hero-content{ position:relative; z-index:2; max-width:620px; padding:0 6vw; }
+  .hero-eyebrow{ color:var(--gold); letter-spacing:0.35em; text-transform:uppercase; font-size:0.75rem; margin-bottom:1.2rem; display:block; }
+  .hero h1{
+    font-family:'Bebas Neue',sans-serif; font-size:clamp(3.5rem, 9vw, 7rem); line-height:0.95; letter-spacing:0.02em;
+    text-shadow:0 4px 40px rgba(0,0,0,0.6);
+  }
+  .hero h1 .accent{ color:var(--accent-soft); }
+  .hero p{ margin-top:1.5rem; font-size:1.05rem; color:var(--text-dim); max-width:440px; line-height:1.6; }
+  .hero-cta{
+    margin-top:2.5rem; display:inline-flex; align-items:center; gap:10px;
+    background:var(--accent); color:#160a04; padding:16px 36px; text-decoration:none;
+    font-weight:700; letter-spacing:0.05em; text-transform:uppercase; font-size:0.85rem;
+    border-radius:2px; transition:transform .3s, box-shadow .3s;
+    box-shadow:0 10px 40px -10px rgba(179,40,45,0.6);
+  }
+  .hero-cta:hover{ transform:translateY(-3px); box-shadow:0 16px 50px -10px rgba(179,40,45,0.8); }
+  .scroll-cue{
+    position:absolute; bottom:38px; left:50%; transform:translateX(-50%); z-index:2;
+    display:flex; flex-direction:column; align-items:center; gap:8px;
+    color:var(--text-dim); font-size:0.7rem; letter-spacing:0.2em; text-transform:uppercase;
+  }
+  .scroll-cue .stick{ width:1px; height:36px; background:linear-gradient(to bottom, var(--gold), transparent); animation:sink 1.8s ease-in-out infinite; }
+  @keyframes sink{ 0%,100%{ opacity:0.3; transform:translateY(0);} 50%{ opacity:1; transform:translateY(6px);} }
+
+  /* CUT TRANSITION */
+  .cut-pin{ position:relative; height:280vh; background:#000; }
+  .cut-sticky{ position:sticky; top:0; height:100vh; width:100%; overflow:hidden; background:#000; }
+  .cut-half{
+    position:absolute; inset:0; width:100%; height:100%;
+    background-image:url('assets/hero-barber.jpg'); background-size:cover; background-position:62% 22%;
+    will-change:transform, clip-path;
+  }
+  @media (max-width:600px){
+    .cut-half{ background-position:58% 15%; }
+  }
+  .cut-half-a{ clip-path:polygon(0 0, 100% 0, 0 100%); }
+  .cut-half-b{ clip-path:polygon(100% 0, 100% 100%, 0 100%); }
+  .blade-line{
+    position:absolute; top:-10%; left:-10%; width:180%; height:6px;
+    background:linear-gradient(90deg, transparent, #fff 45%, var(--gold) 55%, transparent);
+    transform-origin:0 0; transform:rotate(45deg) translateX(-100%);
+    opacity:0; box-shadow:0 0 24px 4px rgba(201,162,39,0.8);
+    z-index:3; pointer-events:none;
+  }
+  .cut-reveal-text{
+    position:absolute; inset:0; z-index:2; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; text-align:center; opacity:0;
+  }
+  .cut-scissors{
+    position:absolute; top:19%; left:56%; width:72px; height:72px; z-index:4;
+    opacity:0; pointer-events:none; filter:drop-shadow(0 0 14px rgba(201,162,39,0.85));
+  }
+  .cut-scissors svg{ width:100%; height:100%; overflow:visible; }
+  .blade-a, .blade-b{ transform-origin:32px 32px; }
+  .cut-reveal-text span{ color:var(--gold); letter-spacing:0.3em; text-transform:uppercase; font-size:0.8rem; margin-bottom:1rem; }
+  .cut-reveal-text .serif{ font-size:clamp(1.8rem,4vw,3.2rem); }
+
+  /* MENU / PANEL */
+  .panel{ position:relative; background:var(--bg); padding:8vh 6vw 4vh; }
+  .panel-head{ text-align:center; max-width:640px; margin:0 auto 4rem; }
+  .panel-head span{ color:var(--gold); letter-spacing:0.35em; text-transform:uppercase; font-size:0.75rem; }
+  .panel-head h2{ font-family:'Bebas Neue',sans-serif; font-size:clamp(2.4rem,5vw,3.8rem); margin-top:1rem; letter-spacing:0.03em; }
+  .panel-head p{ color:var(--text-dim); margin-top:1rem; line-height:1.6; }
+
+  .menu-board{
+    max-width:720px; margin:0 auto 6rem; background:var(--bg-alt); border:1px solid var(--line);
+    border-radius:6px; padding:3rem clamp(1.5rem,4vw,3.5rem); position:relative; opacity:0; transform:translateY(30px);
+    transition:opacity .8s ease, transform .8s ease;
+  }
+  .menu-board.visible{ opacity:1; transform:translateY(0); }
+  .menu-row{
+    display:flex; align-items:baseline; gap:0.6rem; padding:0.9rem 0; border-bottom:1px dashed var(--line);
+  }
+  .menu-row:last-child{ border-bottom:none; }
+  .menu-name{ font-family:'Playfair Display',serif; font-size:1.15rem; white-space:nowrap; }
+  .menu-desc{ color:var(--text-dim); font-size:0.8rem; margin-top:0.2rem; }
+  .menu-dots{ flex:1; border-bottom:2px dotted var(--line); transform:translateY(-6px); }
+  .menu-price{ font-family:'Bebas Neue',sans-serif; font-size:1.3rem; color:var(--gold); letter-spacing:0.03em; white-space:nowrap; }
+
+  .info-grid{
+    display:grid; grid-template-columns:1fr 1fr; gap:2rem; max-width:1000px; margin:0 auto;
+    align-items:stretch;
+  }
+  .info-photo{
+    border-radius:6px; overflow:hidden; opacity:0; transform:translateY(30px); transition:opacity .8s ease, transform .8s ease;
+  }
+  .info-photo.visible{ opacity:1; transform:translateY(0); }
+  .info-photo img{ width:100%; height:100%; object-fit:cover; display:block; min-height:280px; filter:brightness(0.85); }
+  .info-card{
+    background:var(--bg-alt); border:1px solid var(--line); border-radius:6px; padding:2.5rem;
+    display:flex; flex-direction:column; justify-content:center; gap:1.6rem;
+    opacity:0; transform:translateY(30px); transition:opacity .8s ease, transform .8s ease;
+  }
+  .info-card.visible{ opacity:1; transform:translateY(0); }
+  .info-block span.label{ color:var(--gold); letter-spacing:0.25em; text-transform:uppercase; font-size:0.7rem; }
+  .info-block .value{ font-family:'Playfair Display',serif; font-size:1.15rem; margin-top:0.5rem; line-height:1.5; }
+
+  @media (max-width:800px){
+    .info-grid{ grid-template-columns:1fr; }
+    .info-photo{ min-height:220px; }
+  }
+
+  /* FOOTER */
+  footer{ background:var(--bg-alt); border-top:1px solid var(--line); padding:7vh 6vw 4vh; text-align:center; margin-top:6vh; }
+  footer .logo{ font-size:2rem; display:inline-block; margin-bottom:1rem; }
+  .footer-note{ color:var(--text-dim); font-size:0.75rem; letter-spacing:0.05em; opacity:0.6; margin-top:1rem; }
+</style>
+</head>
+<body>
+
+<nav id="navbar">
+  <a href="#" class="logo">THE GENTLEMAN'<span>S</span> CUT</a>
+  <ul class="nav-links">
+    <li><a href="#panel">Services</a></li>
+    <li><a href="#panel">Hours</a></li>
+    <li><a href="#panel">Location</a></li>
+  </ul>
+  <button class="book-btn">Book Now</button>
+</nav>
+
+<header class="hero">
+  <img class="hero-bg" src="assets/hero-barber.jpg" alt="Barber cutting hair, tossing scissors">
+  <div class="hero-content">
+    <span class="hero-eyebrow">Barbershop · Est. 2018</span>
+    <h1>Sharp Looks.<br><span class="accent">Sharper</span> Moves.</h1>
+    <p>Classic cuts, hot towel shaves, and a barber who never misses — on the head or the catch.</p>
+    <a href="#panel" class="hero-cta">See Prices & Hours</a>
+  </div>
+  <div class="scroll-cue">
+    <span>Scroll</span>
+    <div class="stick"></div>
+  </div>
+</header>
+
+<section class="cut-pin" id="cutPin">
+  <div class="cut-sticky">
+    <div class="cut-half cut-half-a" id="cutHalfA"></div>
+    <div class="cut-half cut-half-b" id="cutHalfB"></div>
+    <div class="blade-line" id="bladeLine"></div>
+    <div class="cut-scissors" id="cutScissors">
+      <svg viewBox="0 0 64 64">
+        <circle cx="32" cy="32" r="3" fill="var(--gold)"/>
+        <g class="blade-a" id="bladeA">
+          <path d="M32 32 L58 10" stroke="var(--gold)" stroke-width="4" stroke-linecap="round"/>
+          <circle cx="58" cy="10" r="3" fill="var(--gold)"/>
+          <ellipse cx="14" cy="50" rx="9" ry="6" fill="none" stroke="var(--gold)" stroke-width="4" transform="rotate(-20 14 50)"/>
+        </g>
+        <g class="blade-b" id="bladeB">
+          <path d="M32 32 L58 54" stroke="var(--gold)" stroke-width="4" stroke-linecap="round"/>
+          <circle cx="58" cy="54" r="3" fill="var(--gold)"/>
+          <ellipse cx="14" cy="14" rx="9" ry="6" fill="none" stroke="var(--gold)" stroke-width="4" transform="rotate(20 14 14)"/>
+        </g>
+      </svg>
+    </div>
+    <div class="cut-reveal-text" id="cutRevealText">
+      <span>One Clean Cut</span>
+      <div class="serif">Prices, Hours &amp; Location</div>
+    </div>
+  </div>
+</section>
+
+<section class="panel" id="panel">
+  <div class="panel-head">
+    <span>The Price List</span>
+    <h2>What It'll Cost You</h2>
+    <p>No surprises, no upsells — just the board on the wall.</p>
+  </div>
+
+  <div class="menu-board" id="menuBoard">
+    <div class="menu-row">
+      <div>
+        <div class="menu-name">Classic Haircut</div>
+        <div class="menu-desc">Scissor or clipper, your call</div>
+      </div>
+      <div class="menu-dots"></div>
+      <div class="menu-price">$25</div>
+    </div>
+    <div class="menu-row">
+      <div>
+        <div class="menu-name">Line Up / Edge Up</div>
+        <div class="menu-desc">Clean edges, five minutes</div>
+      </div>
+      <div class="menu-dots"></div>
+      <div class="menu-price">$12</div>
+    </div>
+    <div class="menu-row">
+      <div>
+        <div class="menu-name">Beard Trim &amp; Shape</div>
+        <div class="menu-desc">Straight razor lineup</div>
+      </div>
+      <div class="menu-dots"></div>
+      <div class="menu-price">$15</div>
+    </div>
+    <div class="menu-row">
+      <div>
+        <div class="menu-name">Hot Towel Shave</div>
+        <div class="menu-desc">The full old-school treatment</div>
+      </div>
+      <div class="menu-dots"></div>
+      <div class="menu-price">$30</div>
+    </div>
+    <div class="menu-row">
+      <div>
+        <div class="menu-name">Cut + Beard Combo</div>
+        <div class="menu-desc">Our most-booked slot</div>
+      </div>
+      <div class="menu-dots"></div>
+      <div class="menu-price">$35</div>
+    </div>
+    <div class="menu-row">
+      <div>
+        <div class="menu-name">Kids Cut</div>
+        <div class="menu-desc">Under 12, zero tears policy</div>
+      </div>
+      <div class="menu-dots"></div>
+      <div class="menu-price">$18</div>
+    </div>
+  </div>
+
+  <div class="info-grid">
+    <div class="info-photo" id="infoPhoto">
+      <img src="assets/tools-flatlay.jpg" alt="Barber tools laid out">
+    </div>
+    <div class="info-card" id="infoCard">
+      <div class="info-block">
+        <span class="label">Location</span>
+        <div class="value">45 Barber Row<br>Kathmandu</div>
+      </div>
+      <div class="info-block">
+        <span class="label">Hours</span>
+        <div class="value">Tue – Sun, 10AM – 7PM<br>Closed Mondays</div>
+      </div>
+      <div class="info-block">
+        <span class="label">Book</span>
+        <div class="value">+977-1-000-0000<br>hello@gentlemanscut.example</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <a href="#" class="logo">THE GENTLEMAN'<span style="color:var(--accent)">S</span> CUT</a>
+  <div class="footer-note">© 2026 The Gentleman's Cut. Placeholder demo content — for portfolio purposes only.</div>
+</footer>
+
+<script>
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  const pin = document.getElementById('cutPin');
+  const halfA = document.getElementById('cutHalfA');
+  const halfB = document.getElementById('cutHalfB');
+  const blade = document.getElementById('bladeLine');
+  const revealText = document.getElementById('cutRevealText');
+  const scissors = document.getElementById('cutScissors');
+  const bladeA = document.getElementById('bladeA');
+  const bladeB = document.getElementById('bladeB');
+  let ticking = false;
+
+  function clamp(v, min, max){ return Math.max(min, Math.min(max, v)); }
+
+  function updateCut(){
+    const rect = pin.getBoundingClientRect();
+    const total = rect.height - window.innerHeight;
+    const progress = clamp(-rect.top / total, 0, 1);
+
+    const zoomPhase = clamp(progress / 0.3, 0, 1);
+    const zoomScale = 1 + zoomPhase * 0.08;
+
+    const bladePhase = clamp((progress - 0.28) / (0.42 - 0.28), 0, 1);
+    const bladeOpacity = bladePhase > 0 && bladePhase < 1 ? Math.sin(bladePhase * Math.PI) : 0;
+    const bladeTravel = -100 + bladePhase * 200;
+
+    const splitStart = 0.4, splitEnd = 0.85;
+    const splitPhase = clamp((progress - splitStart) / (splitEnd - splitStart), 0, 1);
+    const splitEase = splitPhase * splitPhase * (3 - 2 * splitPhase);
+
+    halfA.style.transform = `scale(${zoomScale}) translate(${splitEase * 60}%, ${-splitEase * 60}%) rotate(${splitEase * -3}deg)`;
+    halfB.style.transform = `scale(${zoomScale}) translate(${-splitEase * 60}%, ${splitEase * 60}%) rotate(${splitEase * 3}deg)`;
+
+    blade.style.opacity = bladeOpacity;
+    blade.style.transform = `rotate(45deg) translateX(${bladeTravel}%)`;
+
+    const scStart = 0.24, scPeak = 0.34, scFadeStart = 0.55, scFadeEnd = 0.68;
+    let scOpacity = 0;
+    if (progress > scStart && progress < scFadeEnd){
+      if (progress < scPeak) scOpacity = (progress - scStart) / (scPeak - scStart);
+      else if (progress < scFadeStart) scOpacity = 1;
+      else scOpacity = 1 - (progress - scFadeStart) / (scFadeEnd - scFadeStart);
+    }
+    scissors.style.opacity = clamp(scOpacity, 0, 1);
+
+    const travelPhase = clamp((progress - scStart) / (scFadeEnd - scStart), 0, 1);
+    scissors.style.transform = `translate(${travelPhase * -42}vw, ${travelPhase * 38}vh) rotate(${-42 + travelPhase * 8}deg) scale(${1 - travelPhase * 0.25})`;
+
+    const snipPhase = clamp((progress - scStart) / (scPeak + 0.06 - scStart), 0, 1);
+    const snipAngle = Math.sin(snipPhase * Math.PI * 2) * 14;
+    bladeA.style.transform = `rotate(${snipAngle}deg)`;
+    bladeB.style.transform = `rotate(${-snipAngle}deg)`;
+
+    const textStart = 0.5, textEnd = 0.68;
+    let textOpacity = 0;
+    if (progress > textStart){
+      textOpacity = progress < textEnd ? (progress - textStart) / (textEnd - textStart) : 1;
+    }
+    revealText.style.opacity = clamp(textOpacity, 0, 1);
+
+    ticking = false;
+  }
+
+  window.addEventListener('scroll', () => {
+    if (!ticking){ requestAnimationFrame(updateCut); ticking = true; }
+  });
+  updateCut();
+
+  const revealEls = document.querySelectorAll('.menu-board, .info-photo, .info-card');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting){
+        setTimeout(() => entry.target.classList.add('visible'), i * 100);
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
