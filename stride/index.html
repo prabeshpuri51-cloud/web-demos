@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>STRIDE - placeholder shoe shop demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Pacifico&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#ffffff; --surface:#f4f1ec; --ink:#0d0d0f; --muted:#6b6660;
+    --red:#e03131; --blue:#3a6fb0; --line:rgba(13,13,15,.14);
+    --focus:#3a6fb0;
+    --font-display:'Archivo',system-ui,sans-serif; --font-lace:'Pacifico',cursive;
+  }
+  *{box-sizing:border-box;margin:0}
+  html{scroll-behavior:auto}
+  body{background:var(--bg);color:var(--ink);font-family:var(--font-display);-webkit-font-smoothing:antialiased}
+  a{color:inherit}
+  :focus-visible{outline:2px solid var(--focus);outline-offset:3px}
+  .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+  /* nav */
+  .nav{position:fixed;inset:0 0 auto 0;z-index:50;display:flex;justify-content:space-between;align-items:center;padding:18px 5vw;transition:background .3s,backdrop-filter .3s}
+  .nav.solid{background:rgba(255,255,255,.86);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .logo{font-weight:800;letter-spacing:.14em;font-size:1.05rem;text-decoration:none;white-space:nowrap}
+  .nav ul{display:flex;gap:28px;list-style:none;padding:0;font-size:.9rem;font-weight:500}
+  .nav a.link{text-decoration:none}
+  .nav a.link:hover{text-decoration:underline;text-underline-offset:5px}
+  @media (max-width:600px){.nav ul{gap:16px;font-size:.8rem}.nav ul li:nth-child(n+3){display:none}}
+
+  /* story: pinned stage that plays, then lifts away */
+  .story{position:relative;height:620vh}
+  .pin{position:sticky;top:0;height:100vh;overflow:hidden}
+  .shop-hero{position:absolute;inset:0;background:var(--surface);display:flex;flex-direction:column;justify-content:center;padding:0 5vw}
+  .shop-hero h1{font-size:clamp(2.6rem,8vw,7rem);line-height:.95;letter-spacing:-.03em;font-weight:800;max-width:14ch}
+  .shop-hero p{margin-top:18px;max-width:38ch;color:var(--muted);font-size:1.05rem}
+  .stage-wrap{position:absolute;inset:0;background:#fff;z-index:5;will-change:transform;box-shadow:0 30px 60px rgba(0,0,0,.18)}
+  .stage{position:absolute;left:50%;top:50%;height:100vh;aspect-ratio:16/9;width:auto;transform:translate(-50%,-50%);}   /* fits the height; on phones the sides crop, on ultrawide the margins stay white */
+  .layer{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:contrast(1.18) brightness(1.05);opacity:0;will-change:opacity;user-select:none;pointer-events:none}
+  /* two falling shoes: the single side-view shoe, multiplied onto the white stage */
+  .shoe{position:absolute;width:26%;aspect-ratio:2.44;background:url(keyframes/shoe-side.png) 50% 55.7%/175% no-repeat;mix-blend-mode:multiply;filter:contrast(1.15) brightness(1.04);will-change:transform;pointer-events:none;transform-origin:50% 80%;transition:opacity .5s}
+  #shoeL{left:31%;top:73%}
+  #shoeR{left:45%;top:76%}
+  #kf1{transition:opacity .5s}
+  .hint{position:absolute;left:50%;top:16vh;transform:translateX(-50%);z-index:6;font-size:.78rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);opacity:0;transition:opacity .6s}
+  .hint.show{opacity:1}
+  .devtag{position:absolute;right:12px;bottom:12px;z-index:9;font:11px monospace;background:#000c;color:#fff;padding:4px 8px;border-radius:4px;display:none}
+  body.devmode .devtag{display:block}
+
+  /* shop */
+  .shop{position:relative;height:360vh;background:var(--surface)}
+  .shop-pin{position:sticky;top:0;height:100vh;overflow:hidden;display:flex;flex-direction:column;align-items:center;padding-top:68px;background:var(--surface)}   /* solid bg so the shoes' multiply blend has something to blend with */
+  .shop h2{font-size:clamp(1.4rem,3.2vw,2.3rem);letter-spacing:-.02em;font-weight:800;text-align:center}
+  .shop .sub{color:var(--muted);font-size:.9rem;margin-top:4px;text-align:center}
+  .ring-stage{position:relative;flex:1 1 auto;width:100%;min-height:0}
+  .ring3d{position:absolute;inset:0;transform-style:preserve-3d;touch-action:pan-y;cursor:grab;outline-offset:-6px}
+  .ring3d:active{cursor:grabbing}
+  .rcard{position:absolute;left:50%;top:50%;width:var(--cw,200px);height:var(--ch,280px);margin:calc(var(--ch,280px)/-2) 0 0 calc(var(--cw,200px)/-2);border-radius:14px;overflow:hidden;background:#fff;box-shadow:0 22px 40px rgba(20,16,10,.22),0 3px 8px rgba(20,16,10,.16);backface-visibility:hidden;will-change:transform;user-select:none}
+  .rcard .rpic{position:absolute;left:0;right:0;top:0;height:64%;background:url(keyframes/kf1-shoes-start.jpg) 50% 79%/270% no-repeat}
+  .rcard .rtxt{position:absolute;left:0;right:0;bottom:0;padding:10px 13px 12px}
+  .rcard h3{font-size:clamp(.8rem,1.5vw,1.05rem);line-height:1.15}
+  .rcard p{color:var(--muted);font-size:clamp(.66rem,1vw,.8rem);margin-top:2px}
+  .rcard .price{color:var(--ink);font-weight:800;margin-top:6px;font-size:clamp(.8rem,1.3vw,.95rem)}
+  .rnav{position:absolute;top:50%;transform:translateY(-50%);z-index:20;width:44px;height:44px;border-radius:50%;border:1px solid var(--ink);background:#fff;color:var(--ink);font:700 1.1rem var(--font-display);cursor:pointer}
+  .rnav:hover{background:var(--ink);color:#fff}
+  .rnav.prev{left:3vw}.rnav.next{right:3vw}
+  .lace-wrap{display:flex;justify-content:center;padding:0 5vw 10px;flex:0 0 auto}
+  /* the parent must not get its own transform or the shoes' multiply-blend stops seeing the page behind them */
+  .lace-btn{display:grid;grid-template-columns:22% 1fr 22%;align-items:center;width:min(94vw,860px);text-decoration:none}
+  .lace-btn svg{width:100%;height:auto;display:block;overflow:visible;transition:transform .15s}
+  .lace-btn:hover svg{transform:translateY(-4px) rotate(-.5deg)}
+  .lace-btn:active svg{transform:translateY(0)}
+  .lb-shoe{aspect-ratio:2.44;background:url(keyframes/shoe-side.png) 50% 55.7%/175% no-repeat;mix-blend-mode:multiply;filter:contrast(1.15) brightness(1.04)}
+  .lb-shoe.r{transform:scaleX(-1)}
+  footer{padding:40px 5vw;color:var(--muted);font-size:.85rem;text-align:center}
+
+  /* reduced motion: skip the sequence, offer an explicit preview */
+  .preview-btn{position:fixed;left:16px;bottom:16px;z-index:60;display:none;font:600 .85rem var(--font-display);padding:12px 18px;min-height:44px;border-radius:999px;border:1px solid var(--ink);background:#fff;color:var(--ink);cursor:pointer}
+  body.rm .preview-btn{display:block}
+  body.rm .story{height:auto}
+  body.rm .pin{position:relative;height:auto;min-height:100vh}
+  body.rm .stage-wrap{display:none}
+  body.rm .shop{height:auto}
+  body.rm .shop-pin{position:relative;height:auto;min-height:100vh}
+  .lace-wrap .lace-btn{width:min(94vw,440px)}
+</style>
+</head>
+<body>
+<nav class="nav" id="nav" aria-label="Main">
+  <a class="logo" href="#top">STRIDE</a>
+  <ul><li><a class="link" href="#shop">New</a></li><li><a class="link" href="#shop">Classics</a></li><li><a class="link" href="#shop">Sale</a></li><li><a class="link" href="#shop">Cart (0)</a></li></ul>
+</nav>
+
+<main id="top">
+<section class="story" id="story" aria-label="Intro">
+  <div class="pin">
+    <div class="shop-hero">
+      <h1>Step out of the frame.</h1>
+      <p>Everyday sneakers, made to be worn hard. Placeholder shop for a demo.</p>
+    </div>
+    <div class="stage-wrap" id="stageWrap" aria-hidden="true">
+      <div class="stage" id="stage">
+        <img class="layer" id="kf1" src="keyframes/kf1-shoes-start.jpg" alt="">
+        <img class="layer" id="kf2" src="keyframes/kf2-smoke-forming.jpg" alt="">
+        <img class="layer" id="kf3" src="keyframes/kf3-figure-standing.jpg" alt="">
+        <img class="layer" id="kf4" src="keyframes/kf4-dance-pose.jpg" alt="">
+        <img class="layer" id="kf5" src="keyframes/kf5-reach-up.jpg" alt="">
+        <div class="shoe" id="shoeL"></div>
+        <div class="shoe" id="shoeR"></div>
+      </div>
+      <div class="hint" id="hint">Scroll</div>
+      <div class="devtag" id="devTag">placeholder stills stand in for LTX clips</div>
+    </div>
+  </div>
+</section>
+
+<section class="shop" id="shop">
+ <div class="shop-pin">
+  <div><h2>This week</h2><p class="sub">Drag, scroll or use the arrows</p></div>
+  <div class="ring-stage">
+    <div class="ring3d" id="ring3d" tabindex="0" role="region" aria-label="Shoe carousel. Use the left and right arrow keys to rotate."></div>
+    <button class="rnav prev" id="rPrev" type="button" aria-label="Previous shoe">&#8592;</button>
+    <button class="rnav next" id="rNext" type="button" aria-label="Next shoe">&#8594;</button>
+  </div>
+
+  <div class="lace-wrap">
+    <a class="lace-btn" href="#shop" id="shopNow">
+      <span class="lb-shoe l" aria-hidden="true"></span>
+      <svg viewBox="0 -80 520 250" aria-hidden="true">
+        <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <!-- lace arch from the left shoe to the right shoe, with a bow -->
+          <g id="laceArch">
+            <path d="M-70 36 C -55 -70, 130 -75, 245 -22 M590 36 C 575 -70, 390 -75, 275 -22 M260 -22 C 215 -78, 172 -38, 250 -18 M260 -22 C 305 -78, 348 -38, 270 -18 M258 -20 C 250 8, 240 14, 230 34 M262 -20 C 272 8, 282 14, 292 34" stroke="#0d0d0f" stroke-width="13"/>
+            <path d="M-70 36 C -55 -70, 130 -75, 245 -22 M590 36 C 575 -70, 390 -75, 275 -22 M260 -22 C 215 -78, 172 -38, 250 -18 M260 -22 C 305 -78, 348 -38, 270 -18 M258 -20 C 250 8, 240 14, 230 34 M262 -20 C 272 8, 282 14, 292 34" stroke="#faf7f2" stroke-width="8"/>
+            <path d="M-70 36 C -55 -70, 130 -75, 245 -22 M590 36 C 575 -70, 390 -75, 275 -22" stroke="#0d0d0f" stroke-width="1.4" stroke-dasharray="3 6" opacity=".45"/>
+          </g>
+        </g>
+        <g font-family="Pacifico, cursive" font-size="112">
+          <text x="262" y="132" text-anchor="end" fill="#e03131">Shop</text>
+          <text x="282" y="132" text-anchor="start" fill="#0d0d0f">now</text>
+        </g>
+      </svg>
+      <span class="lb-shoe r" aria-hidden="true"></span>
+      <span class="sr-only">Shop now</span>
+    </a>
+  </div>
+ </div>
+</section>
+<footer>STRIDE is a placeholder brand for a demo. No real products.</footer>
+</main>
+
+<button class="preview-btn" id="previewBtn" type="button">Preview animation</button>
+
+<script>
+(function(){
+  var $=function(id){return document.getElementById(id)};
+  var story=$('story'), wrap=$('stageWrap'), nav=$('nav'), hint=$('hint');
+  var L=$('shoeL'), R=$('shoeR');
+  var k2=$('kf2'),k3=$('kf3'),k4=$('kf4'),k5=$('kf5');
+  var mq=window.matchMedia('(prefers-reduced-motion: reduce)');
+  if(location.hash==='#dev') document.body.classList.add('devmode');
+
+  var clamp=function(v,a,b){return Math.max(a,Math.min(b,v))};
+  var ramp=function(p,a,b){return clamp((p-a)/(b-a),0,1)};
+  var ease=function(t){return t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2};
+
+  /* ---- shoe drop: two shoes fall, bounce twice, settle together ---- */
+  var dropDone=false, dropStart=0;
+  var k1=$('kf1'), landed=false;
+  var shoes=[   // x0 in vw, y0 in vh (start above the frame), r0 in degrees
+    {el:L, x0:-24, y0:-105, r0:-40, delay:0},
+    {el:R, x0: 20, y0:-125, r0: 55, delay:220}
+  ];
+  // fall, bounce 1, bounce 2, rest; returns vertical offset in vh (0 = resting on the floor)
+  function yAt(t,h0){
+    var F=600,B1=340,B2=210;
+    if(t<0) return h0;
+    if(t<F){ var u=t/F; return h0*(1-u*u); }
+    t-=F;
+    if(t<B1){ var u=t/B1; return -16*(1-Math.pow(2*u-1,2)); }
+    t-=B1;
+    if(t<B2){ var u=t/B2; return -5*(1-Math.pow(2*u-1,2)); }
+    return 0;
+  }
+  function drawDrop(now){
+    var t=now-dropStart, allDone=true;
+    shoes.forEach(function(s){
+      var tt=t-s.delay;
+      var y=yAt(tt,s.y0);
+      var x=s.x0*(1-ease(clamp(tt/1150,0,1))), r=s.r0*(1-ease(clamp(tt/750,0,1)));   // slide together and straighten
+      s.el.style.transform='translate('+x+'vw,'+y+'vh) rotate('+r+'deg)';
+      if(tt<1150) allDone=false;
+    });
+    if(!allDone) requestAnimationFrame(drawDrop);
+    else { dropDone=true; landed=true; hint.classList.add('show'); update(); }
+  }
+  function playDrop(){
+    dropDone=false; landed=false; hint.classList.remove('show'); update();
+    shoes.forEach(function(s){s.el.style.transform='translate('+s.x0+'vw,'+s.y0+'vh) rotate('+s.r0+'deg)'});
+    dropStart=performance.now()+250; requestAnimationFrame(function tick(now){ if(now<dropStart){requestAnimationFrame(tick);return;} drawDrop(now); });
+  }
+
+  /* ---- scroll timeline ---- */
+  function update(){
+    var rect=story.getBoundingClientRect();
+    var total=story.offsetHeight-window.innerHeight;
+    var p=clamp(-rect.top/total,0,1);
+    // stills stand in for the future LTX clips; windows are narrow to limit cross-fade ghosting
+    k2.style.opacity=ramp(p,.06,.12)*(1-ramp(p,.20,.26));
+    k3.style.opacity=ramp(p,.20,.26)*(1-ramp(p,.34,.40));
+    k4.style.opacity=ramp(p,.34,.40)*(1-ramp(p,.48,.54));
+    k5.style.opacity=ramp(p,.48,.54);
+    // falling shoes fade out into the matching pair image once landed; that image gives way to the smoke frame
+    var pairVis=landed?(1-ramp(p,.09,.13)):0;
+    k1.style.opacity=pairVis;
+    L.style.opacity=R.style.opacity=landed?0:1;
+    var lift=ease(ramp(p,.72,.98));
+    wrap.style.transform='translateY('+(-lift*125)+'%)';   // 125% so the soft shadow leaves the screen too
+    hint.style.opacity=(dropDone&&p<.03)?1:0;
+    nav.classList.toggle('solid',p>.9||rect.bottom<window.innerHeight*.5);
+  }
+  window.addEventListener('scroll',update,{passive:true});
+  window.addEventListener('resize',update);
+
+  /* ---- shop: 3D ring of shoe cards ---- */
+  var ringEl=$('ring3d'), shopSec=$('shop'), ringStage=ringEl.parentNode;
+  var PRODUCTS=[
+    {n:'Court Low',       d:'White leather, blue trim.',  p:'$89', f:''},
+    {n:'Court Low Red',   d:'Same shoe, warm colourway.', p:'$89', f:'hue-rotate(150deg) saturate(1.3)'},
+    {n:'Court Low Green', d:'Everyday, easy to clean.',   p:'$89', f:'hue-rotate(-90deg) saturate(1.2)'},
+    {n:'Court Low Mono',  d:'All white, no colour.',      p:'$92', f:'grayscale(1)'},
+    {n:'Court Low Sand',  d:'Warm, worn-in look.',        p:'$95', f:'hue-rotate(60deg) saturate(1.4)'},
+    {n:'Court Low Violet',d:'Limited colourway.',         p:'$95', f:'hue-rotate(250deg) saturate(1.2)'}
+  ];
+  var N=27, STEP=360/N, CULL=48, R=1000;
+  var rcards=[];
+  for(var i=0;i<N;i++){
+    var pr=PRODUCTS[i%PRODUCTS.length], c=document.createElement('article');
+    c.className='rcard'; c.setAttribute('aria-hidden', i===0?'false':'true');
+    c.innerHTML='<div class="rpic" style="filter:contrast(1.12) '+pr.f+'"></div><div class="rtxt"><h3>'+pr.n+'</h3><p>'+pr.d+'</p><p class="price">'+pr.p+'</p></div>';
+    ringEl.appendChild(c); rcards.push(c);
+  }
+  var manual=0, drift=0, lastT=null, scrollPhase=0, forceMotion=false;
+  function layoutRing(){
+    var h=ringStage.clientHeight, ch=Math.max(150,Math.min(h*0.9,340)), cw=Math.min(ch*0.74,innerWidth*0.36);
+    ringEl.style.setProperty('--ch',ch+'px'); ringEl.style.setProperty('--cw',cw+'px');
+    R=(cw+26)/(STEP*Math.PI/180); ringEl.style.perspective=R+'px';
+  }
+  function placeRing(){
+    var phase=scrollPhase+drift+manual;
+    for(var i=0;i<N;i++){
+      var a=((i*STEP+phase)%360+540)%360-180, el=rcards[i];
+      if(Math.abs(a)>CULL){ el.style.visibility='hidden'; continue; }
+      el.style.visibility='visible';
+      var r=a*Math.PI/180, cc=Math.cos(r);
+      el.style.transform='translate3d('+(R*Math.sin(r))+'px,0,'+(R*(1-cc))+'px) rotateY('+(-a)+'deg)';
+      el.style.filter='brightness('+(1-0.6*(1-cc))+')';
+    }
+  }
+  function ringTick(t){
+    if(lastT==null) lastT=t; var dt=Math.min((t-lastT)/1000,.1); lastT=t;
+    if(!mq.matches || forceMotion) drift-=2.4*dt;   // slow idle rotation; off under reduced motion unless the visitor pressed "Preview animation"
+    syncScroll(); placeRing(); requestAnimationFrame(ringTick);
+  }
+  function syncScroll(){
+    var rect=shopSec.getBoundingClientRect(), tot=shopSec.offsetHeight-innerHeight;
+    scrollPhase=(tot>0 && !document.body.classList.contains('rm')) ? -clamp(-rect.top/tot,0,1)*260 : 0;   // scrolling turns the ring
+  }
+  window.addEventListener('scroll',function(){syncScroll();placeRing()},{passive:true});   // also on scroll, not only in the animation loop
+  var dragX=null;   // drag to rotate
+  ringEl.addEventListener('pointerdown',function(e){dragX=e.clientX; ringEl.setPointerCapture(e.pointerId)});
+  ringEl.addEventListener('pointermove',function(e){ if(dragX==null) return; manual+=(e.clientX-dragX)*0.18; dragX=e.clientX; });
+  ringEl.addEventListener('pointerup',function(){dragX=null}); ringEl.addEventListener('pointercancel',function(){dragX=null});
+  function nudge(dir){ manual+=dir*STEP; }
+  $('rPrev').addEventListener('click',function(){nudge(1)}); $('rNext').addEventListener('click',function(){nudge(-1)});
+  ringEl.addEventListener('keydown',function(e){ if(e.key==='ArrowLeft'){nudge(1);e.preventDefault()} if(e.key==='ArrowRight'){nudge(-1);e.preventDefault()} });
+  document.addEventListener('visibilitychange',function(){lastT=null});
+  window.addEventListener('resize',function(){layoutRing();placeRing()});
+  layoutRing(); placeRing(); requestAnimationFrame(ringTick);
+
+  /* ---- reduced motion: jump to the end state, keep an explicit preview control ---- */
+  function applyMotion(){
+    if(mq.matches){ document.body.classList.add('rm'); nav.classList.add('solid'); }
+    else { document.body.classList.remove('rm'); update(); }
+  }
+  $('previewBtn').addEventListener('click',function(){
+    forceMotion=true; document.body.classList.remove('rm'); window.scrollTo(0,0); update(); playDrop();
+  });
+  mq.addEventListener&&mq.addEventListener('change',applyMotion);
+  applyMotion();
+  if(!mq.matches){ update(); playDrop(); }
+})();
+</script>
+</body>
+</html>
