@@ -58,7 +58,7 @@
   .ring3d{position:absolute;inset:0;transform-style:preserve-3d;touch-action:pan-y;cursor:grab;outline-offset:-6px}
   .ring3d:active{cursor:grabbing}
   .rcard{position:absolute;left:50%;top:50%;width:var(--cw,200px);height:var(--ch,280px);margin:calc(var(--ch,280px)/-2) 0 0 calc(var(--cw,200px)/-2);border-radius:14px;overflow:hidden;background:#fff;box-shadow:0 22px 40px rgba(20,16,10,.22),0 3px 8px rgba(20,16,10,.16);backface-visibility:hidden;will-change:transform;user-select:none}
-  .rcard .rpic{position:absolute;left:0;right:0;top:0;height:64%;background:url(keyframes/kf1-shoes-start.jpg) 50% 79%/270% no-repeat}
+  .rcard .rpic{position:absolute;left:0;right:0;top:0;height:56%;background:url(keyframes/kf1-shoes-start.jpg) 50% 79%/270% no-repeat}
   .rcard .rtxt{position:absolute;left:0;right:0;bottom:0;padding:10px 13px 12px}
   .rcard h3{font-size:clamp(.8rem,1.5vw,1.05rem);line-height:1.15}
   .rcard p{color:var(--muted);font-size:clamp(.66rem,1vw,.8rem);margin-top:2px}
@@ -68,12 +68,10 @@
   .rnav.prev{left:3vw}.rnav.next{right:3vw}
   .lace-wrap{display:flex;justify-content:center;padding:0 5vw 10px;flex:0 0 auto}
   /* the parent must not get its own transform or the shoes' multiply-blend stops seeing the page behind them */
-  .lace-btn{display:grid;grid-template-columns:22% 1fr 22%;align-items:center;width:min(94vw,860px);text-decoration:none}
-  .lace-btn svg{width:100%;height:auto;display:block;overflow:visible;transition:transform .15s}
-  .lace-btn:hover svg{transform:translateY(-4px) rotate(-.5deg)}
-  .lace-btn:active svg{transform:translateY(0)}
-  .lb-shoe{aspect-ratio:2.44;background:url(keyframes/shoe-side.png) 50% 55.7%/175% no-repeat;mix-blend-mode:multiply;filter:contrast(1.15) brightness(1.04)}
-  .lb-shoe.r{transform:scaleX(-1)}
+  .lace-btn{display:block;width:min(94vw,560px);text-decoration:none;border-radius:12px}
+  .lace-btn img{display:block;width:100%;height:auto;mix-blend-mode:multiply;transition:transform .15s}   /* white image background multiplies away into the cream page */
+  .lace-btn:hover img{transform:translateY(-4px) scale(1.015)}
+  .lace-btn:active img{transform:translateY(0) scale(1)}
   footer{padding:40px 5vw;color:var(--muted);font-size:.85rem;text-align:center}
 
   /* reduced motion: skip the sequence, offer an explicit preview */
@@ -84,7 +82,6 @@
   body.rm .stage-wrap{display:none}
   body.rm .shop{height:auto}
   body.rm .shop-pin{position:relative;height:auto;min-height:100vh}
-  .lace-wrap .lace-btn{width:min(94vw,440px)}
 </style>
 </head>
 <body>
@@ -126,24 +123,8 @@
   </div>
 
   <div class="lace-wrap">
-    <a class="lace-btn" href="#shop" id="shopNow">
-      <span class="lb-shoe l" aria-hidden="true"></span>
-      <svg viewBox="0 -80 520 250" aria-hidden="true">
-        <g fill="none" stroke-linecap="round" stroke-linejoin="round">
-          <!-- lace arch from the left shoe to the right shoe, with a bow -->
-          <g id="laceArch">
-            <path d="M-70 36 C -55 -70, 130 -75, 245 -22 M590 36 C 575 -70, 390 -75, 275 -22 M260 -22 C 215 -78, 172 -38, 250 -18 M260 -22 C 305 -78, 348 -38, 270 -18 M258 -20 C 250 8, 240 14, 230 34 M262 -20 C 272 8, 282 14, 292 34" stroke="#0d0d0f" stroke-width="13"/>
-            <path d="M-70 36 C -55 -70, 130 -75, 245 -22 M590 36 C 575 -70, 390 -75, 275 -22 M260 -22 C 215 -78, 172 -38, 250 -18 M260 -22 C 305 -78, 348 -38, 270 -18 M258 -20 C 250 8, 240 14, 230 34 M262 -20 C 272 8, 282 14, 292 34" stroke="#faf7f2" stroke-width="8"/>
-            <path d="M-70 36 C -55 -70, 130 -75, 245 -22 M590 36 C 575 -70, 390 -75, 275 -22" stroke="#0d0d0f" stroke-width="1.4" stroke-dasharray="3 6" opacity=".45"/>
-          </g>
-        </g>
-        <g font-family="Pacifico, cursive" font-size="112">
-          <text x="262" y="132" text-anchor="end" fill="#e03131">Shop</text>
-          <text x="282" y="132" text-anchor="start" fill="#0d0d0f">now</text>
-        </g>
-      </svg>
-      <span class="lb-shoe r" aria-hidden="true"></span>
-      <span class="sr-only">Shop now</span>
+    <a class="lace-btn" href="#shop" id="shopNow" aria-label="Shop now">
+      <img src="keyframes/shopnow-lace.png" alt="Shop now, spelled out in a red and a black shoelace between two sneakers" width="1024" height="338">
     </a>
   </div>
  </div>
