@@ -52,8 +52,8 @@
   body.devmode .devtag{display:block}
 
   /* shop */
-  .shop{position:relative;height:240vh;background:var(--surface)}
-  .shop-pin{position:sticky;top:0;height:100vh;height:100dvh;overflow:hidden;display:flex;flex-direction:column;align-items:center;padding-top:68px;padding-bottom:calc(env(safe-area-inset-bottom,0px) + 8px);background:var(--surface)}
+  .shop{position:relative;background:var(--surface)}
+  .shop-pin{position:relative;min-height:100vh;min-height:100dvh;overflow:hidden;display:flex;flex-direction:column;align-items:center;padding-top:68px;padding-bottom:calc(env(safe-area-inset-bottom,0px) + 8px);background:var(--surface)}
   @media (max-width:700px){.shop-pin{padding-bottom:calc(env(safe-area-inset-bottom,0px) + 72px)}}   /* keep the Shop now button clear of the phone's bottom toolbar */   /* solid bg so the shoes' multiply blend has something to blend with */
   .shop h2{font-size:clamp(1.4rem,3.2vw,2.3rem);letter-spacing:-.02em;font-weight:800;text-align:center}
   .shop .sub{color:var(--muted);font-size:.9rem;margin-top:4px;text-align:center}
@@ -175,7 +175,7 @@
 <section class="shop" id="shop">
  <div class="shop-pin">
   <div class="deco" aria-hidden="true"><span class="blob b3"></span><span class="blob b4"></span><span class="dots"></span><span class="giant g2">KICKS</span></div>
-  <div><h2><span>This week</span></h2><p class="sub">Drag, scroll or use the arrows</p></div>
+  <div><h2><span>This week</span></h2><p class="sub">Drag sideways or use the arrows</p></div>
   <div class="ring-stage">
     <div class="ring3d" id="ring3d" tabindex="0" role="region" aria-label="Shoe carousel. Use the left and right arrow keys to rotate."></div>
     <button class="rnav prev" id="rPrev" type="button" aria-label="Previous shoe">&#8592;</button>
@@ -306,10 +306,8 @@
     syncScroll(); placeRing(); requestAnimationFrame(ringTick);
   }
   function syncScroll(){
-    var rect=shopSec.getBoundingClientRect(), tot=shopSec.offsetHeight-innerHeight;
-    scrollPhase=(tot>0 && !document.body.classList.contains('rm')) ? -clamp(-rect.top/tot,0,1)*150 : 0;   // scrolling turns the ring
+    scrollPhase=0;   // the ring no longer follows page scroll: it turns by itself, by dragging sideways, or with the arrows, so the page scrolls normally
   }
-  window.addEventListener('scroll',function(){syncScroll();placeRing()},{passive:true});   // also on scroll, not only in the animation loop
   var dragX=null, dragY=0, dragging=false;   // drag to rotate; only a clearly sideways move counts, so vertical page scrolling on a phone is never hijacked
   ringEl.addEventListener('pointerdown',function(e){dragX=e.clientX; dragY=e.clientY; dragging=false; if(e.pointerType==='mouse') ringEl.setPointerCapture(e.pointerId)});
   ringEl.addEventListener('pointermove',function(e){
