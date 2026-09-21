@@ -6,13 +6,13 @@
 <title>STRIDE - placeholder shoe shop demo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Pacifico&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Unbounded:wght@600;800&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg:#ffffff; --surface:#f4f1ec; --ink:#0d0d0f; --muted:#6b6660;
     --red:#e03131; --blue:#3a6fb0; --line:rgba(13,13,15,.14);
     --focus:#3a6fb0;
-    --font-display:'Archivo',system-ui,sans-serif; --font-lace:'Pacifico',cursive;
+    --font-display:'Archivo',system-ui,sans-serif; --font-head:'Unbounded','Archivo',system-ui,sans-serif;
   }
   *{box-sizing:border-box;margin:0}
   html{scroll-behavior:auto}
@@ -67,6 +67,39 @@
   .rnav:hover{background:var(--ink);color:#fff}
   .rnav.prev{left:3vw}.rnav.next{right:3vw}
   .lace-wrap{display:flex;justify-content:center;padding:0 5vw 10px;flex:0 0 auto}
+
+  /* ---- look: type, colour washes, dot grid, grain, sticker, ticker (shop side only; the intro stays pure white) ---- */
+  .logo,.shop-hero h1,.shop h2,.rcard h3,.rcard .price{font-family:var(--font-head)}
+  .logo{font-weight:800;letter-spacing:.06em}
+  .shop-hero h1{font-size:clamp(2rem,6.2vw,5.4rem);line-height:1.04;letter-spacing:-.025em;max-width:13ch;font-weight:800}
+  .shop-hero h1 em{font-style:normal;color:var(--red)}
+  .shop h2{font-size:clamp(1.2rem,2.8vw,2rem);font-weight:800;letter-spacing:-.02em}
+  .shop h2 span{background:linear-gradient(transparent 60%,rgba(224,49,49,.4) 60%);padding:0 .15em}
+  .rcard h3{font-weight:600;letter-spacing:-.01em}
+  .deco{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:-1}   /* behind content, inside its parent's own stacking context, so the lace image can still multiply against it */
+  .shop-hero,.shop-pin{isolation:isolate}
+  .blob{position:absolute;border-radius:50%;filter:blur(70px);opacity:.5}
+  .b1{width:40vw;height:40vw;right:-10vw;top:-12vw;background:var(--red)}
+  .b2{width:36vw;height:36vw;left:-12vw;bottom:-16vw;background:var(--blue)}
+  .b3{width:34vw;height:34vw;left:-10vw;bottom:-14vw;background:var(--blue);opacity:.32}
+  .b4{width:32vw;height:32vw;right:-8vw;top:-12vw;background:var(--red);opacity:.28}
+  .dots{position:absolute;inset:0;background-image:radial-gradient(rgba(13,13,15,.24) 1.2px,transparent 1.4px);background-size:22px 22px;-webkit-mask-image:linear-gradient(100deg,transparent 35%,#000 100%);mask-image:linear-gradient(100deg,transparent 35%,#000 100%)}
+  .giant{position:absolute;font:800 clamp(6rem,23vw,21rem)/.8 var(--font-head);letter-spacing:-.05em;color:rgba(13,13,15,.07);white-space:nowrap;user-select:none}   /* solid faint fill: an outline shows the font's overlapping contours */
+  .giant.g1{right:-1vw;bottom:14vh}
+  .giant.g2{left:50%;top:9%;transform:translateX(-50%)}
+  .shop-hero::after,.shop-pin::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:3;opacity:.07;mix-blend-mode:multiply;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  .shop-hero>*:not(.deco):not(.ticker):not(.badge){position:relative;z-index:1}
+  .shop-pin>*:not(.deco){position:relative}
+  .badge{position:absolute;right:7vw;top:18vh;width:clamp(96px,14vw,170px);aspect-ratio:1;z-index:2;animation:spin 20s linear infinite}
+  .badge svg{width:100%;height:100%;overflow:visible}
+  .badge text{font-family:var(--font-head);font-weight:800;fill:var(--ink)}
+  .badge .disc{fill:var(--red)}
+  .ticker{position:absolute;left:0;right:0;bottom:0;z-index:2;background:var(--ink);color:#fff;overflow:hidden;white-space:nowrap;padding:12px 0;font:800 .74rem var(--font-head);letter-spacing:.16em}
+  .ticker .track{display:inline-block;animation:marq 32s linear infinite}
+  .ticker b{color:var(--red);margin:0 1.2em}
+  @keyframes marq{to{transform:translateX(-50%)}}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  @media (prefers-reduced-motion:reduce){.badge,.ticker .track{animation:none}}
   /* the parent must not get its own transform or the shoes' multiply-blend stops seeing the page behind them */
   .lace-btn{display:block;width:min(94vw,560px);text-decoration:none;border-radius:12px}
   .lace-btn img{display:block;width:100%;height:auto;mix-blend-mode:multiply;transition:transform .15s}   /* white image background multiplies away into the cream page */
@@ -94,8 +127,20 @@
 <section class="story" id="story" aria-label="Intro">
   <div class="pin">
     <div class="shop-hero">
-      <h1>Step out of the frame.</h1>
+      <div class="deco" aria-hidden="true">
+        <span class="blob b1"></span><span class="blob b2"></span><span class="dots"></span><span class="giant g1">STRIDE</span>
+      </div>
+      <div class="badge" aria-hidden="true">
+        <svg viewBox="0 0 200 200">
+          <defs><path id="circ" d="M100,100 m-74,0 a74,74 0 1,1 148,0 a74,74 0 1,1 -148,0"/></defs>
+          <circle class="disc" cx="100" cy="100" r="58"/>
+          <text font-size="16"><textPath href="#circ" textLength="440" lengthAdjust="spacing">NEW DROP • SUMMER 26 •</textPath></text>
+          <text x="100" y="114" text-anchor="middle" font-size="40" style="fill:#fff">&#8595;</text>
+        </svg>
+      </div>
+      <h1>Step out of the <em>frame.</em></h1>
       <p>Everyday sneakers, made to be worn hard. Placeholder shop for a demo.</p>
+      <div class="ticker" aria-hidden="true"><div class="track"><span>FRESH KICKS<b>&#10038;</b>FREE SHIPPING OVER $75<b>&#10038;</b>STEP OUT OF THE FRAME<b>&#10038;</b>NEW COLOURWAYS EVERY WEEK<b>&#10038;</b></span><span>FRESH KICKS<b>&#10038;</b>FREE SHIPPING OVER $75<b>&#10038;</b>STEP OUT OF THE FRAME<b>&#10038;</b>NEW COLOURWAYS EVERY WEEK<b>&#10038;</b></span></div></div>
     </div>
     <div class="stage-wrap" id="stageWrap" aria-hidden="true">
       <div class="stage" id="stage">
@@ -115,7 +160,8 @@
 
 <section class="shop" id="shop">
  <div class="shop-pin">
-  <div><h2>This week</h2><p class="sub">Drag, scroll or use the arrows</p></div>
+  <div class="deco" aria-hidden="true"><span class="blob b3"></span><span class="blob b4"></span><span class="dots"></span><span class="giant g2">KICKS</span></div>
+  <div><h2><span>This week</span></h2><p class="sub">Drag, scroll or use the arrows</p></div>
   <div class="ring-stage">
     <div class="ring3d" id="ring3d" tabindex="0" role="region" aria-label="Shoe carousel. Use the left and right arrow keys to rotate."></div>
     <button class="rnav prev" id="rPrev" type="button" aria-label="Previous shoe">&#8592;</button>
