@@ -37,11 +37,11 @@
   .shop-hero h1{font-size:clamp(2.6rem,8vw,7rem);line-height:.95;letter-spacing:-.03em;font-weight:800;max-width:14ch}
   .shop-hero p{margin-top:18px;max-width:38ch;color:var(--muted);font-size:1.05rem}
   .stage-wrap{position:absolute;inset:0;background:#fff;z-index:5;will-change:transform;box-shadow:0 30px 60px rgba(0,0,0,.18)}
-  .stage{position:absolute;left:50%;top:50%;height:100vh;aspect-ratio:16/9;width:auto;transform:translate(-50%,-50%);}   /* fits the height; on phones the sides crop, on ultrawide the margins stay white */
+  .stage{position:absolute;left:50%;top:50%;height:min(100vh,140vw);aspect-ratio:16/9;width:auto;transform:translate(-50%,-50%);}   /* fits the height; capped on portrait phones so the shoe pair isn't wider than the screen */
   .layer{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:contrast(1.18) brightness(1.05);opacity:0;will-change:opacity;user-select:none;pointer-events:none}
   /* two falling shoes: the single side-view shoe, multiplied onto the white stage */
-  .shoe{position:absolute;width:26%;aspect-ratio:2.44;background:url(keyframes/shoe-side.png) 50% 55.7%/175% no-repeat;mix-blend-mode:multiply;filter:contrast(1.15) brightness(1.04);will-change:transform;pointer-events:none;transform-origin:50% 80%;transition:opacity .5s}
-  #shoeL{left:31%;top:73%}
+  .shoe{position:absolute;width:24%;aspect-ratio:2.44;background:url(keyframes/shoe-side.png) 50% 55.7%/175% no-repeat;mix-blend-mode:multiply;filter:contrast(1.15) brightness(1.04);will-change:transform;pointer-events:none;transform-origin:50% 80%;transition:opacity .5s}
+  #shoeL{left:32%;top:73%}
   #shoeR{left:45%;top:76%}
   #kf1{transition:opacity .5s}
   .hint{position:absolute;left:50%;top:16vh;transform:translateX(-50%);z-index:6;font-size:.78rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);opacity:0;transition:opacity .6s}
@@ -70,7 +70,10 @@
 
   /* ---- look: type, colour washes, dot grid, grain, sticker, ticker (shop side only; the intro stays pure white) ---- */
   .logo,.shop-hero h1,.shop h2,.rcard h3,.rcard .price{font-family:var(--font-head)}
-  .logo{font-weight:800;letter-spacing:.06em}
+  .logo{display:inline-flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.05em}
+  .logo .mark{width:34px;height:34px;flex:none;transition:transform .25s cubic-bezier(.3,1.6,.5,1)}
+  .logo:hover .mark{transform:rotate(-12deg) scale(1.08)}
+  .logo i{font-style:normal;color:var(--red)}
   .shop-hero h1{font-size:clamp(2rem,6.2vw,5.4rem);line-height:1.04;letter-spacing:-.025em;max-width:13ch;font-weight:800}
   .shop-hero h1 em{font-style:normal;color:var(--red)}
   .shop h2{font-size:clamp(1.2rem,2.8vw,2rem);font-weight:800;letter-spacing:-.02em}
@@ -119,7 +122,15 @@
 </head>
 <body>
 <nav class="nav" id="nav" aria-label="Main">
-  <a class="logo" href="#top">STRIDE</a>
+  <a class="logo" href="#top" aria-label="STRIDE, home">
+    <svg class="mark" viewBox="0 0 44 44" aria-hidden="true">
+      <rect width="44" height="44" rx="12" fill="#e03131"/>
+      <path d="M9 27V20.5C14.5 20.5 17 16.5 18.6 12L23 14C24.2 18 28 20 33 21C36.4 21.8 36.6 27 36.6 27Z" fill="#fff"/>
+      <rect x="8" y="28.6" width="29.6" height="4.2" rx="2.1" fill="#fff"/>
+      <path d="M22.5 17.2L26 18.8M21.2 20.2L24.8 21.8" stroke="#e03131" stroke-width="1.6" stroke-linecap="round"/>
+    </svg>
+    <span class="wm">STR<i>I</i>DE</span>
+  </a>
   <ul><li><a class="link" href="#shop">New</a></li><li><a class="link" href="#shop">Classics</a></li><li><a class="link" href="#shop">Sale</a></li><li><a class="link" href="#shop">Cart (0)</a></li></ul>
 </nav>
 
@@ -261,7 +272,7 @@
     {n:'Court Low Sand',  d:'Warm, worn-in look.',        p:'$95', f:'hue-rotate(60deg) saturate(1.4)'},
     {n:'Court Low Violet',d:'Limited colourway.',         p:'$95', f:'hue-rotate(250deg) saturate(1.2)'}
   ];
-  var N=27, STEP=360/N, CULL=48, R=1000;
+  var N=27, STEP=360/N, CULL=48, RING_R=1000;   // (was "R", which clobbered the right-shoe element and broke every scroll update)
   var rcards=[];
   for(var i=0;i<N;i++){
     var pr=PRODUCTS[i%PRODUCTS.length], c=document.createElement('article');
@@ -273,7 +284,7 @@
   function layoutRing(){
     var h=ringStage.clientHeight, ch=Math.max(150,Math.min(h*0.9,340)), cw=Math.min(ch*0.74,innerWidth*0.36);
     ringEl.style.setProperty('--ch',ch+'px'); ringEl.style.setProperty('--cw',cw+'px');
-    R=(cw+26)/(STEP*Math.PI/180); ringEl.style.perspective=R+'px';
+    RING_R=(cw+26)/(STEP*Math.PI/180); ringEl.style.perspective=RING_R+'px';
   }
   function placeRing(){
     var phase=scrollPhase+drift+manual;
@@ -282,7 +293,7 @@
       if(Math.abs(a)>CULL){ el.style.visibility='hidden'; continue; }
       el.style.visibility='visible';
       var r=a*Math.PI/180, cc=Math.cos(r);
-      el.style.transform='translate3d('+(R*Math.sin(r))+'px,0,'+(R*(1-cc))+'px) rotateY('+(-a)+'deg)';
+      el.style.transform='translate3d('+(RING_R*Math.sin(r))+'px,0,'+(RING_R*(1-cc))+'px) rotateY('+(-a)+'deg)';
       el.style.filter='brightness('+(1-0.6*(1-cc))+')';
     }
   }
