@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light">
 <title>STRIDE - placeholder shoe shop demo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,7 +16,7 @@
     --font-display:'Archivo',system-ui,sans-serif; --font-head:'Unbounded','Archivo',system-ui,sans-serif;
   }
   *{box-sizing:border-box;margin:0}
-  html{scroll-behavior:auto}
+  html{scroll-behavior:auto;color-scheme:light}   /* opt out of forced/auto dark mode, which turned the shop dark on the phone */
   body{background:var(--bg);color:var(--ink);font-family:var(--font-display);-webkit-font-smoothing:antialiased}
   a{color:inherit}
   :focus-visible{outline:2px solid var(--focus);outline-offset:3px}
@@ -32,17 +33,18 @@
 
   /* story: pinned stage that plays, then lifts away */
   .story{position:relative;height:620vh}
-  .pin{position:sticky;top:0;height:100vh;overflow:hidden}
+  .pin{position:sticky;top:0;height:100vh;height:100dvh;overflow:hidden}   /* dvh follows the phone's collapsing address/tool bars */
   .shop-hero{position:absolute;inset:0;background:var(--surface);display:flex;flex-direction:column;justify-content:center;padding:0 5vw}
   .shop-hero h1{font-size:clamp(2.6rem,8vw,7rem);line-height:.95;letter-spacing:-.03em;font-weight:800;max-width:14ch}
   .shop-hero p{margin-top:18px;max-width:38ch;color:var(--muted);font-size:1.05rem}
   .stage-wrap{position:absolute;inset:0;background:#fff;z-index:5;will-change:transform;box-shadow:0 30px 60px rgba(0,0,0,.18)}
-  .stage{position:absolute;left:50%;top:50%;height:min(100vh,140vw);aspect-ratio:16/9;width:auto;transform:translate(-50%,-50%);}   /* fits the height; capped on portrait phones so the shoe pair isn't wider than the screen */
+  .stage{position:absolute;left:50%;top:50%;height:min(100vh,140vw);height:min(100dvh,140vw);aspect-ratio:16/9;width:auto;transform:translate(-50%,-50%);}   /* fits the height; capped on portrait phones so the shoe pair isn't wider than the screen */
   .layer{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:contrast(1.18) brightness(1.05);opacity:0;will-change:opacity;user-select:none;pointer-events:none}
   /* two falling shoes: the single side-view shoe, multiplied onto the white stage */
-  .shoe{position:absolute;width:24%;aspect-ratio:2.44;background:url(keyframes/shoe-side.png) 50% 55.7%/175% no-repeat;mix-blend-mode:multiply;filter:contrast(1.15) brightness(1.04);will-change:transform;pointer-events:none;transform-origin:50% 80%;transition:opacity .5s}
-  #shoeL{left:32%;top:73%}
-  #shoeR{left:45%;top:76%}
+  .shoe{position:absolute;width:24%;aspect-ratio:2.44;background:url(keyframes/shoe-side.png) 50% 55.7%/175% no-repeat;filter:contrast(1.25) brightness(1.06);will-change:transform;pointer-events:none;transform-origin:50% 80%;transition:opacity .5s}   /* no blend mode: it rendered as white boxes on the phone; the filter whitens the image background instead */
+  .shoe.gone{visibility:hidden}
+  #shoeL{left:29%;top:73%}
+  #shoeR{left:49%;top:76%}
   #kf1{transition:opacity .5s}
   .hint{position:absolute;left:50%;top:16vh;transform:translateX(-50%);z-index:6;font-size:.78rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);opacity:0;transition:opacity .6s}
   .hint.show{opacity:1}
@@ -50,8 +52,9 @@
   body.devmode .devtag{display:block}
 
   /* shop */
-  .shop{position:relative;height:360vh;background:var(--surface)}
-  .shop-pin{position:sticky;top:0;height:100vh;overflow:hidden;display:flex;flex-direction:column;align-items:center;padding-top:68px;background:var(--surface)}   /* solid bg so the shoes' multiply blend has something to blend with */
+  .shop{position:relative;height:240vh;background:var(--surface)}
+  .shop-pin{position:sticky;top:0;height:100vh;height:100dvh;overflow:hidden;display:flex;flex-direction:column;align-items:center;padding-top:68px;padding-bottom:calc(env(safe-area-inset-bottom,0px) + 8px);background:var(--surface)}
+  @media (max-width:700px){.shop-pin{padding-bottom:calc(env(safe-area-inset-bottom,0px) + 72px)}}   /* keep the Shop now button clear of the phone's bottom toolbar */   /* solid bg so the shoes' multiply blend has something to blend with */
   .shop h2{font-size:clamp(1.4rem,3.2vw,2.3rem);letter-spacing:-.02em;font-weight:800;text-align:center}
   .shop .sub{color:var(--muted);font-size:.9rem;margin-top:4px;text-align:center}
   .ring-stage{position:relative;flex:1 1 auto;width:100%;min-height:0}
@@ -104,10 +107,10 @@
   @keyframes spin{to{transform:rotate(360deg)}}
   @media (prefers-reduced-motion:reduce){.badge,.ticker .track{animation:none}}
   /* the parent must not get its own transform or the shoes' multiply-blend stops seeing the page behind them */
-  .lace-btn{display:block;width:min(94vw,560px);text-decoration:none;border-radius:12px}
-  .lace-btn img{display:block;width:100%;height:auto;mix-blend-mode:multiply;transition:transform .15s}   /* white image background multiplies away into the cream page */
-  .lace-btn:hover img{transform:translateY(-4px) scale(1.015)}
-  .lace-btn:active img{transform:translateY(0) scale(1)}
+  .lace-btn{display:block;width:min(92vw,560px);text-decoration:none;border-radius:18px;background:#fff;padding:4px 6px;box-shadow:0 14px 30px rgba(20,16,10,.16),0 2px 6px rgba(20,16,10,.12);transition:transform .15s,box-shadow .15s}   /* a solid white card: no blend mode needed, so it looks the same on every browser */
+  .lace-btn img{display:block;width:100%;height:auto;border-radius:14px;filter:contrast(1.06) brightness(1.03)}
+  .lace-btn:hover{transform:translateY(-4px);box-shadow:0 20px 38px rgba(20,16,10,.2),0 3px 8px rgba(20,16,10,.14)}
+  .lace-btn:active{transform:translateY(0)}
   footer{padding:40px 5vw;color:var(--muted);font-size:.85rem;text-align:center}
 
   /* reduced motion: skip the sequence, offer an explicit preview */
@@ -232,10 +235,10 @@
       if(tt<1150) allDone=false;
     });
     if(!allDone) requestAnimationFrame(drawDrop);
-    else { dropDone=true; landed=true; hint.classList.add('show'); update(); }
+    else { dropDone=true; landed=true; hint.classList.add('show'); update(); setTimeout(function(){ if(landed){L.classList.add('gone');R.classList.add('gone');} },700); }
   }
   function playDrop(){
-    dropDone=false; landed=false; hint.classList.remove('show'); update();
+    dropDone=false; landed=false; hint.classList.remove('show'); L.classList.remove('gone'); R.classList.remove('gone'); update();
     shoes.forEach(function(s){s.el.style.transform='translate('+s.x0+'vw,'+s.y0+'vh) rotate('+s.r0+'deg)'});
     dropStart=performance.now()+250; requestAnimationFrame(function tick(now){ if(now<dropStart){requestAnimationFrame(tick);return;} drawDrop(now); });
   }
@@ -304,13 +307,19 @@
   }
   function syncScroll(){
     var rect=shopSec.getBoundingClientRect(), tot=shopSec.offsetHeight-innerHeight;
-    scrollPhase=(tot>0 && !document.body.classList.contains('rm')) ? -clamp(-rect.top/tot,0,1)*260 : 0;   // scrolling turns the ring
+    scrollPhase=(tot>0 && !document.body.classList.contains('rm')) ? -clamp(-rect.top/tot,0,1)*150 : 0;   // scrolling turns the ring
   }
   window.addEventListener('scroll',function(){syncScroll();placeRing()},{passive:true});   // also on scroll, not only in the animation loop
-  var dragX=null;   // drag to rotate
-  ringEl.addEventListener('pointerdown',function(e){dragX=e.clientX; ringEl.setPointerCapture(e.pointerId)});
-  ringEl.addEventListener('pointermove',function(e){ if(dragX==null) return; manual+=(e.clientX-dragX)*0.18; dragX=e.clientX; });
-  ringEl.addEventListener('pointerup',function(){dragX=null}); ringEl.addEventListener('pointercancel',function(){dragX=null});
+  var dragX=null, dragY=0, dragging=false;   // drag to rotate; only a clearly sideways move counts, so vertical page scrolling on a phone is never hijacked
+  ringEl.addEventListener('pointerdown',function(e){dragX=e.clientX; dragY=e.clientY; dragging=false; if(e.pointerType==='mouse') ringEl.setPointerCapture(e.pointerId)});
+  ringEl.addEventListener('pointermove',function(e){
+    if(dragX==null) return;
+    var dx=e.clientX-dragX, dy=e.clientY-dragY;
+    if(!dragging){ if(Math.abs(dx)>10 && Math.abs(dx)>Math.abs(dy)*1.6) dragging=true; else return; }
+    manual+=dx*0.18; dragX=e.clientX; dragY=e.clientY;
+  });
+  function endDrag(){dragX=null; dragging=false}
+  ringEl.addEventListener('pointerup',endDrag); ringEl.addEventListener('pointercancel',endDrag);
   function nudge(dir){ manual+=dir*STEP; }
   $('rPrev').addEventListener('click',function(){nudge(1)}); $('rNext').addEventListener('click',function(){nudge(-1)});
   ringEl.addEventListener('keydown',function(e){ if(e.key==='ArrowLeft'){nudge(1);e.preventDefault()} if(e.key==='ArrowRight'){nudge(-1);e.preventDefault()} });
