@@ -159,14 +159,13 @@
     <div class="stage-wrap" id="stageWrap" aria-hidden="true">
       <div class="stage" id="stage">
         <img class="layer" id="kf1" src="keyframes/kf1-shoes-start.jpg" alt="">
-        <video class="layer" id="clipA" muted playsinline preload="auto" aria-hidden="true"><source src="ltx-clips/clipA-mist-economy3s.mp4" type="video/mp4"></video>
-        <img class="layer" id="kf4" src="keyframes/kf4-dance-pose.jpg" alt="">
-        <img class="layer" id="kf5" src="keyframes/kf5-reach-up.jpg" alt="">
+        <video class="layer" id="clipDance" muted playsinline preload="auto" aria-hidden="true"><source src="veo-clips/veo-dance-freeze.mp4" type="video/mp4"></video>
+        <video class="layer" id="clipReach" muted playsinline preload="auto" aria-hidden="true"><source src="veo-clips/veo-reach-grip.mp4" type="video/mp4"></video>
         <div class="shoe" id="shoeL"></div>
         <div class="shoe" id="shoeR"></div>
       </div>
       <div class="hint" id="hint">Scroll</div>
-      <div class="devtag" id="devTag">placeholder stills stand in for LTX clips</div>
+      <div class="devtag" id="devTag">AI video clips generated with Google Veo</div>
     </div>
   </div>
 </section>
@@ -198,8 +197,8 @@
   var $=function(id){return document.getElementById(id)};
   var story=$('story'), wrap=$('stageWrap'), nav=$('nav'), hint=$('hint');
   var L=$('shoeL'), R=$('shoeR');
-  var clipA=$('clipA'),k4=$('kf4'),k5=$('kf5'),clipAPlayed=false;
-  clipA.pause();   // plays forward once, the first time scroll reaches it (seeking this element is unreliable in testing, so opacity is scroll-driven but playback itself is not scrubbed)
+  var clipDance=$('clipDance'),clipReach=$('clipReach'),clipDancePlayed=false,clipReachPlayed=false;
+  clipDance.pause(); clipReach.pause();   // each plays forward once, the first time scroll reaches it (seeking is unreliable in testing, so opacity is scroll-driven but playback itself is not scrubbed)
   var mq=window.matchMedia('(prefers-reduced-motion: reduce)');
   if(location.hash==='#dev') document.body.classList.add('devmode');
 
@@ -248,12 +247,13 @@
     var rect=story.getBoundingClientRect();
     var total=story.offsetHeight-window.innerHeight;
     var p=clamp(-rect.top/total,0,1);
-    // clip A (real LTX video: smoke condensing into the figure) plays forward once, triggered by scroll reaching it;
-    // remaining stills stand in for the LTX clips not made yet. Windows are narrow to limit cross-fade ghosting
-    clipA.style.opacity=ramp(p,.06,.12)*(1-ramp(p,.34,.40));
-    if(!clipAPlayed && p>=.06){ clipAPlayed=true; clipA.play().catch(function(){}); }
-    k4.style.opacity=ramp(p,.34,.40)*(1-ramp(p,.48,.54));
-    k5.style.opacity=ramp(p,.48,.54);
+    // clipDance (Veo: smoke condensing -> figure -> dance -> freeze) and clipReach (Veo: freeze -> reach up -> grip
+    // the screen) each play forward once, triggered by scroll reaching their window; the CSS wrap-lift below is
+    // what actually pulls the "screen" away, so clipReach only needs to land on the grip, not animate the pull
+    clipDance.style.opacity=ramp(p,.06,.12)*(1-ramp(p,.40,.46));
+    if(!clipDancePlayed && p>=.06){ clipDancePlayed=true; clipDance.play().catch(function(){}); }
+    clipReach.style.opacity=ramp(p,.40,.46);
+    if(!clipReachPlayed && p>=.40){ clipReachPlayed=true; clipReach.play().catch(function(){}); }
     // falling shoes fade out into the matching pair image once landed; that image gives way to the smoke frame
     var pairVis=landed?(1-ramp(p,.09,.13)):0;
     k1.style.opacity=pairVis;
