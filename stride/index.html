@@ -194,6 +194,10 @@
 
 <script>
 (function(){
+  // browsers restore the previous scroll position on reload by default, which could otherwise make the page
+  // load already-scrolled deep into (or past) the intro and immediately mark it "done" with nothing ever shown
+  if('scrollRestoration' in history) history.scrollRestoration='manual';
+  window.scrollTo(0,0);
   var $=function(id){return document.getElementById(id)};
   var story=$('story'), wrap=$('stageWrap'), nav=$('nav'), hint=$('hint');
   var L=$('shoeL'), R=$('shoeR');
