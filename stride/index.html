@@ -243,12 +243,13 @@
   }
 
   /* ---- scroll timeline ---- */
-  var storyDone=false;   // once the reveal has essentially finished, the character must not reappear on scrolling back up (its videos are spent and would just show a frozen last frame) - only a reload resets this
+  var storyDone=false, doneFloor=0;   // once the reveal has essentially finished, the whole intro is a one-way trip: scrolling back up can't go past this point, so the spent character/videos are never seen again - only a reload resets this
   function update(){
     var rect=story.getBoundingClientRect();
     var total=story.offsetHeight-window.innerHeight;
+    if(storyDone && window.scrollY<doneFloor){ window.scrollTo(0,doneFloor); return; }
     var p=clamp(-rect.top/total,0,1);
-    if(p>.97) storyDone=true;
+    if(!storyDone && p>.97){ storyDone=true; doneFloor=window.scrollY; }
     // clipDance (Veo: smoke condensing -> figure -> dance -> freeze) and clipReach (Veo: freeze -> reach up -> grip
     // the screen) each play forward once, triggered by scroll reaching their window; the CSS wrap-lift below is
     // what actually pulls the "screen" away, so clipReach only needs to land on the grip, not animate the pull
