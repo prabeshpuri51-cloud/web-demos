@@ -284,6 +284,30 @@
     c.innerHTML='<div class="rpic" style="filter:contrast(1.12) '+pr.f+'"></div><div class="rtxt"><h3>'+pr.n+'</h3><p>'+pr.d+'</p><p class="price">'+pr.p+'</p></div>';
     ringEl.appendChild(c); rcards.push(c);
   }
+  // Safari drops CSS `filter` on elements inside this ring's 3D transform (translate3d/preserve-3d) -
+  // a long-standing WebKit bug, not fixable by promoting the element to its own layer. Work around it by
+  // baking each colourway into a flat image with a canvas (which supports the same filter string) once,
+  // then swap it in as a plain background image with no live filter left for Safari's 3D path to drop.
+  (function(){
+    var test=document.createElement('canvas').getContext('2d');
+    if(!test || !('filter' in test)) return;   // no canvas filter support: leave the CSS filter as the fallback
+    var img=new Image();
+    img.onload=function(){
+      var cache={};
+      PRODUCTS.forEach(function(pr){
+        if(!pr.f || cache[pr.f]) return;
+        var cv=document.createElement('canvas'); cv.width=img.naturalWidth; cv.height=img.naturalHeight;
+        var ctx=cv.getContext('2d'); ctx.filter='contrast(1.12) '+pr.f; ctx.drawImage(img,0,0);
+        cache[pr.f]=cv.toDataURL();
+      });
+      rcards.forEach(function(c,i){
+        var pr=PRODUCTS[i%PRODUCTS.length], url=cache[pr.f];
+        if(!url) return;
+        var pic=c.querySelector('.rpic'); pic.style.filter=''; pic.style.backgroundImage='url('+url+')';
+      });
+    };
+    img.src='keyframes/kf1-shoes-start.jpg';
+  })();
   var manual=0, drift=0, lastT=null, scrollPhase=0, forceMotion=false;
   function layoutRing(){
     var h=ringStage.clientHeight, ch=Math.max(150,Math.min(h*0.9,340)), cw=Math.min(ch*0.74,innerWidth*0.36);
