@@ -159,8 +159,7 @@
     <div class="stage-wrap" id="stageWrap" aria-hidden="true">
       <div class="stage" id="stage">
         <img class="layer" id="kf1" src="keyframes/kf1-shoes-start.jpg" alt="">
-        <img class="layer" id="kf2" src="keyframes/kf2-smoke-forming.jpg" alt="">
-        <img class="layer" id="kf3" src="keyframes/kf3-figure-standing.jpg" alt="">
+        <video class="layer" id="clipA" muted playsinline preload="auto" aria-hidden="true"><source src="ltx-clips/clipA-mist-economy3s.mp4" type="video/mp4"></video>
         <img class="layer" id="kf4" src="keyframes/kf4-dance-pose.jpg" alt="">
         <img class="layer" id="kf5" src="keyframes/kf5-reach-up.jpg" alt="">
         <div class="shoe" id="shoeL"></div>
@@ -199,7 +198,8 @@
   var $=function(id){return document.getElementById(id)};
   var story=$('story'), wrap=$('stageWrap'), nav=$('nav'), hint=$('hint');
   var L=$('shoeL'), R=$('shoeR');
-  var k2=$('kf2'),k3=$('kf3'),k4=$('kf4'),k5=$('kf5');
+  var clipA=$('clipA'),k4=$('kf4'),k5=$('kf5'),clipAPlayed=false;
+  clipA.pause();   // plays forward once, the first time scroll reaches it (seeking this element is unreliable in testing, so opacity is scroll-driven but playback itself is not scrubbed)
   var mq=window.matchMedia('(prefers-reduced-motion: reduce)');
   if(location.hash==='#dev') document.body.classList.add('devmode');
 
@@ -248,9 +248,10 @@
     var rect=story.getBoundingClientRect();
     var total=story.offsetHeight-window.innerHeight;
     var p=clamp(-rect.top/total,0,1);
-    // stills stand in for the future LTX clips; windows are narrow to limit cross-fade ghosting
-    k2.style.opacity=ramp(p,.06,.12)*(1-ramp(p,.20,.26));
-    k3.style.opacity=ramp(p,.20,.26)*(1-ramp(p,.34,.40));
+    // clip A (real LTX video: smoke condensing into the figure) plays forward once, triggered by scroll reaching it;
+    // remaining stills stand in for the LTX clips not made yet. Windows are narrow to limit cross-fade ghosting
+    clipA.style.opacity=ramp(p,.06,.12)*(1-ramp(p,.34,.40));
+    if(!clipAPlayed && p>=.06){ clipAPlayed=true; clipA.play().catch(function(){}); }
     k4.style.opacity=ramp(p,.34,.40)*(1-ramp(p,.48,.54));
     k5.style.opacity=ramp(p,.48,.54);
     // falling shoes fade out into the matching pair image once landed; that image gives way to the smoke frame
