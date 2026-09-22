@@ -8,3 +8,4 @@ Small self-contained web tools, built by quickbuildlab.
 - [EMBERS — restaurant landing page](embers/)
 - [The Gentleman's Cut — barbershop landing page](gentlemans-cut/)
 - [DRIFT — specialty coffee landing page](drift/)
+- [STRIDE — sneaker shop landing page](stride/)
