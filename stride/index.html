@@ -243,13 +243,12 @@
   }
 
   /* ---- scroll timeline ---- */
-  var storyDone=false, doneFloor=0;   // once the reveal has essentially finished, the whole intro is a one-way trip: scrolling back up can't go past this point, so the spent character/videos are never seen again - only a reload resets this
+  var storyDone=false;   // once the reveal has essentially finished, the character must not reappear on scrolling back up (its videos are spent and would just show a frozen last frame); scrolling itself stays completely free - a hard scroll floor was tried and rejected because it also blocked scrolling back into the (perfectly fine, video-free) shop-hero tagline screen that shares the same scroll range
   function update(){
     var rect=story.getBoundingClientRect();
     var total=story.offsetHeight-window.innerHeight;
-    if(storyDone && window.scrollY<doneFloor){ window.scrollTo(0,doneFloor); return; }
     var p=clamp(-rect.top/total,0,1);
-    if(!storyDone && p>.97){ storyDone=true; doneFloor=window.scrollY; }
+    if(p>.97) storyDone=true;
     // clipDance (Veo: smoke condensing -> figure -> dance -> freeze) and clipReach (Veo: freeze -> reach up -> grip
     // the screen) each play forward once, triggered by scroll reaching their window; the CSS wrap-lift below is
     // what actually pulls the "screen" away, so clipReach only needs to land on the grip, not animate the pull
