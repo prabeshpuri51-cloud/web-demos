@@ -243,21 +243,23 @@
   }
 
   /* ---- scroll timeline ---- */
+  var storyDone=false;   // once the reveal has essentially finished, the character must not reappear on scrolling back up (its videos are spent and would just show a frozen last frame) - only a reload resets this
   function update(){
     var rect=story.getBoundingClientRect();
     var total=story.offsetHeight-window.innerHeight;
     var p=clamp(-rect.top/total,0,1);
+    if(p>.97) storyDone=true;
     // clipDance (Veo: smoke condensing -> figure -> dance -> freeze) and clipReach (Veo: freeze -> reach up -> grip
     // the screen) each play forward once, triggered by scroll reaching their window; the CSS wrap-lift below is
     // what actually pulls the "screen" away, so clipReach only needs to land on the grip, not animate the pull
-    clipDance.style.opacity=ramp(p,.06,.12)*(1-ramp(p,.40,.46));
-    if(!clipDancePlayed && p>=.06){ clipDancePlayed=true; clipDance.play().catch(function(){}); }
-    clipReach.style.opacity=ramp(p,.40,.46);
-    if(!clipReachPlayed && p>=.40){ clipReachPlayed=true; clipReach.play().catch(function(){}); }
+    clipDance.style.opacity=storyDone?0:ramp(p,.06,.12)*(1-ramp(p,.40,.46));
+    if(!clipDancePlayed && !storyDone && p>=.06){ clipDancePlayed=true; clipDance.play().catch(function(){}); }
+    clipReach.style.opacity=storyDone?0:ramp(p,.40,.46);
+    if(!clipReachPlayed && !storyDone && p>=.40){ clipReachPlayed=true; clipReach.play().catch(function(){}); }
     // falling shoes fade out into the matching pair image once landed; that image gives way to the smoke frame
-    var pairVis=landed?(1-ramp(p,.09,.13)):0;
+    var pairVis=(landed && !storyDone)?(1-ramp(p,.09,.13)):0;
     k1.style.opacity=pairVis;
-    L.style.opacity=R.style.opacity=landed?0:1;
+    L.style.opacity=R.style.opacity=(landed||storyDone)?0:1;
     var lift=ease(ramp(p,.72,.98));
     wrap.style.transform='translateY('+(-lift*125)+'%)';   // 125% so the soft shadow leaves the screen too
     hint.style.opacity=(dropDone&&p<.03)?1:0;
