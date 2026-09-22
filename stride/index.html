@@ -274,46 +274,26 @@
 
   /* ---- shop: 3D ring of shoe cards ---- */
   var ringEl=$('ring3d'), shopSec=$('shop'), ringStage=ringEl.parentNode;
+  // Each colourway is its own real photo (generated to match the base shot's pose/angle/background), not a
+  // CSS/canvas filter on one photo - the base photo is almost entirely white leather with just a thin blue
+  // trim, so there was barely any colour there for a filter to shift, which is why every "colourway" kept
+  // looking like the same white shoe no matter how it was applied.
   var PRODUCTS=[
-    {n:'Court Low',       d:'White leather, blue trim.',  p:'$89', f:''},
-    {n:'Court Low Red',   d:'Same shoe, warm colourway.', p:'$89', f:'hue-rotate(150deg) saturate(1.3)'},
-    {n:'Court Low Green', d:'Everyday, easy to clean.',   p:'$89', f:'hue-rotate(-90deg) saturate(1.2)'},
-    {n:'Court Low Mono',  d:'All white, no colour.',      p:'$92', f:'grayscale(1)'},
-    {n:'Court Low Sand',  d:'Warm, worn-in look.',        p:'$95', f:'hue-rotate(60deg) saturate(1.4)'},
-    {n:'Court Low Violet',d:'Limited colourway.',         p:'$95', f:'hue-rotate(250deg) saturate(1.2)'}
+    {n:'Court Low',       d:'White leather, blue trim.',  p:'$89', img:'keyframes/kf1-shoes-start.jpg'},
+    {n:'Court Low Red',   d:'Same shoe, warm colourway.', p:'$89', img:'keyframes/ring/court-low-red.jpg'},
+    {n:'Court Low Green', d:'Everyday, easy to clean.',   p:'$89', img:'keyframes/ring/court-low-green.jpg'},
+    {n:'Court Low Mono',  d:'All white, no colour.',      p:'$92', img:'keyframes/ring/court-low-mono.jpg'},
+    {n:'Court Low Sand',  d:'Warm, worn-in look.',        p:'$95', img:'keyframes/ring/court-low-sand.jpg'},
+    {n:'Court Low Violet',d:'Limited colourway.',         p:'$95', img:'keyframes/ring/court-low-violet.jpg'}
   ];
   var N=27, STEP=360/N, CULL=48, RING_R=1000;   // (was "R", which clobbered the right-shoe element and broke every scroll update)
   var rcards=[];
   for(var i=0;i<N;i++){
     var pr=PRODUCTS[i%PRODUCTS.length], c=document.createElement('article');
     c.className='rcard'; c.setAttribute('aria-hidden', i===0?'false':'true');
-    c.innerHTML='<div class="rpic" style="filter:contrast(1.12) '+pr.f+'"></div><div class="rtxt"><h3>'+pr.n+'</h3><p>'+pr.d+'</p><p class="price">'+pr.p+'</p></div>';
+    c.innerHTML='<div class="rpic" style="background-image:url('+pr.img+')"></div><div class="rtxt"><h3>'+pr.n+'</h3><p>'+pr.d+'</p><p class="price">'+pr.p+'</p></div>';
     ringEl.appendChild(c); rcards.push(c);
   }
-  // Safari drops CSS `filter` on elements inside this ring's 3D transform (translate3d/preserve-3d) -
-  // a long-standing WebKit bug, not fixable by promoting the element to its own layer. Work around it by
-  // baking each colourway into a flat image with a canvas (which supports the same filter string) once,
-  // then swap it in as a plain background image with no live filter left for Safari's 3D path to drop.
-  (function(){
-    var test=document.createElement('canvas').getContext('2d');
-    if(!test || !('filter' in test)) return;   // no canvas filter support: leave the CSS filter as the fallback
-    var img=new Image();
-    img.onload=function(){
-      var cache={};
-      PRODUCTS.forEach(function(pr){
-        if(!pr.f || cache[pr.f]) return;
-        var cv=document.createElement('canvas'); cv.width=img.naturalWidth; cv.height=img.naturalHeight;
-        var ctx=cv.getContext('2d'); ctx.filter='contrast(1.12) '+pr.f; ctx.drawImage(img,0,0);
-        cache[pr.f]=cv.toDataURL();
-      });
-      rcards.forEach(function(c,i){
-        var pr=PRODUCTS[i%PRODUCTS.length], url=cache[pr.f];
-        if(!url) return;
-        var pic=c.querySelector('.rpic'); pic.style.filter=''; pic.style.backgroundImage='url('+url+')';
-      });
-    };
-    img.src='keyframes/kf1-shoes-start.jpg';
-  })();
   var manual=0, drift=0, lastT=null, scrollPhase=0, forceMotion=false;
   function layoutRing(){
     var h=ringStage.clientHeight, ch=Math.max(150,Math.min(h*0.9,340)), cw=Math.min(ch*0.74,innerWidth*0.36);
