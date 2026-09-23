@@ -36,24 +36,14 @@
   nav ul a:hover{opacity:1;color:var(--rose-deep)}
   .nav-cta{background:var(--rose-deep);color:#fff;padding:10px 20px;border-radius:999px;font-size:.85rem;font-weight:600;
     box-shadow:0 6px 16px rgba(214,104,143,.35);white-space:nowrap}
-  .nav-toggle{display:none;flex:none;width:38px;height:38px;border-radius:50%;background:var(--blush);border:1.5px solid var(--rose);
-    position:relative;cursor:pointer}
-  .nav-toggle span,.nav-toggle span::before,.nav-toggle span::after{position:absolute;left:10px;right:10px;height:2px;
-    background:var(--rose-deep);border-radius:2px;transition:transform .2s,opacity .2s}
-  .nav-toggle span{top:18px}
-  .nav-toggle span::before{content:"";top:-6px}
-  .nav-toggle span::after{content:"";top:6px}
-  .nav-toggle.open span{opacity:0}
-  .nav-toggle.open span::before{transform:translateY(6px) rotate(45deg)}
-  .nav-toggle.open span::after{transform:translateY(-6px) rotate(-45deg)}
-  @media (max-width:720px){
-    nav ul,.nav-cta{display:none}
-    .nav-toggle{display:block}
-    .nav-menu{position:fixed;top:66px;left:16px;right:16px;background:#fff;border-radius:16px;padding:18px;
-      box-shadow:0 20px 40px rgba(214,104,143,.22);border:1px solid var(--border);display:none;flex-direction:column;gap:14px;z-index:49}
-    .nav-menu.open{display:flex}
-    .nav-menu a{font-weight:500;padding:6px 4px}
-    .nav-menu .nav-cta{display:flex;justify-content:center;margin-top:4px}
+  /* mobile: same approach as STRIDE/DRIFT - shrink and drop the least-essential link rather than a hamburger menu */
+  @media (max-width:600px){
+    nav{padding:14px 16px}
+    .logo{font-size:1.05rem}
+    .logo .mark{width:28px;height:28px;font-size:.8rem}
+    nav ul{gap:14px;font-size:.78rem}
+    nav ul li:nth-child(n+2){display:none}
+    .nav-cta{padding:8px 14px;font-size:.78rem}
   }
 
   /* ---- hero ---- */
@@ -139,23 +129,16 @@
   <a class="logo" href="#top"><span class="mark">PP</span>Pretty Petite</a>
   <ul id="navLinks"><li><a href="#new">New Arrivals</a></li><li><a href="#why">Why Us</a></li><li><a href="#order">Order</a></li></ul>
   <a class="nav-cta" href="#order">DM to Order</a>
-  <button class="nav-toggle" id="navToggle" type="button" aria-label="Menu" aria-expanded="false"><span></span></button>
 </nav>
-<div class="nav-menu" id="navMenu">
-  <a href="#new">New Arrivals</a>
-  <a href="#why">Why Us</a>
-  <a href="#order">Order</a>
-  <a class="nav-cta" href="#order">DM to Order</a>
-</div>
 
 <main id="top">
   <section class="hero">
     <div class="hero-inner">
       <span class="ribbon">San Ignacio &middot; Ships Country Wide</span>
       <h1>Pretty Outfits,<br><em>Pretty Confidence.</em></h1>
-      <p>Trendy, affordable fashion picked for you. New arrivals every week &mdash; shop cute, shop confident, shop pretty.</p>
+      <p>Streetwear pre&ndash;orders for kids and adults. Pay a small down payment to reserve your size, we handle the rest.</p>
       <div class="hero-actions">
-        <a class="btn btn-primary" href="#new">Shop New Arrivals</a>
+        <a class="btn btn-primary" href="#new">See What's Open for Pre&ndash;order</a>
         <a class="btn btn-ghost" href="#order">Order via DM</a>
       </div>
     </div>
@@ -163,58 +146,60 @@
 
   <div class="strip">
     <span><b>300+</b> happy followers</span>
-    <span><b>Weekly</b> new arrivals</span>
+    <span><b>Kids &amp; adult</b> sizes</span>
     <span><b>Country&nbsp;wide</b> shipping</span>
-    <span><b>DM</b> to order, easy checkout</span>
+    <span><b>Small down payment</b> to reserve</span>
   </div>
 
   <section class="section" id="new">
     <div class="section-head">
-      <span class="kicker">This week</span>
+      <span class="kicker">Pre&ndash;order now</span>
       <h2>New Arrivals</h2>
       <p>Placeholder product cards &mdash; swap in real photos once you're ready to go live.</p>
     </div>
     <div class="grid">
       <article class="card">
-        <div class="card-pic" style="background:linear-gradient(160deg,#f7d9e6,#f1b9d1)">
-          <span class="card-badge">New</span>
-          <svg viewBox="0 0 64 64" fill="none" stroke="#a24568" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M32 10c-2 0-3.5 1.6-3.5 3.5 0 1.3.8 2 1.8 2.7"/><path d="M32 16.2 L12 32 C9 34.3 10 38 13.5 38 H50.5 C54 38 55 34.3 52 32 Z"/></svg>
+        <div class="card-pic" style="background:linear-gradient(160deg,#e9e2e6,#c7bcc4)">
+          <span class="card-badge">Pre&ndash;order</span>
+          <svg viewBox="0 0 64 64" fill="none" stroke="#a24568" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 8 L22 20 L15 56 H27 L32 34 L37 56 H49 L42 20 L42 8 Z"/></svg>
         </div>
         <div class="card-body">
-          <h3>Pinstripe Midi Dress</h3>
-          <p>Sizes 8&ndash;16 &middot; Navy</p>
-          <div class="card-foot"><span class="price">$45</span><a class="order-btn" href="#order">DM to order</a></div>
+          <h3>Cross Print Denim</h3>
+          <p>Kids 8Y&ndash;12Y &middot; $45 down payment</p>
+          <div class="card-foot"><span class="price">$90</span><a class="order-btn" href="#order">Pre&ndash;order</a></div>
         </div>
       </article>
       <article class="card">
-        <div class="card-pic" style="background:linear-gradient(160deg,#f0dfe9,#dcb7cf)">
-          <svg viewBox="0 0 64 64" fill="none" stroke="#a24568" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M32 10c-2 0-3.5 1.6-3.5 3.5 0 1.3.8 2 1.8 2.7"/><path d="M32 16.2 L12 32 C9 34.3 10 38 13.5 38 H50.5 C54 38 55 34.3 52 32 Z"/></svg>
+        <div class="card-pic" style="background:linear-gradient(160deg,#efe9ec,#d6cbd1)">
+          <span class="card-badge">Pre&ndash;order</span>
+          <svg viewBox="0 0 64 64" fill="none" stroke="#a24568" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10 L44 10 L44 20 L36 22 L36 56 L28 56 L28 22 L20 20 Z"/></svg>
         </div>
         <div class="card-body">
-          <h3>Heart Knit Sweater</h3>
-          <p>One size &middot; Multicolour</p>
-          <div class="card-foot"><span class="price">$32</span><a class="order-btn" href="#order">DM to order</a></div>
+          <h3>FLYRICH Graphic Tee</h3>
+          <p>Sizes 3Y&ndash;14Y &middot; $15 down payment</p>
+          <div class="card-foot"><span class="price">$30</span><a class="order-btn" href="#order">Pre&ndash;order</a></div>
         </div>
       </article>
       <article class="card">
-        <div class="card-pic" style="background:linear-gradient(160deg,#efe1ea,#d9a8c4)">
-          <span class="card-badge">Restocked</span>
-          <svg viewBox="0 0 64 64" fill="none" stroke="#a24568" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M32 10c-2 0-3.5 1.6-3.5 3.5 0 1.3.8 2 1.8 2.7"/><path d="M32 16.2 L12 32 C9 34.3 10 38 13.5 38 H50.5 C54 38 55 34.3 52 32 Z"/></svg>
+        <div class="card-pic" style="background:linear-gradient(160deg,#ece5e9,#cfc1c9)">
+          <span class="card-badge">Pre&ndash;order</span>
+          <svg viewBox="0 0 64 64" fill="none" stroke="#a24568" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 8 L23 30 L16 56 H27 L32 38 L37 56 H48 L41 30 L41 8 Z"/></svg>
         </div>
         <div class="card-body">
-          <h3>Faux Leather Set</h3>
-          <p>Sizes S&ndash;L &middot; Black</p>
-          <div class="card-foot"><span class="price">$58</span><a class="order-btn" href="#order">DM to order</a></div>
+          <h3>Distressed Denim Shorts</h3>
+          <p>Adult 30&ndash;40 &middot; $20 down payment</p>
+          <div class="card-foot"><span class="price">$50</span><a class="order-btn" href="#order">Pre&ndash;order</a></div>
         </div>
       </article>
       <article class="card">
-        <div class="card-pic" style="background:linear-gradient(160deg,#f6dee9,#e5a9c6)">
-          <svg viewBox="0 0 64 64" fill="none" stroke="#a24568" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M32 10c-2 0-3.5 1.6-3.5 3.5 0 1.3.8 2 1.8 2.7"/><path d="M32 16.2 L12 32 C9 34.3 10 38 13.5 38 H50.5 C54 38 55 34.3 52 32 Z"/></svg>
+        <div class="card-pic" style="background:linear-gradient(160deg,#eae2e7,#c9bdc5)">
+          <span class="card-badge">Pre&ndash;order</span>
+          <svg viewBox="0 0 64 64" fill="none" stroke="#a24568" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 8 L22 18 L14 56 H26 L32 32 L38 56 H50 L42 18 L42 8 Z"/></svg>
         </div>
         <div class="card-body">
-          <h3>Everyday Blouse</h3>
-          <p>Sizes 6&ndash;14 &middot; White</p>
-          <div class="card-foot"><span class="price">$28</span><a class="order-btn" href="#order">DM to order</a></div>
+          <h3>Ripped Skinny Jeans</h3>
+          <p>Adult 28&ndash;38 &middot; $28 down payment</p>
+          <div class="card-foot"><span class="price">$56</span><a class="order-btn" href="#order">Pre&ndash;order</a></div>
         </div>
       </article>
     </div>
@@ -223,21 +208,21 @@
   <section class="section" id="why">
     <div class="about">
       <div>
-        <span class="kicker" style="color:var(--rose-deep)">Why shop with us</span>
-        <h2>Handpicked pieces, real people behind every order.</h2>
-        <p>Pretty Petite is a small boutique run with love from San Ignacio. Every piece is chosen to be trendy, affordable, and easy to style, then shipped wherever you are.</p>
+        <span class="kicker" style="color:var(--rose-deep)">How pre&ndash;ordering works</span>
+        <h2>Reserve it now, pay the rest on arrival.</h2>
+        <p>Pretty Petite is run with love from San Ignacio. Send a small down payment to lock in your size, and settle the rest once your order arrives.</p>
       </div>
       <div class="why-list">
-        <div class="why-item"><span class="ico">$</span><div><h4>Affordable prices</h4><p>Trendy fashion that doesn't break the bank.</p></div></div>
-        <div class="why-item"><span class="ico">&#10022;</span><div><h4>New arrivals weekly</h4><p>Fresh styles dropped regularly, first come first served.</p></div></div>
-        <div class="why-item"><span class="ico">&#9993;</span><div><h4>Fast, reliable shipping</h4><p>Shipped country wide, packed with care.</p></div></div>
+        <div class="why-item"><span class="ico">1</span><div><h4>Pick your item and size</h4><p>DM us the item, kids or adult size.</p></div></div>
+        <div class="why-item"><span class="ico">2</span><div><h4>Send the down payment</h4><p>A small deposit reserves your order.</p></div></div>
+        <div class="why-item"><span class="ico">3</span><div><h4>Pay the rest on arrival</h4><p>Shipped country wide, balance due when it lands.</p></div></div>
       </div>
     </div>
   </section>
 
   <section class="cta" id="order">
-    <h2>Ready to shop?</h2>
-    <p>Send us a DM with the item you want and your size. We'll confirm availability and get it shipped to you.</p>
+    <h2>Ready to pre&ndash;order?</h2>
+    <p>Send us a DM with the item you want, your size, and we'll confirm the down payment to lock it in.</p>
     <div class="hero-actions">
       <a class="btn btn-primary" href="https://instagram.com/prettypetite_bz" target="_blank" rel="noopener">Message on Instagram</a>
     </div>
@@ -251,16 +236,6 @@
 <script>
   var nav=document.getElementById('nav');
   window.addEventListener('scroll',function(){ nav.classList.toggle('solid', window.scrollY>40); },{passive:true});
-
-  var navToggle=document.getElementById('navToggle'), navMenu=document.getElementById('navMenu');
-  navToggle.addEventListener('click',function(){
-    var open=navMenu.classList.toggle('open');
-    navToggle.classList.toggle('open',open);
-    navToggle.setAttribute('aria-expanded',open);
-  });
-  navMenu.querySelectorAll('a').forEach(function(a){
-    a.addEventListener('click',function(){ navMenu.classList.remove('open'); navToggle.classList.remove('open'); navToggle.setAttribute('aria-expanded','false'); });
-  });
 </script>
 </body>
 </html>
