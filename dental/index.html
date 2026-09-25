@@ -1,0 +1,532 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MIRA Dental Care - placeholder clinic demo</title>
+<meta name="description" content="Placeholder dental clinic website demo. No real clinic.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Figtree:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f4f8fb; --surface:#ffffff; --ink:#10283c; --muted:#4a6276; --line:#d6e2eb;
+  --blue:#1b5fa8; --blue-d:#134a86; --navy:#0e2c49; --coral:#f0675a; --sun:#f5c14b; --mint:#b9e4d5; --sky:#cfe4f5;
+  --radius:18px; --wrap:1120px;
+  --serif:"Instrument Serif","Times New Roman",serif;
+  --sans:"Figtree","Noto Sans Devanagari",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.6 var(--sans);-webkit-text-size-adjust:100%}
+body.np{font-size:17.5px;line-height:1.75}
+img,svg{max-width:100%;display:block}
+a{color:inherit}
+.wrap{max-width:var(--wrap);margin:0 auto;padding-inline:20px}
+section{padding-block:72px}
+h1,h2,h3{margin:0;font-weight:400;text-wrap:balance}
+h1,h2{font-family:var(--serif);letter-spacing:-.01em;line-height:1.05}
+body.np h1,body.np h2{font-family:"Noto Sans Devanagari",var(--sans);font-weight:600;letter-spacing:0;line-height:1.3}
+h1{font-size:clamp(2.6rem,7vw,4.6rem)}
+h2{font-size:clamp(2rem,4.6vw,3.1rem)}
+h3{font:600 1.08rem/1.3 var(--sans)}
+p{margin:0}
+.eyebrow{font-size:.78rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--blue)}
+body.np .eyebrow{letter-spacing:.02em}
+.lead{color:var(--muted);font-size:1.12rem;max-width:56ch}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 24px;border-radius:999px;font:600 1rem var(--sans);text-decoration:none;border:2px solid var(--blue);background:var(--blue);color:#fff;cursor:pointer;transition:background .2s,transform .2s}
+.btn:hover{background:var(--blue-d);border-color:var(--blue-d)}
+.btn.ghost{background:transparent;color:var(--blue)}
+.btn.ghost:hover{background:var(--sky)}
+:focus-visible{outline:3px solid var(--coral);outline-offset:3px}
+
+/* top bar */
+.top{position:sticky;top:0;z-index:50;background:rgba(244,248,251,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:20px;min-height:68px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font:400 1.55rem var(--serif);letter-spacing:.01em}
+.brand small{display:block;font:600 .62rem var(--sans);letter-spacing:.2em;color:var(--muted);text-transform:uppercase;margin-top:-4px}
+.nav{display:flex;gap:26px;margin-left:auto;font-weight:600;font-size:.95rem}
+.nav a{text-decoration:none;color:var(--muted)}
+.nav a:hover{color:var(--blue)}
+.top .actions{display:flex;gap:10px;align-items:center}
+.lang{border:2px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;min-height:40px;padding:0 14px;font:600 .9rem var(--sans);cursor:pointer}
+.top .btn{min-height:42px;padding:0 18px;font-size:.95rem}
+
+/* hero */
+.hero{padding-block:48px 64px}
+.hero .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center}
+.hero h1{margin:14px 0 18px}
+.hero h1 em{font-style:italic;color:var(--blue)}
+body.np .hero h1 em{font-style:normal}
+.cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.chip{display:inline-flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:8px 14px;font-weight:600;font-size:.9rem}
+.chip b{color:var(--coral)}
+.art{width:100%;height:auto;border-radius:28px}
+
+/* stats */
+.stats{padding-block:0 8px}
+.stats ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.stats li{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px 20px}
+.stats .num{font:400 2.7rem/1 var(--serif);color:var(--blue);font-variant-numeric:tabular-nums}
+body.np .stats .num{font-family:var(--sans);font-weight:600;font-size:2.3rem}
+.stats .lab{color:var(--muted);font-size:.93rem;margin-top:6px}
+
+/* services */
+.head{display:flex;flex-direction:column;gap:12px;margin-bottom:34px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px 20px;display:flex;flex-direction:column;gap:10px;transition:transform .2s,border-color .2s}
+.card:hover{transform:translateY(-3px);border-color:var(--blue)}
+.ico{width:52px;height:52px;border-radius:16px 16px 26px 16px;display:grid;place-items:center}
+.ico svg{width:28px;height:28px;stroke:var(--ink);stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.c1{background:var(--sky)} .c2{background:var(--mint)} .c3{background:#fbd5cf} .c4{background:#fbe6b0}
+.card p{color:var(--muted);font-size:.95rem}
+.price{margin-top:auto;padding-top:8px;font-weight:700;font-size:.92rem}
+.price span{color:var(--muted);font-weight:500}
+.note{margin-top:18px;color:var(--muted);font-size:.88rem}
+
+/* before after */
+.ba .wrap{display:grid;grid-template-columns:.9fr 1.1fr;gap:44px;align-items:center}
+.ba-box{position:relative;border-radius:24px;overflow:hidden;border:1px solid var(--line);background:var(--surface);aspect-ratio:4/3;--p:50%}
+.ba-box svg{position:absolute;inset:0;width:100%;height:100%}
+.ba-after{clip-path:inset(0 0 0 var(--p))}
+.ba-line{position:absolute;top:0;bottom:0;left:var(--p);width:3px;background:#fff;box-shadow:0 0 0 1px rgba(16,40,60,.15);transform:translateX(-1.5px);pointer-events:none}
+.ba-knob{position:absolute;top:50%;left:var(--p);width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;background:#fff;border:2px solid var(--blue);display:grid;place-items:center;pointer-events:none;color:var(--blue);font-weight:700}
+.ba-tag{position:absolute;top:12px;padding:5px 12px;border-radius:999px;background:rgba(255,255,255,.9);font-weight:700;font-size:.8rem}
+.ba-tag.l{left:12px}.ba-tag.r{right:12px}
+.ba input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize;margin:0}
+.ba-box:focus-within{outline:3px solid var(--coral);outline-offset:3px}
+
+/* doctor */
+.doc .wrap{display:grid;grid-template-columns:.8fr 1.2fr;gap:44px;align-items:center}
+.doc-art{border-radius:28px;background:var(--sky);aspect-ratio:1/1;max-width:420px;width:100%}
+.creds{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.creds span{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-weight:600;font-size:.9rem}
+
+/* reviews */
+.rev{background:var(--navy);color:#eaf2f8}
+.rev h2,.rev .eyebrow{color:#fff}
+.rev .eyebrow{color:var(--sun)}
+.rev .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.q{background:#153c60;border-radius:var(--radius);padding:24px 22px;display:flex;flex-direction:column;gap:14px}
+.stars{color:var(--sun);letter-spacing:3px;font-size:1.05rem}
+.q p{font-size:1.02rem}
+.q small{color:#a9c3d8}
+.rev .note{color:#a9c3d8}
+
+/* steps */
+.steps ol{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(3,1fr);gap:16px;counter-reset:s}
+.steps li{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:24px 22px;counter-increment:s}
+.steps li::before{content:counter(s);display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:var(--coral);color:#fff;font-weight:700;margin-bottom:14px}
+.steps li p{color:var(--muted);margin-top:6px;font-size:.96rem}
+
+/* book */
+.book .box{background:var(--surface);border:1px solid var(--line);border-radius:28px;padding:34px;display:grid;grid-template-columns:1fr 1fr;gap:36px}
+form{display:grid;gap:14px}
+label{font-weight:600;font-size:.92rem;display:grid;gap:6px}
+input[type=text],input[type=tel],select{width:100%;min-height:48px;padding:0 14px;border-radius:12px;border:2px solid var(--line);background:var(--bg);color:var(--ink);font:500 1rem var(--sans)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.msg{display:none;background:var(--bg);border:2px dashed var(--blue);border-radius:14px;padding:16px;font-size:.95rem;gap:12px}
+.msg.on{display:grid}
+.msg pre{margin:0;white-space:pre-wrap;font:500 .95rem/1.5 var(--sans)}
+.fine{color:var(--muted);font-size:.86rem}
+
+/* visit */
+.visit .wrap{display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:stretch}
+.hours{width:100%;border-collapse:collapse;font-size:1rem}
+.hours td{padding:12px 0;border-bottom:1px solid var(--line)}
+.hours td:last-child{text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+.map{border-radius:24px;border:1px solid var(--line);background:
+  linear-gradient(90deg,transparent 47%,#fff 47%,#fff 53%,transparent 53%),
+  linear-gradient(0deg,transparent 60%,#fff 60%,#fff 66%,transparent 66%),
+  linear-gradient(35deg,transparent 30%,#e6eef4 30%,#e6eef4 34%,transparent 34%),#dbe9e4;
+  min-height:300px;display:grid;place-items:center;position:relative}
+.pin{background:var(--coral);color:#fff;border-radius:999px;padding:10px 16px;font-weight:700;box-shadow:0 8px 20px rgba(16,40,60,.2)}
+.map small{position:absolute;bottom:12px;left:14px;color:var(--muted);font-weight:600}
+
+/* faq */
+.faq details{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:0 20px;margin-bottom:10px}
+.faq summary{cursor:pointer;list-style:none;padding:18px 0;font-weight:600;display:flex;justify-content:space-between;gap:16px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font-size:1.4rem;line-height:1;color:var(--blue)}
+.faq details[open] summary::after{content:"\2212"}
+.faq details p{padding-bottom:18px;color:var(--muted)}
+
+/* footer */
+footer{background:var(--navy);color:#c6d8e6;padding-block:44px 120px}
+footer .wrap{display:grid;gap:14px}
+footer b{color:#fff}
+.demo{border:2px dashed #4b7396;border-radius:14px;padding:14px 16px;color:#fff;font-weight:600}
+
+/* sticky mobile bar */
+.bar{display:none}
+
+@media (max-width:980px){
+  .grid{grid-template-columns:repeat(2,1fr)}
+  .stats ul{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:760px){
+  section{padding-block:52px}
+  .nav{display:none}
+  .top .wrap{gap:10px}
+  .top .actions{margin-left:auto}
+  .brand small{display:none}
+  .hero .wrap,.ba .wrap,.doc .wrap,.book .box,.visit .wrap{grid-template-columns:1fr}
+  .hero{padding-top:28px}
+  .art{order:-1}
+  .rev .grid3,.steps ol{grid-template-columns:1fr}
+  .book .box{padding:22px}
+  .bar{display:grid;grid-template-columns:1fr 1fr 1.2fr;gap:8px;position:fixed;left:0;right:0;bottom:0;z-index:60;padding:10px 12px calc(10px + env(safe-area-inset-bottom,0px));background:rgba(255,255,255,.96);border-top:1px solid var(--line)}
+  .bar a{display:flex;align-items:center;justify-content:center;min-height:46px;border-radius:999px;font-weight:700;text-decoration:none;font-size:.95rem;border:2px solid var(--blue);color:var(--blue)}
+  .bar a.p{background:var(--blue);color:#fff}
+}
+@media (max-width:460px){
+  .grid{grid-template-columns:1fr}
+  .two{grid-template-columns:1fr}
+  .top .btn.desk{display:none}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-tooth" viewBox="0 0 24 24"><path d="M12 5.5C10 4 6 4.2 5.2 8c-.6 3 1.2 4.6 1.5 7.2.3 2.6 1.5 4.3 2.4 2.2.5-1.3 1-3 2.9-3s2.4 1.7 2.9 3c.9 2.1 2.1.4 2.4-2.2.3-2.6 2.1-4.2 1.5-7.2C18 4.2 14 4 12 5.5z"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 8.2-7 10-4-1.8-7-5.5-7-10V6l7-3z"/><path d="M8.7 12.2l2.3 2.3 4.4-4.6"/></symbol>
+  <symbol id="i-fill" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.2"/></symbol>
+  <symbol id="i-root" viewBox="0 0 24 24"><path d="M6 3.5h12v6c0 3-1.2 4.5-1.6 8.5M6 9.5c0 3 1.2 4.5 1.6 8.5M12 9.5v9"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3v5M12 16v5M3 12h5M16 12h5M6 6l3 3M15 15l3 3M18 6l-3 3M9 15l-3 3"/></symbol>
+  <symbol id="i-brace" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="8" rx="4"/><path d="M8 12h.01M12 12h.01M16 12h.01"/></symbol>
+  <symbol id="i-implant" viewBox="0 0 24 24"><path d="M7 4h10M8 4v4M16 4v4M9 8h6M10 12h4M10.5 16h3M11.2 20h1.6"/></symbol>
+  <symbol id="i-kid" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M8.5 14c1 1.6 2.2 2.3 3.5 2.3s2.5-.7 3.5-2.3M9 9.5h.01M15 9.5h.01"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="5"/><path d="M12 8v8M8 12h8"/></symbol>
+</svg>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="MIRA Dental Care">
+      <svg width="38" height="38" viewBox="0 0 38 38" aria-hidden="true"><path d="M2 19a17 17 0 0 1 34 0z" fill="#1b5fa8"/><path d="M8 19a11 11 0 0 0 22 0z" fill="#f0675a"/><circle cx="19" cy="19" r="0" /></svg>
+      <span>MIRA<small data-i="brandsub">Dental Care</small></span>
+    </a>
+    <nav class="nav" aria-label="Main">
+      <a href="#services" data-i="nav_services">Services</a>
+      <a href="#doctor" data-i="nav_doctor">Doctor</a>
+      <a href="#reviews" data-i="nav_reviews">Reviews</a>
+      <a href="#visit" data-i="nav_visit">Visit</a>
+    </nav>
+    <div class="actions">
+      <button class="lang" id="lang" type="button" aria-label="Switch language">नेपाली</button>
+      <a class="btn desk" href="#book" data-i="book">Book a visit</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow" data-i="hero_eye">Family dentistry in Kathmandu</span>
+      <h1 data-i="hero_h">Dentistry, <em>made gentle.</em></h1>
+      <p class="lead" data-i="hero_p">Check-ups, fillings, braces and more for the whole family. Plain explanations, clear prices and short waits.</p>
+      <div class="cta">
+        <a class="btn" href="#book" data-i="book">Book a visit</a>
+        <a class="btn ghost" href="tel:+97798XXXXXXXX" data-i="call">Call the clinic</a>
+      </div>
+      <div class="chips">
+        <span class="chip"><b>4.9</b> <span data-i="chip_rating">Google rating (sample)</span></span>
+        <span class="chip" data-i="chip_open">Open Sunday to Saturday</span>
+        <span class="chip" data-i="chip_kids">Kids welcome</span>
+      </div>
+    </div>
+    <svg class="art" viewBox="0 0 560 500" role="img" aria-label="Abstract illustration of a tooth surrounded by colourful shapes">
+      <rect width="560" height="500" rx="28" fill="#cfe4f5"/>
+      <path d="M0 500V330a170 170 0 0 1 340 0v170z" fill="#1b5fa8"/>
+      <path d="M340 500V400a110 110 0 0 1 220 0v100z" fill="#f5c14b"/>
+      <path d="M40 0h210v0a105 105 0 0 1-210 0z" fill="#f0675a"/>
+      <circle cx="470" cy="100" r="62" fill="#b9e4d5"/>
+      <path d="M470 100m-62 0a62 62 0 0 1 124 0z" fill="#8fd0bb"/>
+      <g transform="translate(150 96) scale(1.22)">
+        <path d="M120 44C88 20 30 34 28 96c-1 40 26 62 30 118 2 30 18 48 34 20 8-16 14-38 28-38s20 22 28 38c16 28 32 10 34-20 4-56 31-78 30-118-2-62-60-76-92-52z" fill="#fff" stroke="#10283c" stroke-width="5" stroke-linejoin="round"/>
+        <path d="M74 70c-14 6-24 18-26 34" fill="none" stroke="#cfe4f5" stroke-width="7" stroke-linecap="round"/>
+        <circle cx="96" cy="104" r="5" fill="#10283c"/><circle cx="144" cy="104" r="5" fill="#10283c"/>
+        <path d="M100 126c8 9 32 9 40 0" fill="none" stroke="#10283c" stroke-width="5" stroke-linecap="round"/>
+      </g>
+    </svg>
+  </div>
+</section>
+
+<section class="stats" aria-label="Clinic facts">
+  <div class="wrap">
+    <ul>
+      <li><div class="num" data-count="12" data-suffix="">12</div><div class="lab" data-i="st1">years caring for patients</div></li>
+      <li><div class="num" data-count="8000" data-suffix="+">8,000+</div><div class="lab" data-i="st2">patients treated</div></li>
+      <li><div class="num" data-count="3" data-suffix="">3</div><div class="lab" data-i="st3">dentists on the team</div></li>
+      <li><div class="num" style="font-size:2.1rem" data-i="st4n">Same day</div><div class="lab" data-i="st4">emergency appointments</div></li>
+    </ul>
+    <p class="note" data-i="stnote">Sample figures for this demo.</p>
+  </div>
+</section>
+
+<section id="services">
+  <div class="wrap">
+    <div class="head">
+      <span class="eyebrow" data-i="nav_services">Services</span>
+      <h2 data-i="sv_h">Everything your family needs, in one clinic</h2>
+      <p class="lead" data-i="sv_p">Each visit starts with a short talk about what you need and what it costs, before any treatment.</p>
+    </div>
+    <div class="grid">
+      <article class="card"><div class="ico c1"><svg><use href="#i-check"/></svg></div><h3 data-i="s1">Check-up and cleaning</h3><p data-i="s1p">A full check, scaling and polish to keep gums and teeth healthy.</p><div class="price"><span data-i="from">from</span> Rs 1,200</div></article>
+      <article class="card"><div class="ico c2"><svg><use href="#i-fill"/></svg></div><h3 data-i="s2">Fillings</h3><p data-i="s2p">Tooth-coloured fillings that look natural and last.</p><div class="price"><span data-i="from">from</span> Rs 1,500</div></article>
+      <article class="card"><div class="ico c3"><svg><use href="#i-root"/></svg></div><h3 data-i="s3">Root canal</h3><p data-i="s3p">Save a painful tooth, with numbing and gentle care.</p><div class="price"><span data-i="from">from</span> Rs 6,000</div></article>
+      <article class="card"><div class="ico c4"><svg><use href="#i-spark"/></svg></div><h3 data-i="s4">Whitening</h3><p data-i="s4p">Brighter teeth in one visit, without harsh scrubbing.</p><div class="price"><span data-i="from">from</span> Rs 8,000</div></article>
+      <article class="card"><div class="ico c1"><svg><use href="#i-brace"/></svg></div><h3 data-i="s5">Braces and aligners</h3><p data-i="s5p">Straighter teeth for teens and adults, with a clear plan.</p><div class="price"><span data-i="from">from</span> Rs 45,000</div></article>
+      <article class="card"><div class="ico c2"><svg><use href="#i-implant"/></svg></div><h3 data-i="s6">Implants and crowns</h3><p data-i="s6p">Replace a missing tooth with one that feels like your own.</p><div class="price"><span data-i="from">from</span> Rs 60,000</div></article>
+      <article class="card"><div class="ico c3"><svg><use href="#i-kid"/></svg></div><h3 data-i="s7">Children's dentistry</h3><p data-i="s7p">A calm first visit, with time to explain and play.</p><div class="price"><span data-i="from">from</span> Rs 800</div></article>
+      <article class="card"><div class="ico c4"><svg><use href="#i-plus"/></svg></div><h3 data-i="s8">Emergency care</h3><p data-i="s8p">Toothache, broken tooth or swelling: call and we will fit you in.</p><div class="price"><span data-i="s8pr">Same-day visits</span></div></article>
+    </div>
+    <p class="note" data-i="pnote">Sample prices for the layout. The real clinic sets its own.</p>
+  </div>
+</section>
+
+<section class="ba" aria-labelledby="ba-h">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow" data-i="ba_eye">Results</span>
+      <h2 id="ba-h" data-i="ba_h">See the difference</h2>
+      <p class="lead" data-i="ba_p" style="margin-top:14px">Drag the handle to compare before and after. On a real site, this shows the clinic's own patient cases, with permission.</p>
+    </div>
+    <div class="ba-box" id="ba">
+      <svg viewBox="0 0 400 300" aria-hidden="true">
+        <rect width="400" height="300" fill="#e9c9c4"/>
+        <path d="M0 300V190q200-120 400 0v110z" fill="#d97b86"/>
+        <g fill="#e0cf88" stroke="#b9a35a" stroke-width="2">
+          <rect x="70" y="120" width="42" height="74" rx="18"/><rect x="118" y="108" width="44" height="86" rx="18"/><rect x="168" y="100" width="46" height="94" rx="20"/>
+          <rect x="220" y="100" width="46" height="94" rx="20"/><rect x="270" y="108" width="44" height="86" rx="18"/><rect x="318" y="120" width="42" height="74" rx="18"/>
+        </g>
+        <path d="M184 122l8 12M244 130l-6 14" stroke="#8c6b2c" stroke-width="4" stroke-linecap="round"/>
+      </svg>
+      <svg class="ba-after" viewBox="0 0 400 300" aria-hidden="true">
+        <rect width="400" height="300" fill="#f2d7d3"/>
+        <path d="M0 300V190q200-120 400 0v110z" fill="#ee8e98"/>
+        <g fill="#ffffff" stroke="#dbe6ee" stroke-width="2">
+          <rect x="70" y="120" width="42" height="74" rx="18"/><rect x="118" y="108" width="44" height="86" rx="18"/><rect x="168" y="100" width="46" height="94" rx="20"/>
+          <rect x="220" y="100" width="46" height="94" rx="20"/><rect x="270" y="108" width="44" height="86" rx="18"/><rect x="318" y="120" width="42" height="74" rx="18"/>
+        </g>
+        <path d="M178 112c4-6 10-8 14-8M230 112c4-6 10-8 14-8" stroke="#dcecf7" stroke-width="5" stroke-linecap="round" fill="none"/>
+      </svg>
+      <span class="ba-tag l" data-i="before">Before</span><span class="ba-tag r" data-i="after">After</span>
+      <div class="ba-line"></div><div class="ba-knob" aria-hidden="true">&harr;</div>
+      <input type="range" min="8" max="92" value="50" id="ba-range" aria-label="Compare before and after">
+    </div>
+  </div>
+</section>
+
+<section class="doc" id="doctor">
+  <div class="wrap">
+    <svg class="doc-art" viewBox="0 0 400 400" role="img" aria-label="Abstract portrait placeholder">
+      <rect width="400" height="400" fill="#cfe4f5"/>
+      <path d="M0 400V300a200 200 0 0 1 400 0v100z" fill="#1b5fa8"/>
+      <rect x="182" y="212" width="36" height="46" rx="12" fill="#e3a83a"/>
+      <circle cx="200" cy="160" r="62" fill="#f5c14b"/>
+      <path d="M138 158c0-38 26-62 62-62s62 24 62 62c-18-24-42-34-62-34s-44 10-62 34z" fill="#3b2a26"/>
+      <circle cx="180" cy="168" r="5" fill="#10283c"/><circle cx="220" cy="168" r="5" fill="#10283c"/>
+      <path d="M186 190c8 8 20 8 28 0" fill="none" stroke="#10283c" stroke-width="5" stroke-linecap="round"/>
+      <path d="M96 400v-30a104 84 0 0 1 208 0v30z" fill="#fff"/>
+      <path d="M170 292l30 40 30-40" fill="none" stroke="#1b5fa8" stroke-width="10" stroke-linejoin="round"/>
+    </svg>
+    <div>
+      <span class="eyebrow" data-i="nav_doctor">Doctor</span>
+      <h2 data-i="dr_h" style="margin:12px 0 16px">Meet your dentist</h2>
+      <p class="lead" data-i="dr_p">Dr. A. Sharma (placeholder) leads the clinic. Every treatment starts with listening, then a plain explanation of the options and the cost.</p>
+      <div class="creds"><span>BDS</span><span>MDS (sample)</span><span data-i="cr1">12 years' experience</span><span data-i="cr2">Speaks Nepali and English</span></div>
+      <p class="note" data-i="drnote">Placeholder person. The real doctor's photo, credentials and registration number go here.</p>
+    </div>
+  </div>
+</section>
+
+<section class="rev" id="reviews">
+  <div class="wrap">
+    <div class="head">
+      <span class="eyebrow" data-i="nav_reviews">Reviews</span>
+      <h2 data-i="rv_h">What patients say</h2>
+    </div>
+    <div class="grid3">
+      <figure class="q" style="margin:0"><div class="stars" aria-label="5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p data-i="q1">The clinic felt calm, and the dentist explained every step before starting.</p><small data-i="qs">Sample review</small></figure>
+      <figure class="q" style="margin:0"><div class="stars" aria-label="5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p data-i="q2">My son was scared of dentists. He asked when we can come back.</p><small data-i="qs">Sample review</small></figure>
+      <figure class="q" style="margin:0"><div class="stars" aria-label="5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p data-i="q3">The price was told to me first, and the final bill was the same.</p><small data-i="qs">Sample review</small></figure>
+    </div>
+    <p class="note" style="margin-top:18px" data-i="rvnote">Sample text for the layout. A real site shows the clinic's own Google reviews.</p>
+  </div>
+</section>
+
+<section class="steps">
+  <div class="wrap">
+    <div class="head"><span class="eyebrow" data-i="stp_eye">Your visit</span><h2 data-i="stp_h">Simple from start to finish</h2></div>
+    <ol>
+      <li><h3 data-i="t1">Book in a minute</h3><p data-i="t1p">Send a message on WhatsApp or call. Pick a day that suits you.</p></li>
+      <li><h3 data-i="t2">Check-up and talk</h3><p data-i="t2p">We look, take an X-ray if needed, and explain what we see in plain words.</p></li>
+      <li><h3 data-i="t3">Your plan and price</h3><p data-i="t3p">You get the options and the cost first. Treatment starts only when you agree.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section class="book" id="book">
+  <div class="wrap">
+    <div class="box">
+      <div>
+        <span class="eyebrow" data-i="book">Book a visit</span>
+        <h2 data-i="bk_h" style="margin:12px 0 14px">Tell us when you can come</h2>
+        <p class="lead" data-i="bk_p">Fill in the form and we prepare a WhatsApp message for you to send. No account needed.</p>
+        <p class="fine" style="margin-top:14px" data-i="bk_fine">Demo: the button uses a placeholder number. A real site opens the clinic's WhatsApp.</p>
+      </div>
+      <div>
+        <form id="form" novalidate>
+          <label for="f-name"><span data-i="f_name">Your name</span><input type="text" id="f-name" autocomplete="name" placeholder="Sita Sharma"></label>
+          <label for="f-phone"><span data-i="f_phone">Phone number</span><input type="tel" id="f-phone" autocomplete="tel" placeholder="98XXXXXXXX"></label>
+          <label for="f-svc"><span data-i="f_svc">What do you need?</span>
+            <select id="f-svc"><option data-i="o1">Check-up and cleaning</option><option data-i="o2">Toothache or emergency</option><option data-i="o3">Braces or aligners</option><option data-i="o4">Whitening</option><option data-i="o5">Children's visit</option><option data-i="o6">Something else</option></select></label>
+          <div class="two">
+            <label for="f-day"><span data-i="f_day">Preferred day</span>
+              <select id="f-day"><option data-i="d1">Sunday</option><option data-i="d2">Monday</option><option data-i="d3">Tuesday</option><option data-i="d4">Wednesday</option><option data-i="d5">Thursday</option><option data-i="d6">Friday</option><option data-i="d7">Saturday</option></select></label>
+            <label for="f-time"><span data-i="f_time">Time</span>
+              <select id="f-time"><option data-i="m1">Morning</option><option data-i="m2">Afternoon</option><option data-i="m3">Evening</option></select></label>
+          </div>
+          <button class="btn" type="submit" data-i="f_go">Prepare my message</button>
+        </form>
+        <div class="msg" id="msg" aria-live="polite">
+          <pre id="msg-text"></pre>
+          <a class="btn" id="wa" href="#" target="_blank" rel="noopener" data-i="f_wa">Open WhatsApp</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="visit" id="visit">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow" data-i="nav_visit">Visit</span>
+      <h2 data-i="v_h" style="margin:12px 0 16px">Find the clinic</h2>
+      <p class="lead" data-i="v_p" style="margin-bottom:18px">Gokarneshwor, Kathmandu. Near the main chowk, with parking for two-wheelers. (Sample address)</p>
+      <table class="hours">
+        <tr><td data-i="h1">Sunday to Friday</td><td>9:00 - 19:00</td></tr>
+        <tr><td data-i="h2">Saturday</td><td>10:00 - 16:00</td></tr>
+        <tr><td data-i="h3">Emergencies</td><td data-i="h3v">Call any time</td></tr>
+      </table>
+      <p class="fine" style="margin-top:12px">Tel: 01-XXXXXXX &nbsp;|&nbsp; WhatsApp: 98XXXXXXXX</p>
+    </div>
+    <div class="map" role="img" aria-label="Map placeholder"><span class="pin" data-i="pin">MIRA Dental Care</span><small data-i="mapnote">Map goes here</small></div>
+  </div>
+</section>
+
+<section class="faq" id="faq">
+  <div class="wrap">
+    <div class="head"><span class="eyebrow" data-i="faq_eye">Questions</span><h2 data-i="faq_h">Before you come</h2></div>
+    <details><summary data-i="fq1">Will it hurt?</summary><p data-i="fa1">We numb the area first and go slowly. Tell us to stop at any time and we will.</p></details>
+    <details><summary data-i="fq2">How much will it cost?</summary><p data-i="fa2">You get the price before treatment starts. The prices above are a guide, and we confirm after the check-up.</p></details>
+    <details><summary data-i="fq3">Do you treat children?</summary><p data-i="fa3">Yes. We start with a short, friendly first visit so children get used to the chair.</p></details>
+    <details><summary data-i="fq4">What if I have a toothache today?</summary><p data-i="fa4">Call us. We keep space for same-day emergencies.</p></details>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="demo" data-i="demo">MIRA Dental Care is a placeholder brand for a demo. No real clinic, doctor, prices or reviews.</div>
+    <div><b>MIRA Dental Care</b><br><span data-i="foot">Made as a sample of what your clinic's website could look like.</span></div>
+  </div>
+</footer>
+
+<nav class="bar" aria-label="Quick actions">
+  <a href="tel:+97798XXXXXXXX" data-i="call2">Call</a>
+  <a href="https://wa.me/97798XXXXXXXX" target="_blank" rel="noopener">WhatsApp</a>
+  <a class="p" href="#book" data-i="book2">Book a visit</a>
+</nav>
+
+<script>
+(function(){
+  var NP={
+    brandsub:"डेन्टल केयर", nav_services:"सेवाहरू", nav_doctor:"चिकित्सक", nav_reviews:"रिभ्यु", nav_visit:"भेट्ने ठाउँ",
+    book:"भेट समय बुक गर्नुहोस्", book2:"बुक गर्नुहोस्", call:"क्लिनिकमा फोन गर्नुहोस्", call2:"फोन",
+    hero_eye:"काठमाडौंमा पारिवारिक दन्त उपचार", hero_h:"दाँतको उपचार, <em>कोमल हातले।</em>",
+    hero_p:"पूरै परिवारका लागि जाँच, फिलिङ, ब्रेसेस र अरू उपचार। बुझ्न सजिलो कुरा, स्पष्ट मूल्य र कम पर्खाइ।",
+    chip_rating:"गुगल रेटिङ (नमुना)", chip_open:"आइतबारदेखि शनिबारसम्म खुला", chip_kids:"बालबालिकालाई स्वागत छ",
+    st1:"वर्षको अनुभव", st2:"उपचार गरिएका बिरामी", st3:"जना दन्त चिकित्सक", st4n:"त्यही दिन", st4:"आपतकालीन उपचार", stnote:"यो डेमोका लागि नमुना आँकडा हो।",
+    sv_h:"तपाईंको परिवारलाई चाहिने सबै एउटै क्लिनिकमा", sv_p:"हरेक भेटमा उपचार सुरु गर्नु अघि के चाहिन्छ र कति खर्च लाग्छ भन्ने छोटो कुराकानी हुन्छ।",
+    s1:"जाँच र सफाइ", s1p:"पूरा जाँच, स्केलिङ र पालिस, गिजा र दाँत स्वस्थ राख्न।", from:"सुरु",
+    s2:"फिलिङ", s2p:"प्राकृतिक देखिने र टिकाउ, दाँतकै रङको फिलिङ।",
+    s3:"रुट क्यानाल", s3p:"दुख्ने दाँतलाई बचाउन, सुन्न बनाएर कोमल तरिकाले।",
+    s4:"दाँत सेतो बनाउने", s4p:"एउटै भेटमा चम्किलो दाँत, कडा रगडबिना।",
+    s5:"ब्रेसेस र एलाइनर", s5p:"किशोर र वयस्कका लागि स्पष्ट योजनासहित सिधा दाँत।",
+    s6:"इम्प्लान्ट र क्राउन", s6p:"हराएको दाँतको ठाउँमा आफ्नै जस्तो लाग्ने दाँत।",
+    s7:"बालबालिकाको दाँत", s7p:"शान्त पहिलो भेट, बुझाउने र खेल्ने समयसहित।",
+    s8:"आपतकालीन उपचार", s8p:"दाँत दुख्दा, भाँचिँदा वा सुन्निँदा फोन गर्नुहोस्, हामी समय मिलाउँछौं।", s8pr:"त्यही दिन भेट",
+    pnote:"यो लेआउटका लागि नमुना मूल्य हो। वास्तविक क्लिनिकले आफ्नै मूल्य तोक्छ।",
+    ba_eye:"नतिजा", ba_h:"फरक आफैं हेर्नुहोस्", ba_p:"अघि र पछिको फरक हेर्न ह्यान्डल तान्नुहोस्। वास्तविक साइटमा क्लिनिकका आफ्नै बिरामीका तस्बिर (अनुमतिसहित) हुन्छन्।", before:"अघि", after:"पछि",
+    dr_h:"आफ्नो दन्त चिकित्सकसँग भेट्नुहोस्", dr_p:"डा. ए. शर्मा (नमुना) क्लिनिकको नेतृत्व गर्नुहुन्छ। हरेक उपचार सुन्नबाट सुरु हुन्छ, अनि विकल्प र खर्च सजिलो भाषामा बुझाइन्छ।", cr1:"१२ वर्षको अनुभव", cr2:"नेपाली र अंग्रेजी बोल्नुहुन्छ",
+    drnote:"नमुना व्यक्ति। वास्तविक चिकित्सकको फोटो, योग्यता र दर्ता नम्बर यहाँ आउँछ।",
+    rv_h:"बिरामीहरू के भन्छन्", q1:"क्लिनिक शान्त लाग्यो, र सुरु गर्नु अघि डाक्टरले हरेक चरण बुझाउनुभयो।", q2:"मेरो छोरा दन्त चिकित्सकसँग डराउँथ्यो। अहिले फेरि कहिले जाने भनेर सोध्छ।", q3:"मूल्य पहिले नै भनियो, र अन्तिम बिल त्यति नै आयो।", qs:"नमुना रिभ्यु",
+    rvnote:"लेआउटका लागि नमुना पाठ। वास्तविक साइटमा क्लिनिककै गुगल रिभ्यु देखिन्छन्।",
+    stp_eye:"तपाईंको भेट", stp_h:"सुरुदेखि अन्त्यसम्म सजिलो", t1:"एक मिनेटमा बुक गर्नुहोस्", t1p:"WhatsApp मा सन्देश पठाउनुहोस् वा फोन गर्नुहोस्। सुहाउने दिन छान्नुहोस्।", t2:"जाँच र कुराकानी", t2p:"हामी हेर्छौं, चाहिए एक्स-रे गर्छौं, र देखेको कुरा सजिलो भाषामा बुझाउँछौं।", t3:"तपाईंको योजना र मूल्य", t3p:"पहिले विकल्प र खर्च बताइन्छ। तपाईं सहमत भएपछि मात्र उपचार सुरु हुन्छ।",
+    bk_h:"कहिले आउन मिल्छ भन्नुहोस्", bk_p:"फारम भर्नुहोस्, हामी तपाईंलाई पठाउन WhatsApp सन्देश तयार गरिदिन्छौं। खाता चाहिँदैन।", bk_fine:"डेमो: बटनले नमुना नम्बर प्रयोग गर्छ। वास्तविक साइटले क्लिनिकको WhatsApp खोल्छ।",
+    f_name:"तपाईंको नाम", f_phone:"फोन नम्बर", f_svc:"तपाईंलाई के चाहिएको छ?", o1:"जाँच र सफाइ", o2:"दाँत दुखेको वा आपतकालीन", o3:"ब्रेसेस वा एलाइनर", o4:"दाँत सेतो बनाउने", o5:"बालबालिकाको भेट", o6:"अरू केही",
+    f_day:"मन पर्ने दिन", d1:"आइतबार", d2:"सोमबार", d3:"मंगलबार", d4:"बुधबार", d5:"बिहीबार", d6:"शुक्रबार", d7:"शनिबार", f_time:"समय", m1:"बिहान", m2:"दिउँसो", m3:"साँझ", f_go:"मेरो सन्देश तयार गर्नुहोस्", f_wa:"WhatsApp मा खोल्नुहोस्",
+    v_h:"क्लिनिक कहाँ छ", v_p:"गोकर्णेश्वर, काठमाडौं। मुख्य चोकनजिक, दुई पाङ्ग्रे सवारीका लागि पार्किङसहित। (नमुना ठेगाना)", h1:"आइतबारदेखि शुक्रबार", h2:"शनिबार", h3:"आपतकालीन", h3v:"जुनसुकै बेला फोन गर्नुहोस्", pin:"मिरा डेन्टल केयर", mapnote:"नक्सा यहाँ आउँछ",
+    faq_eye:"प्रश्नहरू", faq_h:"आउनु अघि",
+    fq1:"के दुख्छ?", fa1:"हामी पहिले सुन्न बनाउँछौं र बिस्तारै काम गर्छौं। रोक्नु भन्नुभयो भने तुरुन्तै रोक्छौं।",
+    fq2:"कति खर्च लाग्छ?", fa2:"उपचार सुरु गर्नु अघि नै मूल्य बताइन्छ। माथिको मूल्य अनुमान मात्र हो, जाँचपछि पक्का गरिन्छ।",
+    fq3:"के तपाईंहरू बालबालिकाको उपचार गर्नुहुन्छ?", fa3:"गर्छौं। बच्चाहरू कुर्सीसँग बानी पर्ने गरी छोटो र मिलनसार पहिलो भेटबाट सुरु गर्छौं।",
+    fq4:"आज दाँत दुखिरहेको छ भने?", fa4:"हामीलाई फोन गर्नुहोस्। त्यही दिनको आपतकालीन उपचारका लागि हामी ठाउँ राख्छौं।",
+    demo:"मिरा डेन्टल केयर डेमोका लागि बनाइएको नमुना ब्रान्ड हो। यहाँ कुनै वास्तविक क्लिनिक, डाक्टर, मूल्य वा रिभ्यु छैन।", foot:"तपाईंको क्लिनिकको वेबसाइट कस्तो देखिन सक्छ भन्ने नमुनाका रूपमा बनाइएको।"
+  };
+  var nodes=[].slice.call(document.querySelectorAll("[data-i]"));
+  nodes.forEach(function(n){ n.setAttribute("data-en",n.innerHTML) });
+  var btn=document.getElementById("lang"), cur="en";
+  function apply(l){
+    cur=l; document.documentElement.lang=(l==="np"?"ne":"en"); document.body.classList.toggle("np",l==="np");
+    nodes.forEach(function(n){ var k=n.getAttribute("data-i"); n.innerHTML=(l==="np"&&NP[k])?NP[k]:n.getAttribute("data-en") });
+    btn.textContent=(l==="np"?"English":"नेपाली");
+    try{ localStorage.setItem("mira-lang",l) }catch(e){}
+    setCounts(true);
+  }
+  btn.addEventListener("click",function(){ apply(cur==="en"?"np":"en") });
+  try{ if(localStorage.getItem("mira-lang")==="np") apply("np") }catch(e){}
+
+  /* count-up stats: final numbers are already in the HTML; the count only plays if motion is allowed */
+  var reduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function fmt(n,s){ return n.toLocaleString("en-US")+s }
+  function setCounts(skip){
+    [].forEach.call(document.querySelectorAll("[data-count]"),function(el){
+      var end=+el.getAttribute("data-count"), suf=el.getAttribute("data-suffix")||"";
+      el.textContent=fmt(end,suf);
+    });
+  }
+  if(!reduce&&"IntersectionObserver" in window){
+    var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(!e.isIntersecting) return; io.unobserve(e.target);
+      var el=e.target, end=+el.getAttribute("data-count"), suf=el.getAttribute("data-suffix")||"", t0=null;
+      function step(t){ if(!t0) t0=t; var p=Math.min(1,(t-t0)/900); el.textContent=fmt(Math.round(end*(1-Math.pow(1-p,3))),suf); if(p<1) requestAnimationFrame(step) }
+      requestAnimationFrame(step) }) },{threshold:.6});
+    [].forEach.call(document.querySelectorAll("[data-count]"),function(el){ io.observe(el) });
+  }
+
+  /* before / after slider */
+  var box=document.getElementById("ba"), rng=document.getElementById("ba-range");
+  function pos(){ box.style.setProperty("--p",rng.value+"%") }
+  rng.addEventListener("input",pos); pos();
+
+  /* booking message */
+  var form=document.getElementById("form"), out=document.getElementById("msg"), txt=document.getElementById("msg-text"), wa=document.getElementById("wa");
+  form.addEventListener("submit",function(e){
+    e.preventDefault();
+    var name=document.getElementById("f-name").value.trim()||"(name)";
+    var ph=document.getElementById("f-phone").value.trim()||"(phone)";
+    function opt(id){ var s=document.getElementById(id); return s.options[s.selectedIndex].textContent }
+    var m=(cur==="np"?"नमस्ते, म मिरा डेन्टल केयरमा भेट समय बुक गर्न चाहन्छु.\n":"Hello, I would like to book a visit at MIRA Dental Care.\n")+
+      (cur==="np"?"नाम: ":"Name: ")+name+"\n"+(cur==="np"?"फोन: ":"Phone: ")+ph+"\n"+
+      (cur==="np"?"आवश्यकता: ":"Need: ")+opt("f-svc")+"\n"+(cur==="np"?"मन पर्ने समय: ":"Preferred time: ")+opt("f-day")+", "+opt("f-time");
+    txt.textContent=m; wa.href="https://wa.me/97798XXXXXXXX?text="+encodeURIComponent(m); out.classList.add("on");
+    out.scrollIntoView({behavior:reduce?"auto":"smooth",block:"nearest"});
+  });
+})();
+</script>
+</body>
+</html>
