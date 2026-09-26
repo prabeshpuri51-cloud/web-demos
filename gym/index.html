@@ -70,8 +70,8 @@ h2{font-size:clamp(38px,5.4vw,68px);margin-bottom:14px}
 /* numbers */
 .nums{background:var(--navy);padding:60px 0;border-bottom:3px solid #000}
 .ngrid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:3px solid #fff}
-.ngrid div{padding:26px 14px;text-align:center;border-right:3px solid #fff}
-.ngrid div:last-child{border:0}
+.ngrid>div{padding:26px 14px;text-align:center;border-right:3px solid #fff}
+.ngrid>div:last-child{border:0}
 .num{font:400 clamp(44px,6.5vw,84px) Anton;color:var(--orange);line-height:1;text-shadow:3px 3px 0 #000}
 .ngrid p{font:700 13px Barlow,'Noto Sans Devanagari';letter-spacing:.16em;text-transform:uppercase;margin-top:8px}
 .ngrid small{display:block;opacity:.6;font-size:11px;letter-spacing:.1em}
@@ -185,7 +185,7 @@ footer p{max-width:620px;margin:0 auto;border:2px dashed #3a4a6b;padding:12px}
  .hero{padding:36px 0 120px;min-height:0}
  .hero .wrap{grid-template-columns:1fr}
  .photo{aspect-ratio:16/11;clip-path:polygon(0 0,100% 0,100% 100%,8% 100%)}
- .ngrid{grid-template-columns:1fr 1fr}.ngrid div:nth-child(2){border-right:0}.ngrid div:nth-child(-n+2){border-bottom:3px solid #fff}
+ .ngrid{grid-template-columns:1fr 1fr}.ngrid>div:nth-child(2){border-right:0}.ngrid>div:nth-child(-n+2){border-bottom:3px solid #fff}
  .pgrid,.tgrid,.rgrid,.fgrid,.split,.form,.vgrid{grid-template-columns:1fr}
  .card.pop{transform:none}.card.pop.in{transform:none}
  .tiles{grid-template-columns:1fr 1fr}.tile{min-height:200px}
