@@ -1,0 +1,557 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+  <title>Rang Events | Wedding & Event Planner in Kathmandu, Nepal</title>
+  <meta name="description" content="Elegantly planned and decorated weddings, bratabandha, pasni, and receptions in Kathmandu, Nepal. View pricing packages and check availability.">
+  <meta name="color-scheme" content="light">
+  
+  <!-- Preconnect and Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheet -->
+  <script>document.documentElement.className+=" js";</script>
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- Defer JavaScript -->
+  <script src="script.js" defer></script>
+</head>
+<body>
+
+  <!-- Skip to Content Link -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="header-container">
+      <a href="#" class="logo">
+        <span class="logo-text">Rang Events</span>
+        <span class="logo-sub">Kathmandu</span>
+      </a>
+      <nav class="nav-scroll" aria-label="Main Navigation">
+        <div class="nav-links">
+          <a href="#portfolio">Portfolio</a>
+          <a href="#packages">Packages</a>
+          <a href="#process">Process</a>
+          <a href="#reviews">Reviews</a>
+          <a href="#contact">Contact</a>
+        </div>
+      </nav>
+      <a href="https://wa.me/9779823314206" class="btn btn-nav btn-whatsapp" target="_blank" rel="noopener noreferrer">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.515 2.266 2.27 3.51 5.284 3.508 8.49-.005 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.974-.502-5.731-1.455L0 24zm6.59-4.846c1.642.975 3.254 1.488 4.793 1.489 5.256 0 9.531-4.248 9.535-9.47.002-2.529-.982-4.908-2.774-6.702-1.792-1.794-4.175-2.783-6.707-2.784-5.263 0-9.54 4.25-9.545 9.472-.001 1.701.446 3.364 1.294 4.846l-.973 3.555 3.655-.959zM17.487 14.37c-.305-.153-1.803-.889-2.082-.99-.279-.101-.482-.153-.685.153-.203.305-.787.99-.965 1.193-.177.203-.355.229-.66.076-.304-.153-1.285-.473-2.448-1.511-.904-.807-1.514-1.804-1.691-2.11-.177-.305-.019-.47.133-.621.137-.136.305-.355.457-.533.153-.178.203-.305.305-.508.101-.203.05-.381-.025-.533-.076-.153-.685-1.65-.939-2.26-.247-.6-.5-.519-.685-.529-.177-.009-.381-.01-.584-.01a1.12 1.12 0 0 0-.813.381c-.279.305-1.066 1.042-1.066 2.54 0 1.498 1.091 2.946 1.243 3.149.152.203 2.147 3.279 5.2 4.595.726.314 1.293.501 1.734.641.73.232 1.393.199 1.918.121.584-.087 1.803-.737 2.057-1.448.254-.712.254-1.321.178-1.448-.076-.127-.279-.203-.584-.356z"/></svg>
+        <span>Get in touch</span>
+      </a>
+    </div>
+  </header>
+
+  <main id="main-content">
+    
+    <!-- Hero Section -->
+    <section class="hero-section" aria-label="Introduction">
+      <div class="hero-bg"></div>
+      <div class="hero-overlay"></div>
+      <div class="hero-content wrapper reveal-fade">
+        <p class="hero-meta">ESTD. 2019 • KATHMANDU, NEPAL (SAMPLE)</p>
+        <h1 class="hero-title">Your wedding, <br><span class="italic-serif">planned with care.</span></h1>
+        <p class="hero-subtitle">Planning, decoration and day-of coordination for weddings, bratabandha, pasni and receptions in Kathmandu.</p>
+        
+        <div class="hero-actions">
+          <a href="#quick-enquiry" class="btn btn-primary">Check your date</a>
+          <a href="#portfolio" class="btn btn-secondary">See our work</a>
+        </div>
+
+        <div class="proof-chips">
+          <span class="chip"><span class="bullet" aria-hidden="true">•</span> 120+ events (sample)</span>
+          <span class="chip"><span class="bullet" aria-hidden="true">•</span> Planning to coordination</span>
+          <span class="chip"><span class="bullet" aria-hidden="true">•</span> Video calls for families abroad</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quick Enquiry Form -->
+    <section id="quick-enquiry" class="enquiry-section wrapper" aria-labelledby="enquiry-heading">
+      <div class="enquiry-card reveal-up">
+        <h2 id="enquiry-heading" class="enquiry-title">Check Your Date & Ask About Service</h2>
+        <form id="whatsapp-enquiry-form" class="enquiry-form">
+          <div class="form-group">
+            <label for="event-type">Event Type</label>
+            <div class="select-wrapper">
+              <select id="event-type" name="event_type" required>
+                <option value="" disabled selected>Select event type</option>
+                <option value="Wedding">Wedding (Vivah)</option>
+                <option value="Reception">Reception Party</option>
+                <option value="Bratabandha">Bratabandha</option>
+                <option value="Pasni">Pasni (Rice Feeding)</option>
+                <option value="Birthday">Birthday</option>
+                <option value="Other">Other Event</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="event-date">Desired Date</label>
+            <input type="date" id="event-date" name="event_date" required>
+          </div>
+          <div class="form-group">
+            <label for="event-venue">Venue or Location</label>
+            <input type="text" id="event-venue" name="event_venue" placeholder="e.g. Baluwatar, or 'not fixed yet'" required>
+          </div>
+          <div class="form-group">
+            <label for="guest-count">Estimated Guests</label>
+            <div class="select-wrapper">
+              <select id="guest-count" name="guest_count" required>
+                <option value="" disabled selected>Select size</option>
+                <option value="Up to 100">Up to 100 guests</option>
+                <option value="100 to 250">100 - 250 guests</option>
+                <option value="250 to 500">250 - 500 guests</option>
+                <option value="500+">500+ guests</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-submit">
+            <button type="submit" class="btn btn-primary btn-submit">
+              <span>Ask on WhatsApp</span>
+              <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.515 2.266 2.27 3.51 5.284 3.508 8.49-.005 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.974-.502-5.731-1.455L0 24zm6.59-4.846c1.642.975 3.254 1.488 4.793 1.489 5.256 0 9.531-4.248 9.535-9.47.002-2.529-.982-4.908-2.774-6.702-1.792-1.794-4.175-2.783-6.707-2.784-5.263 0-9.54 4.25-9.545 9.472-.001 1.701.446 3.364 1.294 4.846l-.973 3.555 3.655-.959zM17.487 14.37c-.305-.153-1.803-.889-2.082-.99-.279-.101-.482-.153-.685.153-.203.305-.787.99-.965 1.193-.177.203-.355.229-.66.076-.304-.153-1.285-.473-2.448-1.511-.904-.807-1.514-1.804-1.691-2.11-.177-.305-.019-.47.133-.621.137-.136.305-.355.457-.533.153-.178.203-.305.305-.508.101-.203.05-.381-.025-.533-.076-.153-.685-1.65-.939-2.26-.247-.6-.5-.519-.685-.529-.177-.009-.381-.01-.584-.01a1.12 1.12 0 0 0-.813.381c-.279.305-1.066 1.042-1.066 2.54 0 1.498 1.091 2.946 1.243 3.149.152.203 2.147 3.279 5.2 4.595.726.314 1.293.501 1.734.641.73.232 1.393.199 1.918.121.584-.087 1.803-.737 2.057-1.448.254-.712.254-1.321.178-1.448-.076-.127-.279-.203-.584-.356z"/></svg>
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- Services Section (What We Do) -->
+    <section id="services" class="services-section wrapper" aria-labelledby="services-heading">
+      <div class="section-intro reveal-up">
+        <p class="section-caption">WHAT WE DO</p>
+        <h2 id="services-heading" class="section-title">Everything you need for your special day</h2>
+        <p class="section-description">We manage and customize every element so you can focus entirely on celebrating with family.</p>
+      </div>
+
+      <div class="services-grid">
+        <!-- Card 1 -->
+        <article class="service-card reveal-up">
+          <div class="service-icon" aria-hidden="true">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M12 6v6l4 2"/></svg>
+          </div>
+          <h3>Wedding Planning</h3>
+          <p>End-to-end event design, venue curation, vendor negotiations, budget control and complete timeline design for smooth flow.</p>
+          <a href="https://wa.me/9779823314206?text=Hi%20Rang%20Events%2C%20I%20am%20interested%20in%20your%20complete%20wedding%20planning%20services.%20Can%20we%20discuss%3F" class="service-link" target="_blank" rel="noopener noreferrer">
+            <span>Ask about planning</span>
+            <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </article>
+
+        <!-- Card 2 -->
+        <article class="service-card reveal-up">
+          <div class="service-icon" aria-hidden="true">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>
+          </div>
+          <h3>Decoration & Flowers</h3>
+          <p>Elegant stages, mandap styling, floral entry gates, custom lighting designs and banquet tabletop setups tailored to your custom style.</p>
+          <a href="https://wa.me/9779823314206?text=Hi%20Rang%20Events%2C%20I'd%20love%20to%20know%20more%20about%20your%20decoration%20and%20floral%20services.%20Could%20we%20connect%3F" class="service-link" target="_blank" rel="noopener noreferrer">
+            <span>Ask about decoration</span>
+            <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </article>
+
+        <!-- Card 3 -->
+        <article class="service-card reveal-up">
+          <div class="service-icon" aria-hidden="true">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <h3>Day-of Coordination</h3>
+          <p>On-site management during the event day. We orchestrate arrival times, caterer delivery, guest seatings and tackle unexpected problems.</p>
+          <a href="https://wa.me/9779823314206?text=Hi%20Rang%20Events%2C%20I'm%20looking%20for%20day-of%20coordination%20assistance%20for%20an%20upcoming%20event.%20Are%20you%20available%3F" class="service-link" target="_blank" rel="noopener noreferrer">
+            <span>Ask about coordination</span>
+            <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </article>
+      </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="portfolio-section wrapper" aria-labelledby="portfolio-heading">
+      <div class="section-intro reveal-up">
+        <p class="section-caption">RECENT WEDDINGS (SAMPLE PHOTOS)</p>
+        <h2 id="portfolio-heading" class="section-title">A glimpse of our celebrations</h2>
+        <p class="section-description">Every wedding is customized, capturing authentic laughter and vibrant traditions across Kathmandu’s best venues.</p>
+      </div>
+
+      <!-- Event 1 -->
+      <article class="event-block reveal-up">
+        <div class="event-meta-info">
+          <h3>Garden wedding, Kathmandu (sample)</h3>
+          <p class="event-stats">350 Guests • Winter Season • Heritage Garden (sample)</p>
+        </div>
+        <div class="gallery-grid">
+          <div class="gallery-item large" data-caption="Heritage Garden Outdoor Stage setup during a winter wedding in Kathmandu (sample)">
+            <img src="photos/event1-1.jpg" alt="Outdoor garden wedding stage with white draping, flowers and seating (sample)" loading="lazy" width="800" height="533" data-fallback="Garden Wedding Setup (Sample event1-1)">
+          </div>
+          <div class="gallery-item" data-caption="Ceremony seating with a floral arch and ribbon-tied chairs on the lawn (sample)">
+            <img src="photos/event1-2.jpg" alt="Rows of white chairs with yellow ribbons facing a floral arch in a garden (sample)" loading="lazy" width="400" height="300" data-fallback="Flower Details (Sample event1-2)">
+          </div>
+          <div class="gallery-item" data-caption="Handcrafted traditional Nepali Marigold backdrops and floral arrangements (sample)">
+            <img src="photos/event1-3.jpg" alt="Marigold garlands hanging against a bright sky (sample)" loading="lazy" width="400" height="300" data-fallback="Garlands & Lighting (Sample event1-3)">
+          </div>
+          <div class="gallery-item" data-caption="Candlelit reception table with fairy lights in the garden (sample)">
+            <img src="photos/event1-4.jpg" style="object-position:center 30%" alt="Round reception table with candelabra, red napkins and fairy lights at night (sample)" loading="lazy" width="400" height="300" data-fallback="Feast Arrangements (Sample event1-4)">
+          </div>
+          <div class="gallery-item" data-caption="Evening lounge corner with draped chairs and hanging lights (sample)">
+            <img src="photos/event1-5.jpg" style="object-position:center 60%" alt="Draped high tables and chairs under hanging flower lights at night (sample)" loading="lazy" width="400" height="300" data-fallback="Evening Guests (Sample event1-5)">
+          </div>
+        </div>
+      </article>
+
+      <!-- Event 2 -->
+      <article class="event-block reveal-up">
+        <div class="event-meta-info">
+          <h3>Grand Banquet Reception, Kathmandu (sample)</h3>
+          <p class="event-stats">500 Guests • Autumn Season • Yak & Yeti (sample)</p>
+        </div>
+        <div class="gallery-grid">
+          <div class="gallery-item large" data-caption="Gilded ballroom banquet grand entry and luxury mainstage with rich pink and cream palettes (sample)">
+            <img src="photos/event2-1.jpg" alt="Grand ballroom with a chandelier, lit stage and round tables (sample)" loading="lazy" width="800" height="533" data-fallback="Grand Ballroom Entrance (Sample event2-1)">
+          </div>
+          <div class="gallery-item" data-caption="Details of the grand tier cake and floral backdrops (sample)">
+            <img src="photos/event2-2.jpg" alt="White wedding cake on a table surrounded by flowers and hanging lanterns (sample)" loading="lazy" width="400" height="300" data-fallback="Banquet Cake & Flower Stage (Sample event2-2)">
+          </div>
+          <div class="gallery-item" data-caption="Banquet hall with a crystal chandelier and set round tables (sample)">
+            <img src="photos/event2-3.jpg" alt="Banquet hall with a chandelier, white chair covers and set round tables (sample)" loading="lazy" width="400" height="300" data-fallback="Ceiling Drapery (Sample event2-3)">
+          </div>
+          <div class="gallery-item" data-caption="Buffet tables with orange flower arrangements and draped canopy (sample)">
+            <img src="photos/event2-4.jpg" alt="Buffet line with orange floral arrangements under peach draping (sample)" loading="lazy" width="400" height="300" data-fallback="The Reception Crowd (Sample event2-4)">
+          </div>
+          <div class="gallery-item" data-caption="Flower-covered mandap with chandeliers and seating for the couple (sample)">
+            <img src="photos/event2-5.jpg" alt="Floral mandap with hanging chandeliers on a dark stage (sample)" loading="lazy" width="400" height="300" data-fallback="Main Stage Detail (Sample event2-5)">
+          </div>
+        </div>
+      </article>
+
+      <!-- Event 3 -->
+      <article class="event-block reveal-up">
+        <div class="event-meta-info">
+          <h3>Bratabandha Ceremony, Lalitpur (sample)</h3>
+          <p class="event-stats">180 Guests • Spring Season • Patan Heritage Venue (sample)</p>
+        </div>
+        <div class="gallery-grid">
+          <div class="gallery-item large" data-caption="Courtyard styled for a family ceremony, with a table and marigold garlands (sample)">
+            <img src="photos/event3-1.jpg" style="object-position:center 65%" alt="Sandstone courtyard with a green garden table and a marigold garland on the floor (sample)" loading="lazy" width="800" height="533" data-fallback="Traditional Courtyard Bratabandha (Sample event3-1)">
+          </div>
+          <div class="gallery-item" data-caption="Ceremony kalash dressed with marigold garland (sample)">
+            <img src="photos/event3-2.jpg" style="object-position:center 55%" alt="Brass pot wrapped in a marigold garland on a blue cloth (sample)" loading="lazy" width="400" height="300" data-fallback="Sacred Puja Area (Sample event3-2)">
+          </div>
+          <div class="gallery-item" data-caption="Puja plate with bananas, flowers and offerings (sample)">
+            <img src="photos/event3-3.jpg" alt="Brass puja plate with bananas, flowers and offerings (sample)" loading="lazy" width="400" height="300" data-fallback="Offering Details (Sample event3-3)">
+          </div>
+          <div class="gallery-item" data-caption="Hot food served from steel chafing dishes (sample)">
+            <img src="photos/event3-4.jpg" style="object-position:center 55%" alt="Steel chafing dishes with hot vegetable dishes at a catered buffet (sample)" loading="lazy" width="400" height="300" data-fallback="Authentic Feast Setting (Sample event3-4)">
+          </div>
+          <div class="gallery-item" data-caption="Entrance arch hung with marigold garlands and a pink carpet (sample)">
+            <img src="photos/event3-5.jpg" alt="Stone archway covered in marigold garlands above a pink carpet (sample)" loading="lazy" width="400" height="300" data-fallback="Entrance Gateway (Sample event3-5)">
+          </div>
+        </div>
+      </article>
+
+      <div class="portfolio-footer reveal-up">
+        <p>Want to see more live-action pictures?</p>
+        <a href="https://instagram.com" class="text-link" target="_blank" rel="noopener noreferrer">
+          See more on Instagram (sample link)
+          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </section>
+
+    <!-- Packages Section -->
+    <section id="packages" class="packages-section wrapper" aria-labelledby="packages-heading">
+      <div class="section-intro reveal-up">
+        <p class="section-caption">PACKAGES WITH CLEAR STARTING PRICES</p>
+        <h2 id="packages-heading" class="section-title">Simplified pricing, tailored for you</h2>
+        <p class="section-description">We provide upfront price ranges (all samples) to help families evaluate budgets without guessing.</p>
+      </div>
+
+      <div class="packages-grid">
+        <!-- Pack 1 -->
+        <article class="package-card reveal-up">
+          <div class="package-header">
+            <h3>Silver Package</h3>
+            <div class="price-box">
+              <span class="currency">from Rs</span>
+              <span class="price-value">150,000</span>
+            </div>
+            <p class="package-term">Sample price • For up to 250 guests</p>
+          </div>
+          <div class="package-body">
+            <p class="package-desc">Perfect for couples who need professional help styling, decorating, and managing the main event day.</p>
+            <ul class="inclusion-list">
+              <li>Full Venue Decoration & entry styling</li>
+              <li>Floral Stage, Mandap, or Canopy design</li>
+              <li>Basic Audio & lighting coordination</li>
+              <li>Day-of Event Timeline & scheduling</li>
+              <li>2 Day-of Coordinators on the ground</li>
+            </ul>
+          </div>
+          <div class="package-footer">
+            <a href="https://wa.me/9779823314206?text=Hi%20Rang%20Events%2C%20I'm%20interested%20in%20the%20Silver%20Package%20(sample%20Rs%20150K)%20for%20my%20event.%20Could%20we%20discuss%3F" class="btn btn-outline" target="_blank" rel="noopener noreferrer">Inquire about Silver</a>
+          </div>
+        </article>
+
+        <!-- Pack 2 -->
+        <article class="package-card featured reveal-up">
+          <div class="badge">MOST CHOSEN</div>
+          <div class="package-header">
+            <h3>Gold Package</h3>
+            <div class="price-box">
+              <span class="currency">from Rs</span>
+              <span class="price-value">300,000</span>
+            </div>
+            <p class="package-term">Sample price • For up to 500 guests</p>
+          </div>
+          <div class="package-body">
+            <p class="package-desc">Complete end-to-end event planning. We handle the timelines, vendors, layouts, and supply the whole team.</p>
+            <ul class="inclusion-list">
+              <li>A-to-Z Planning, site selection & design</li>
+              <li>Signature Flower & Mandap custom art</li>
+              <li>Custom Lighting, seating & drapery</li>
+              <li>Vendor hire (Catering, Video, Music, etc.)</li>
+              <li>Comprehensive timeline & crowd control</li>
+              <li>5 Coordinators for complete execution</li>
+            </ul>
+          </div>
+          <div class="package-footer">
+            <a href="https://wa.me/9779823314206?text=Hi%20Rang%20Events%2C%20I%20would%20like%20to%20learn%20more%20about%20your%20Gold%20Package%20(sample%20Rs%20300K).%20Can%20we%20schedule%20a%20consultation%3F" class="btn btn-primary" target="_blank" rel="noopener noreferrer">Inquire about Gold</a>
+          </div>
+        </article>
+
+        <!-- Pack 3 -->
+        <article class="package-card reveal-up">
+          <div class="package-header">
+            <h3>Platinum Package</h3>
+            <div class="price-box">
+              <span class="price-value">Custom</span>
+            </div>
+            <p class="package-term">Sample service • Tailored without limits</p>
+          </div>
+          <div class="package-body">
+            <p class="package-desc">Designed for multi-day, heritage grand affairs, or destination celebrations with premium requirements.</p>
+            <ul class="inclusion-list">
+              <li>Multi-day & multi-venue support</li>
+              <li>Unrestricted customized floral architectures</li>
+              <li>Hotel stay & guest shuttle coordination</li>
+              <li>Pre-wedding & post-wedding events</li>
+              <li>Lead Planner dedicated to you</li>
+            </ul>
+          </div>
+          <div class="package-footer">
+            <a href="https://wa.me/9779823314206?text=Hi%20Rang%20Events%2C%20I'd%20love%20to%20talk%20about%20a%20Custom%2FPlatinum%20wedding%20package%20tailored%20for%20my%20event.%20Are%20you%20available%3F" class="btn btn-outline" target="_blank" rel="noopener noreferrer">Get a custom quote</a>
+          </div>
+        </article>
+      </div>
+
+      <div class="packages-bottom-text reveal-up">
+        <p>Prices depend on date, venue and guest count. Ask for a written quote. (Sample prices and information for demo purposes)</p>
+        <a href="https://wa.me/9779823314206?text=Hi%20Rang%20Events%2C%20I%20would%20like%20to%20get%20a%20quote%20on%20my%20upcoming%20celebration." class="btn btn-primary" target="_blank" rel="noopener noreferrer">Get a quote on WhatsApp</a>
+      </div>
+    </section>
+
+    <!-- Process Section (How It Works) -->
+    <section id="process" class="process-section wrapper" aria-labelledby="process-heading">
+      <div class="section-intro reveal-up">
+        <p class="section-caption">HOW IT WORKS</p>
+        <h2 id="process-heading" class="section-title">Simplifying your path to the big day</h2>
+        <p class="section-description">We keep the entire preparation phase straightforward, clear, and and supportive.</p>
+      </div>
+
+      <div class="process-steps">
+        <article class="step-card reveal-up">
+          <div class="step-num">1</div>
+          <h3>Message us</h3>
+          <p>Ping us on WhatsApp with your prospective date, estimate guest headcount, and visual dreams.</p>
+        </article>
+
+        <article class="step-card reveal-up">
+          <div class="step-num">2</div>
+          <h3>Free planning call</h3>
+          <p>We'll schedule an initial chat (video or in-person) to align budget, needs, and design styles.</p>
+        </article>
+
+        <article class="step-card reveal-up">
+          <div class="step-num">3</div>
+          <h3>Plan and book</h3>
+          <p>Lock the date with a deposit, and we'll hand over custom layout blueprints and vendor plans.</p>
+        </article>
+
+        <article class="step-card reveal-up">
+          <div class="step-num">4</div>
+          <h3>We run the day</h3>
+          <p>Relax while our team orchestrates deliveries, cue routines, and manages every moment.</p>
+        </article>
+      </div>
+
+      <div class="process-outro reveal-up">
+        <p class="banner-note"><strong>Planning from abroad?</strong> We conduct scheduled video calls to capture fine details with overseas clients & families.</p>
+      </div>
+    </section>
+
+    <!-- Reviews Section -->
+    <section id="reviews" class="reviews-section wrapper" aria-labelledby="reviews-heading">
+      <div class="section-intro reveal-up">
+        <p class="section-caption">TESTIMONIALS (SAMPLE REVIEWS)</p>
+        <h2 id="reviews-heading" class="section-title">What families say about Rang Events</h2>
+        <p class="section-description">Unfiltered feedback from couples and parents after our historical milestones (for demo purposes).</p>
+      </div>
+
+      <div class="reviews-grid">
+        <blockquote class="review-card reveal-up">
+          <p class="review-quote">"Rang Events managed my daughter's wedding at Heritage Garden gracefully. Since we live in Australia, they connected with us over video calls every weekend. Everything was perfect, on schedule, and they kept our budget under control."</p>
+          <cite>
+            <strong>Aarati and Sagar</strong>
+            <span class="cite-meta">Parents of Bride, Sydney (sample review)</span>
+          </cite>
+        </blockquote>
+
+        <blockquote class="review-card reveal-up">
+          <p class="review-quote">"Their design team really listened! Our Bratabandha had extremely strict religious needs, and the setup was perfectly authentic yet modern. Highly organized and friendly staff."</p>
+          <cite>
+            <strong>The Shrestha family</strong>
+            <span class="cite-meta">Family Elders, Kathmandu (sample review)</span>
+          </cite>
+        </blockquote>
+
+        <blockquote class="review-card reveal-up">
+          <p class="review-quote">"Excellent Day-of Coordination. I was completely stress-free during my wedding party. They handled multiple schedule changes from catering gracefully."</p>
+          <cite>
+            <strong>Pramila</strong>
+            <span class="cite-meta">Bride, Sydney (sample review)</span>
+          </cite>
+        </blockquote>
+      </div>
+    </section>
+
+    <!-- Meet The Planner Section -->
+    <section class="planner-section wrapper" aria-labelledby="planner-heading">
+      <div class="planner-card reveal-up">
+        <div class="planner-visual">
+          <div class="avatar" aria-label="Anjali K.">AK</div>
+        </div>
+        <div class="planner-info">
+          <p class="badge-title">MEET YOUR PLANNER</p>
+          <h2 id="planner-heading" class="planner-name">Anjali K., lead planner (sample)</h2>
+          <p class="planner-bio">I started Rang Events to help families enjoy their most significant moments instead of managing logistics. Having coordinated over eighty gatherings in Kathmandu, I realize that precise timelines, reliable partners, and graceful decoration makes all the difference. Let us shape a beautiful, hassle-free day for your family.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact & Visit Section -->
+    <section id="contact" class="contact-section wrapper" aria-labelledby="contact-heading">
+      <div class="section-intro reveal-up">
+        <p class="section-caption">CONTACT &amp; VISIT</p>
+        <h2 id="contact-heading" class="section-title">Let’s begin the planning</h2>
+        <p class="section-description">Reach us immediately to chat through layouts, dates, and scheduling details.</p>
+      </div>
+
+      <div class="contact-grid">
+        <div class="contact-details reveal-up">
+          <div class="detail-block">
+            <h3>Direct Chat & Calling</h3>
+            <div class="action-buttons">
+              <a href="https://wa.me/9779823314206" class="btn btn-primary btn-cta btn-whatsapp" target="_blank" rel="noopener noreferrer">
+                <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.515 2.266 2.27 3.51 5.284 3.508 8.49-.005 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.974-.502-5.731-1.455L0 24zm6.59-4.846c1.642.975 3.254 1.488 4.793 1.489 5.256 0 9.531-4.248 9.535-9.47.002-2.529-.982-4.908-2.774-6.702-1.792-1.794-4.175-2.783-6.707-2.784-5.263 0-9.54 4.25-9.545 9.472-.001 1.701.446 3.364 1.294 4.846l-.973 3.555 3.655-.959zM17.487 14.37c-.305-.153-1.803-.889-2.082-.99-.279-.101-.482-.153-.685.153-.203.305-.787.99-.965 1.193-.177.203-.355.229-.66.076-.304-.153-1.285-.473-2.448-1.511-.904-.807-1.514-1.804-1.691-2.11-.177-.305-.019-.47.133-.621.137-.136.305-.355.457-.533.153-.178.203-.305.305-.508.101-.203.05-.381-.025-.533-.076-.153-.685-1.65-.939-2.26-.247-.6-.5-.519-.685-.529-.177-.009-.381-.01-.584-.01a1.12 1.12 0 0 0-.813.381c-.279.305-1.066 1.042-1.066 2.54 0 1.498 1.091 2.946 1.243 3.149.152.203 2.147 3.279 5.2 4.595.726.314 1.293.501 1.734.641.73.232 1.393.199 1.918.121.584-.087 1.803-.737 2.057-1.448.254-.712.254-1.321.178-1.448-.076-.127-.279-.203-.584-.356z"/></svg>
+                <span>WhatsApp: +977 9823314206 (sample)</span>
+              </a>
+              <a href="tel:+9779823314206" class="btn btn-outline btn-cta btn-call">
+                <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                <span>Call +977 98233 14206 (sample)</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="detail-block margin-top">
+            <h3>Address & Hours</h3>
+            <p class="contact-meta font-medium">Baluwatar, Kathmandu, Nepal (near police headquarters, sample address)</p>
+            <p class="contact-meta text-muted">Open Sunday to Friday, 10 AM to 6 PM (sample)</p>
+            <a href="https://www.google.com/maps/search/?api=1&query=Wedding+and+Event+Planner+Kathmandu" class="text-link flex-center" target="_blank" rel="noopener noreferrer">
+              <span>Get driving directions</span>
+              <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Google Maps Placeholder/Iframe -->
+        <div class="map-container reveal-up" aria-label="Our office location map">
+          <div class="map-overlay-banner">
+            <span class="badge">MAP PLACEHOLDER</span>
+            <p>A real company shows its actual location here</p>
+            <a href="https://www.google.com/maps/search/?api=1&query=Wedding+and+Event+Planner+Kathmandu" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-dark btn-sm">Explore Map</a>
+          </div>
+          <div class="fallback-map">
+            <span>Map graphics simulated here</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Sticky Bottom Bar Mobile Only -->
+  <aside class="sticky-bottom-bar" aria-label="Quick Contacts">
+    <a href="https://wa.me/9779823314206" target="_blank" rel="noopener noreferrer" class="bar-btn">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.515 2.266 2.27 3.51 5.284 3.508 8.49-.005 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.974-.502-5.731-1.455L0 24zm6.59-4.846c1.642.975 3.254 1.488 4.793 1.489 5.256 0 9.531-4.248 9.535-9.47.002-2.529-.982-4.908-2.774-6.702-1.792-1.794-4.175-2.783-6.707-2.784-5.263 0-9.54 4.25-9.545 9.472-.001 1.701.446 3.364 1.294 4.846l-.973 3.555 3.655-.959zM17.487 14.37c-.305-.153-1.803-.889-2.082-.99-.279-.101-.482-.153-.685.153-.203.305-.787.99-.965 1.193-.177.203-.355.229-.66.076-.304-.153-1.285-.473-2.448-1.511-.904-.807-1.514-1.804-1.691-2.11-.177-.305-.019-.47.133-.621.137-.136.305-.355.457-.533.153-.178.203-.305.305-.508.101-.203.05-.381-.025-.533-.076-.153-.685-1.65-.939-2.26-.247-.6-.5-.519-.685-.529-.177-.009-.381-.01-.584-.01a1.12 1.12 0 0 0-.813.381c-.279.305-1.066 1.042-1.066 2.54 0 1.498 1.091 2.946 1.243 3.149.152.203 2.147 3.279 5.2 4.595.726.314 1.293.501 1.734.641.73.232 1.393.199 1.918.121.584-.087 1.803-.737 2.057-1.448.254-.712.254-1.321.178-1.448-.076-.127-.279-.203-.584-.356z"/></svg>
+      <span>WhatsApp</span>
+    </a>
+    <a href="tel:+9779823314206" class="bar-btn">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      <span>Call</span>
+    </a>
+    <a href="https://www.google.com/maps/search/?api=1&query=Wedding+and+Event+Planner+Kathmandu" target="_blank" rel="noopener noreferrer" class="bar-btn">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      <span>Directions</span>
+    </a>
+  </aside>
+
+  <!-- Gallery Lightbox Modal -->
+  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Image gallery viewer" hidden>
+    <div class="lightbox-backdrop"></div>
+    <div class="lightbox-dialog">
+      <button type="button" class="lightbox-close" aria-label="Close viewer">
+        <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+      
+      <div class="lightbox-content-box">
+        <button type="button" class="lightbox-nav prev" aria-label="Previous photo">
+          <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        
+        <div class="lightbox-img-wrapper">
+          <img id="lightbox-img" src="" alt="">
+          <p id="lightbox-caption" class="lightbox-caption"></p>
+        </div>
+        
+        <button type="button" class="lightbox-nav next" aria-label="Next photo">
+          <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-container wrapper">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <span class="footer-logo">Rang Events</span>
+          <p class="brand-tagline">Kathmandu, Nepal • (Sample Demo website)</p>
+        </div>
+        <div class="footer-demo-disclaimer">
+          <p><strong>REQUISITES &amp; INTENT:</strong> Rang Events is a sample, placeholder brand created exclusively as a interactive website demonstration. All event names, customer testimonials, prices, address info, schedules, and photos shown throughout this portal are sample creations used for visualization only and are not real representation of any live company.</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Rang Events. Built for Demonstration purposes.</p>
+        <p class="build-credit">Website by QuickBuild, Kathmandu.</p>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
